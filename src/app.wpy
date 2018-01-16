@@ -27,9 +27,9 @@
 			],
 			window: {
 				backgroundTextStyle: 'dark',
-				navigationBarBackgroundColor: '#FFFFFF',
+				navigationBarBackgroundColor: '#ff5777',
 				navigationBarTitleText: '柠檬好物',
-				navigationBarTextStyle: 'black',
+				navigationBarTextStyle: '#fff',
 				enablePullDownRefresh: true,
 				backgroundColor: '#EFEFEF'
 			},

@@ -26,6 +26,7 @@
 			confirmInput(e){
 				this.search_input_value = e.detail.value;
 				this.$apply();
+				this.$emit('searchValue', this.search_input_value);
 			},
 			search() {
 				this.$emit('searchValue', this.search_input_value);

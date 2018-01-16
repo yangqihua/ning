@@ -1,0 +1,49 @@
+<!--筛选栏-->
+<template>
+	<view class="filter">
+		<view class="nav {{currentType=='0' ? 'nav_active' : ''}}"  data-current="0" @tap="orderBy">默认</view>
+		<view class="nav  {{currentType=='1' ? 'nav_active' : ''}}" data-current="1" @tap="orderBy">价格</view>
+		<view class="nav  {{currentType=='2' ? 'nav_active' : ''}}" data-current="2" @tap="orderBy">销量</view>
+		<view class="nav  {{currentType=='3' ? 'nav_active' : ''}}" data-current="3" @tap="orderBy">券额</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy';
+	export default class FilterBar extends wepy.component {
+		data = {
+			currentType: "0",
+		}
+		methods = {
+			orderBy(e) {
+				this.currentType = e.target.dataset.current;
+				this.$apply();
+			}
+		}
+		watch = {
+			currentType(newValue) {
+				this.$emit("currentType", newValue);
+			},
+		}
+	}
+</script>
+
+<style lang="less">
+	@import "../../styles/theme.less";
+	.filter {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		background: #fff;
+		.nav {
+			flex:1;
+			color: #333;
+			font-size: 26rpx;
+			padding: 12px 20px;
+			text-align: center;
+		}
+		.nav_active {
+			color: @color_red_2;
+		}
+	}
+</style>
