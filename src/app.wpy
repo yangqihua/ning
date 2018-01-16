@@ -1,68 +1,102 @@
 <style lang="less">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
+	.container {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+	}
 </style>
 
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
+	import wepy from 'wepy'
+	import 'wepy-async-function'
+	import {
+		BASE_URL,
+		USER_INFO,
+		SYSTEM_INFO,
+	} from "./utils/constant";
 
-export default class extends wepy.app {
-  config = {
-    pages: [
-      'pages/index'
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
-    }
-  }
+	import {
+		wxRequest
+	} from './utils/wxRequest';
 
-  globalData = {
-    userInfo: null
-  }
+	export default class extends wepy.app {
+		config = {
+			pages: [
+				'pages/index'
+			],
+			window: {
+				backgroundTextStyle: 'dark',
+				navigationBarBackgroundColor: '#FFFFFF',
+				navigationBarTitleText: 'WeChat',
+				navigationBarTextStyle: 'black',
+				enablePullDownRefresh: true,
+				backgroundColor: '#EFEFEF'
+			}
+		}
 
-  constructor () {
-    super()
-    this.use('requestfix')
-  }
+		globalData = {
+			userInfo: null,
+		}
 
-  onLaunch() {
-    this.testAsync()
-  }
+		constructor() {
+			super()
+			this.use('requestfix')
+			this.use('promisify')
+		}
 
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
+		onLaunch(options) {
+			console.log("options :", options)
+			this.initApp()
+		}
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
+		initApp() {
+			let userInfo = wepy.getStorageSync(USER_INFO) || {};
+			console.log("userInfo:", userInfo);
+			wx.checkSession({
+				success: () => {
+					if ((!userInfo.openid) || (!userInfo.nickName)) {
+						this.login();
+					}
+				},
+				fail: () => {
+					this.login();
+				}
+			})
+		}
 
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
-    }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
-  }
-}
+		async login() {
+			let res = await wepy.login();
+			if (res.code) {
+				let userResult = await wepy.getUserInfo();
+				let userInfo = userResult.userInfo;
+
+				let systemInfo = wepy.getSystemInfoSync();
+				wepy.setStorageSync(SYSTEM_INFO, systemInfo);
+
+				let params = {
+					code: res.code,
+					avatarUrl: userInfo.avatarUrl,
+					city: userInfo.city,
+					province: userInfo.province,
+					gender: userInfo.gender,
+					nickName: userInfo.nickName
+				};
+				this.globalData.userInfo = userInfo;
+				wepy.setStorageSync(USER_INFO, userInfo);
+//				wxRequest(params, BASE_URL + 'auth/login').then((result) => {
+//					console.log("openid:", result.data.data);
+//					userInfo['openid'] = result.data.data;
+//					this.globalData.userInfo = userInfo;
+//					wepy.setStorageSync(USER_INFO, userInfo);
+//				})
+			}
+		}
+
+		getUserInfo() {
+			return this.globalData.userInfo || wepy.getStorageSync(USER_INFO)
+		}
+	}
 </script>
