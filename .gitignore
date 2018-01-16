@@ -1,0 +1,10 @@
+/dist
+/node_modules
+.editorconfig
+.eslintignore
+.eslintrc.js
+.idea/
+.wepycache
+.wepyignore
+package-lock.json
+min.config.json
