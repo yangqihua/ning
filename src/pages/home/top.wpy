@@ -1,0 +1,129 @@
+
+<template>
+	<view class="container">
+		<search @searchValue.user="doSearch"></search>
+
+		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
+		        autoplay="true" interval="3000" duration="300" circular="true">
+			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
+				<swiper-item>
+					<image src="{{item.picUrl}}" mode="aspectFill" class="slide-image" style="width: 100%;" @tap="goToAd({{item.adUrl}})"/>
+				</swiper-item>
+			</repeat>
+		</swiper>
+
+		<view class="nav_list">
+			<navigator open-type="navigate" url="/pages/sign_in">
+				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
+				<view class="nav_text">签到有礼</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/exchange_goods">
+				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
+				<view class="nav_text">换货专区</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/wholesale">
+				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
+				<view class="nav_text">特价专区</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/replenishment_goods">
+				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
+				<view class="nav_text">我要补货</view>
+			</navigator>
+		</view>
+
+		<view class="userinfo" @tap="handleViewTap">
+			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import Search from '../../components/search'
+
+	export default class Index extends wepy.page {
+		config = {
+			navigationBarTitleText: '好货精选'
+		}
+		components = {
+			search: Search,
+		}
+
+		data = {
+			userInfo: {
+				nickName: '加载中...'
+			},
+			adList:[
+				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/37/818a59764011d6eeb89a192e150f466a.jpg",adUrl:'xxx1/xx'},
+				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx2/xx'},
+				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx3/xx'},
+			]
+		}
+
+		computed = {
+		}
+
+		methods = {
+			handleViewTap(){
+				console.log("tap");
+			},
+			doSearch(value) {
+				console.log("search value:",value)
+			},
+			goToAd(url){
+				console.log('url:',url);
+			}
+		}
+
+		onLoad() {
+			this.userInfo = this.$parent.getUserInfo();
+			console.log("on load userInfo",this.userInfo);
+			this.$apply();
+		}
+	}
+</script>
+
+<style lang="less">
+	@import "../../styles/theme.less";
+
+	.nav_list {
+		color: #404040;
+		display: flex;
+		font-size: 26rpx;
+		justify-content: space-between;
+		padding: 17rpx 50rpx;
+
+	navigator {
+		text-align: center
+	}
+
+	.nav_icon {
+		height: 80rpx;
+		width: 80rpx;
+		margin: 0 auto;
+		margin-bottom: 14rpx;
+	}
+
+	.nav_text {
+		font-size: 26rpx
+	}
+
+	}
+
+	.userinfo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.userinfo-avatar {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 50%;
+	}
+
+	.userinfo-nickname {
+		color: #aaa;
+	}
+</style>

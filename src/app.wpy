@@ -20,15 +20,50 @@
 	export default class extends wepy.app {
 		config = {
 			pages: [
-				'pages/index'
+				'pages/home/index',
+				'pages/home/top',
+				'pages/home/search',
+				'pages/home/me',
 			],
 			window: {
 				backgroundTextStyle: 'dark',
-				navigationBarBackgroundColor: '#ff5777',
-				navigationBarTitleText: 'WeChat',
-				navigationBarTextStyle: 'white',
+				navigationBarBackgroundColor: '#FFFFFF',
+				navigationBarTitleText: '柠檬好物',
+				navigationBarTextStyle: 'black',
 				enablePullDownRefresh: true,
 				backgroundColor: '#EFEFEF'
+			},
+			tabBar: {
+				color: "#999999",
+				selectedColor: "#ff6a3c",
+				backgroundColor: "#ffffff",
+				borderStyle: "black",
+				list: [
+					{
+						pagePath: 'pages/home/index',
+						text: "首页",
+						iconPath: "images/icon_home.png",
+						selectedIconPath: "images/icon_home_active.png"
+					},
+					{
+						pagePath: 'pages/home/top',
+						text: "好货精选",
+						iconPath: "images/icon_classify.png",
+						selectedIconPath: "images/icon_classify_active.png"
+					},
+					{
+						pagePath: 'pages/home/search',
+						text: "搜索",
+						iconPath: "images/icon_shop_cart.png",
+						selectedIconPath: "images/icon_shop_cart_active.png"
+					},
+					{
+						pagePath: 'pages/home/me',
+						text: "个人中心",
+						iconPath: "images/icon_info.png",
+						selectedIconPath: "images/icon_info_active.png"
+					}
+				]
 			}
 		}
 

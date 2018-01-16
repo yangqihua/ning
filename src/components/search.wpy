@@ -45,7 +45,7 @@
 	}
 
 	.content {
-		padding: 12rpx;
+		padding: 12rpx 8rpx;
 		background-color: #ff5777;
 	}
 
