@@ -34,10 +34,10 @@
 				backgroundColor: '#EFEFEF'
 			},
 			tabBar: {
-				color: "#999999",
-				selectedColor: "#ff6a3c",
+				color: "#666",
+				selectedColor: "#ff5777",
 				backgroundColor: "#ffffff",
-				borderStyle: "black",
+				borderStyle: "#b2b2b2",
 				list: [
 					{
 						pagePath: 'pages/home/index',

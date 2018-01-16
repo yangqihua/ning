@@ -31,20 +31,23 @@
 			</navigator>
 		</view>
 
-		<view class="userinfo" @tap="handleViewTap">
-			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
-		</view>
+		<wxc-toast
+				class="J_toast"
+				text="Hello World">
+		</wxc-toast>
 	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-	import Search from '../../components/search'
+	import Search from '../../components/common/search'
 
 	export default class Index extends wepy.page {
 		config = {
-			navigationBarTitleText: '柠檬好物'
+			navigationBarTitleText: '柠檬好物',
+			usingComponents: {
+				'wxc-toast': '../../packages/@minui/wxc-toast/dist/index'
+			}
 		}
 		components = {
 			search: Search,
@@ -76,10 +79,17 @@
 			}
 		}
 
+		showToast() {
+			let $toast = this.$wxpage.selectComponent('.J_toast')
+			$toast && $toast.show()
+		}
+
 		onLoad() {
 			this.userInfo = this.$parent.getUserInfo();
 			console.log("on load userInfo",this.userInfo);
 			this.$apply();
+
+			this.showToast();
 		}
 	}
 </script>
@@ -109,21 +119,5 @@
 			font-size: 26rpx
 		}
 
-	}
-
-	.userinfo {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.userinfo-avatar {
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 50%;
-	}
-
-	.userinfo-nickname {
-		color: #aaa;
 	}
 </style>
