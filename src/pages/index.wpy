@@ -1,6 +1,7 @@
 
 <template>
 	<view class="container">
+		<search @searchValue.user="doSearch"></search>
 		<view class="userinfo" @tap="handleViewTap">
 			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
 			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
@@ -10,12 +11,14 @@
 
 <script>
 	import wepy from 'wepy'
+	import Search from '../components/search'
 
 	export default class Index extends wepy.page {
 		config = {
 			navigationBarTitleText: '柠檬好物'
 		}
 		components = {
+			search: Search,
 		}
 
 		data = {
@@ -30,7 +33,10 @@
 		methods = {
 			handleViewTap(){
 				console.log("tap");
-			}
+			},
+			doSearch(value) {
+				console.log("search value:",value)
+			},
 		}
 
 		onLoad() {

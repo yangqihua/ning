@@ -1,12 +1,7 @@
 <style lang="less">
-	.container {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: space-between;
-		box-sizing: border-box;
-	}
+	@import "./styles/base";
+	@import "./styles/icon";
+	@import "./styles/style";
 </style>
 
 <script>
@@ -29,9 +24,9 @@
 			],
 			window: {
 				backgroundTextStyle: 'dark',
-				navigationBarBackgroundColor: '#FFFFFF',
+				navigationBarBackgroundColor: '#ff5777',
 				navigationBarTitleText: 'WeChat',
-				navigationBarTextStyle: 'black',
+				navigationBarTextStyle: 'white',
 				enablePullDownRefresh: true,
 				backgroundColor: '#EFEFEF'
 			}

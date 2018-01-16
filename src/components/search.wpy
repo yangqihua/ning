@@ -1,0 +1,101 @@
+<template>
+	<view class="content">
+		<view class="search">
+			<view class="search_content">
+				<i class="iconfont icon-search"></i>
+				<input placeholder-class="search_placeholder" type="text" name="search_input" bindinput="searchInput" class="search_input" focus="true"
+				       value="{{search_input_value}}" confirm-type="search" bindconfirm="confirmInput" placeholder="搜索商品名称"/>
+				<i wx:if="{{search_input_value!=''}}" @tap="delText" class="iconfont icon-del"></i>
+			</view>
+			<button class="btn btn_search" @tap="search()">搜索</button>
+		</view>
+	</view>
+</template>
+<script>
+	import wepy from 'wepy';
+	export default class Search extends wepy.component {
+		data = {
+			search_input_value: '',
+		};
+		methods = {
+			searchInput(e) {
+				this.search_input_value = e.detail.value;
+				this.$apply();
+			},
+			confirmInput(e){
+				this.search_input_value = e.detail.value;
+				this.$apply();
+			},
+			search() {
+				this.$emit('searchValue', this.search_input_value);
+			},
+			delText() {
+				this.search_input_value = "";
+				this.$apply();
+			},
+		}
+
+		onLoad() {}
+	}
+
+</script>
+<style lang="less">
+	.button-hover {
+		background-color: red;
+	}
+
+	.content {
+		padding: 12rpx;
+		background-color: #ff5777;
+	}
+
+	.search {
+		align-items: center;
+		display: flex;
+		margin: 0 auto;
+		width: 680rpx;
+		.search_content {
+			width: 560rpx;
+			display: flex;
+			align-items: center;
+			border-radius: 160rpx;
+			color: #3b333b;
+			background: #fff;
+			padding: 5rpx 12rpx;
+			height: 52rpx;
+			.search_input {
+				font-size: 26rpx;
+				width: 100%;
+			}
+		}
+		.search_placeholder{
+			color: #b2b2b2;
+			text-align: center;
+		}
+		.icon-search {
+			color: #b2b2b2;
+			font-size: 40rpx;
+		}
+		.btn {
+			width: 118rpx;
+			height: 56rpx;
+			font-size: 28rpx;
+			line-height: 56rpx;
+			margin-left: 20rpx;
+			padding-left: 5rpx;
+			padding-right: 5rpx;
+		}
+		.btn_search {
+			color: #fff;
+			background: #ff5777;
+		}
+		.icon-del {
+			color: #b2b2b2;
+			height: 60rpx;
+			line-height: 60rpx;
+			width: 60rpx;
+			font-size: 40rpx;
+		}
+	}
+
+</style>
