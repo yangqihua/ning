@@ -30,8 +30,8 @@
 				navigationBarBackgroundColor: '#ff5777',
 				navigationBarTitleText: '柠檬好物',
 				navigationBarTextStyle: '#fff',
-				enablePullDownRefresh: true,
-				backgroundColor: '#EFEFEF'
+				enablePullDownRefresh: false,
+				backgroundColor: '#EFEFEF',
 			},
 			tabBar: {
 				color: "#666",

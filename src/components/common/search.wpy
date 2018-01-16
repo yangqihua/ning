@@ -42,13 +42,14 @@
 
 </script>
 <style lang="less">
-	.button-hover {
-		background-color: red;
-	}
-
 	.content {
 		padding: 12rpx 8rpx;
 		background-color: #ff5777;
+		position: fixed;
+		top:0;
+		right: 0;
+		left: 0;
+		z-index: 999;
 	}
 
 	.search {

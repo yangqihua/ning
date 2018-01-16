@@ -127,6 +127,10 @@
 <style lang="less">
 	@import "../../styles/theme.less";
 
+	.swiper{
+		padding-top: 84rpx;
+	}
+
 	.nav_list {
 		color: #333;
 		display: flex;
