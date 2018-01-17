@@ -41,7 +41,7 @@
 	@import "../../styles/theme.less";
 
 	.goods_list_container {
-		padding: 0rpx 15rpx;
+		padding: 0rpx 10rpx;
 		background: #f7f7f7;
 		display: flex;
 		flex-wrap: wrap;
@@ -54,8 +54,8 @@
 
 	.list {
 		background: #fff;
-		width: 355rpx;
-		margin-top: 15rpx;
+		width: 360rpx;
+		margin-top: 10rpx;
 		.image_box {
 			image {
 				width: 100%;
