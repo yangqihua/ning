@@ -1,0 +1,58 @@
+<!--筛选栏-->
+<template>
+	<view class="content">
+		<view class="tab">
+
+		</view>
+		<view class="filter">
+			<filterBar @currentType.user="currentType"></filterBar>
+		</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy';
+	import FilterBar from './common/FilterBar'
+	import tip from '../utils/tip'
+	export default class HomeList extends wepy.component {
+		data = {
+			currentType: "0",
+		}
+		components = {
+			filterBar: FilterBar,
+		}
+		methods = {
+			currentType(obj) {
+				tip.success("状态:" + obj);
+//				var name = obj.name;
+//				var type = obj.type;
+//				if (name=="zhonghe") {
+//					this.sort = -1;
+//				} else if (name=="sale") {
+//					this.sort = 3;
+//				} else if (name=="price") {
+//					if (type=="desc") {
+//						this.sort = 2;
+//					} else if (type=="asc") {
+//						this.sort = 1;
+//					}
+//				}else if (name == "sku") {
+//					this.skuval = type;
+//				}
+//				this.list = [];
+//				this.showLoading = true;
+//				this.is_empty = false;
+//				this.getGoodList();
+			},
+		}
+		watch = {
+			currentType(newValue) {
+				this.$emit("currentType", newValue);
+			},
+		}
+	}
+</script>
+
+<style lang="less">
+	@import "../styles/theme.less";
+</style>

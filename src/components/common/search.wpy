@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="search_container">
 		<view class="search">
 			<view class="search_content">
 				<i class="iconfont icon-search"></i>
@@ -42,7 +42,7 @@
 
 </script>
 <style lang="less">
-	.content {
+	.search_container {
 		padding: 12rpx 8rpx;
 		background-color: #ff5777;
 		position: fixed;
