@@ -39,11 +39,11 @@
 			flex:1;
 			color: #333;
 			font-size: 26rpx;
-			padding: 12px 20px;
+			padding: 10px 20px;
 			text-align: center;
 		}
 		.nav_active {
-			color: @color_red_2;
+			color: #ff0077;
 		}
 	}
 </style>
