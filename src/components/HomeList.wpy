@@ -11,7 +11,7 @@
 				<repeat for="{{tabs}}" key="index" index="index" item="tab">
 					<wxc-tab-label tab-index="{{index}}">
 						<view class="label {{ activeKey === index ? 'active' : ''}}">
-							{{tab.title}}
+							{{tab.c_name}}
 						</view>
 					</wxc-tab-label>
 				</repeat>
@@ -20,9 +20,9 @@
 			<repeat for="{{tabs}}" key="index" index="index" item="tab">
 				<wxc-tab-panel tab-index="{{index}}">
 					<view class="filter_bar">
-						<filterBar @currentType.user="currentType"></filterBar>
+						<filterBar @handleSort.user="handleSort"></filterBar>
 					</view>
-					{{tab.content}}
+					{{tab.c_id}}
 				</wxc-tab-panel>
 			</repeat>
 
@@ -41,36 +41,34 @@
 			filterBar: FilterBar,
 		}
 		data = {
-			currentType: "0",
-			activeKey: 0,
+			sortId: "0",
+			activeKey: '0',
 			tabs: [
-				{title: '衣服', content: '内容一'},
-				{title: '裤子', content: '内容二'},
-				{title: '鞋子', content: '内容三'},
-				{title: '化妆品', content: '内容四'},
-				{title: '吃货', content: '内容五'},
-				{title: '吃货', content: '内容五'},
-				{title: '吃货', content: '内容五'},
-				{title: '吃货', content: '内容五'},
-				{title: '吃货', content: '内容五'},
-				{title: '篮球', content: '内容六'}
+				{c_id: '0', c_name: '默认'},
 			]
 		}
 		methods = {
 			onClick: function (e) {
-				console.log(`ComponentId:${e.detail.componentId},you selected:${e.detail.key}`);
 				this.activeKey = e.detail.key;
 			},
-			currentType(obj) {
+			handleSort(obj) {
 				tip.success("状态:" + obj);
 			},
 		}
 		onLoad() {
-
+			let params = {
+				url:'agent/lunbotu',
+				isLoading:false,
+				scb:(res)=>{
+					this.adList = res;
+					this.$apply();
+				}
+			}
+			HTTPUtil.get(params);
 		}
 		watch = {
-			currentType(newValue) {
-				this.$emit("currentType", newValue);
+			sortId(newValue) {
+				this.$emit("handleSort", newValue);
 			},
 		}
 	}

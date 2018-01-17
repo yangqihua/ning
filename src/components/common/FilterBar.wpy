@@ -1,10 +1,10 @@
 <!--筛选栏-->
 <template>
 	<view class="filter">
-		<view class="nav {{currentType=='0' ? 'nav_active' : ''}}"  data-current="0" @tap="orderBy">默认</view>
-		<view class="nav  {{currentType=='1' ? 'nav_active' : ''}}" data-current="1" @tap="orderBy">价格</view>
-		<view class="nav  {{currentType=='2' ? 'nav_active' : ''}}" data-current="2" @tap="orderBy">销量</view>
-		<view class="nav  {{currentType=='3' ? 'nav_active' : ''}}" data-current="3" @tap="orderBy">券额</view>
+		<view class="nav {{sortId=='0' ? 'nav_active' : ''}}"  data-current="0" @tap="handleSort">默认</view>
+		<view class="nav  {{sortId=='1' ? 'nav_active' : ''}}" data-current="1" @tap="handleSort">价格</view>
+		<view class="nav  {{sortId=='2' ? 'nav_active' : ''}}" data-current="2" @tap="handleSort">销量</view>
+		<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" @tap="handleSort">券额</view>
 	</view>
 </template>
 
@@ -12,17 +12,17 @@
 	import wepy from 'wepy';
 	export default class FilterBar extends wepy.component {
 		data = {
-			currentType: "0",
+			sortId: "0",
 		}
 		methods = {
-			orderBy(e) {
-				this.currentType = e.target.dataset.current;
+			handleSort(e) {
+				this.sortId = e.target.dataset.current;
 				this.$apply();
 			}
 		}
 		watch = {
-			currentType(newValue) {
-				this.$emit("currentType", newValue);
+			sortId(newValue) {
+				this.$emit("handleSort", newValue);
 			},
 		}
 	}
