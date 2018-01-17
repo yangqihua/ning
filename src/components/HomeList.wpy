@@ -48,6 +48,7 @@
 			page: 1,
 			goods: [
 				{
+					"id": "563457265871",
 					"iid": "563457265871",
 					"name": "冬装新款男士风衣韩版中长款修身呢子大衣帅气加绒加厚男外套衣服",
 					"pic": "http://img.alicdn.com/imgextra/i2/3511587683/TB2A3Uvjz3z9KJjy0FmXXXiwXXa_!!3511587683.jpg",
@@ -60,6 +61,7 @@
 					"is_tmall": 1
 				},
 				{
+					"id": "561467625072",
 					"iid": "561467625072",
 					"name": "2017冬装新款韩范纯棉白衬衫女长袖职业立领加绒加厚衬衣打底衫",
 					"pic": "http://img.alicdn.com/imgextra/i3/2086988050/TB266avddzJ8KJjSspkXXbF7VXa_!!2086988050.jpg",
@@ -72,6 +74,7 @@
 					"is_tmall": 1
 				},
 				{
+					"id": "555981561241",
 					"iid": "555981561241",
 					"name": "500g山东东阿即食型阿胶糕固元糕膏新春节过年送礼年货食品佳礼盒",
 					"pic": "http://img.alicdn.com/imgextra/i3/1678361457/TB2OuuuahHI8KJjy1zbXXaxdpXa_!!1678361457.jpg",
@@ -141,9 +144,6 @@
 
 <style lang="less" rel="stylesheet/less">
 	@import "../styles/theme.less";
-
-
-
 	.tab {
 		.label {
 			width: 100%;
@@ -158,11 +158,10 @@
 			color: #ff0077;
 		}
 		.filter_bar {
-			padding: 12rpx 0 15rpx 0;
+			padding: 12rpx 0 0 0;
 			background-color: #ffe8ee;
 		}
 		.goods{
-			padding: 20rpx 0;
 		}
 	}
 </style>

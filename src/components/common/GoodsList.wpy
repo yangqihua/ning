@@ -1,16 +1,16 @@
 <template>
 	<view class="goods_list_container">
 		<repeat for="{{goodsList}}" key="index" index="index" item="item">
-			<navigator class="list" url="/pages/goods_detail?id={{item.id}}&purchasetype={{purchasetype}}&special={{special}}">
+			<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
 				<view class="image_box">
-					<image src="{{item.thumLogo}}"></image>
+					<image src="{{item.pic}}"></image>
 				</view>
 				<view class="goods">
 					<view class="product_name" wx:if="{{showTitle}}">{{item.name}}</view>
 					<view class="product_info">
 						<view class="price">￥{{item.price}}</view>
-						<view class="cost_price">￥{{item.marketPrice}}</view>
-						<view class="sale_num">销量{{item.saleCount}}件</view>
+						<view class="cost_price">￥{{item.coupon_price}}</view>
+						<view class="sale_num">销量{{item.sales}}件</view>
 					</view>
 				</view>
 			</navigator>

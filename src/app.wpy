@@ -24,6 +24,7 @@
 				'pages/home/top',
 				'pages/home/search',
 				'pages/home/me',
+				'pages/goods_details',
 			],
 			window: {
 				backgroundTextStyle: 'dark',

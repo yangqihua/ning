@@ -1,0 +1,27 @@
+<template>
+	<view class="container">
+		<view>详情页面</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class GoodsDetails extends wepy.page {
+		config = {
+			navigationBarTitleText: '商品详情',
+		}
+		data = {
+		}
+		onLoad(options) {
+			console.log("options:",options);
+			let goods_id = options['goods_id'];
+		}
+		methods = {
+		}
+		computed = {}
+	}
+</script>
+
+<style lang="less">
+</style>
