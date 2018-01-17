@@ -1,0 +1,33 @@
+<template>
+	<view class="goods_list_container">
+		<repeat for="{{goodsList}}" key="index" index="index" item="item">
+			{{item.name}}
+		</repeat>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy';
+	export default class GoodsList extends wepy.component {
+		data = {
+			sortId: "0",
+		}
+		props = {
+			goodsList:Array
+		}
+		onLoad(){
+			console.log("goodsList:",this.goodsList);
+		}
+		methods = {
+		}
+		watch = {
+		}
+	}
+</script>
+
+<style lang="less">
+	@import "../../styles/theme.less";
+	.goods_list_container {
+		background: #fff;
+	}
+</style>

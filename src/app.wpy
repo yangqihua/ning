@@ -78,13 +78,13 @@
 		}
 
 		onLaunch(options) {
-			console.log("options :", options)
+//			console.log("options :", options)
 			this.initApp()
 		}
 
 		initApp() {
 			let userInfo = wepy.getStorageSync(USER_INFO) || {};
-			console.log("userInfo:", userInfo);
+//			console.log("userInfo:", userInfo);
 			wx.checkSession({
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName)) {

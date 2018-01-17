@@ -1,62 +1,103 @@
 <!--筛选栏-->
 <template>
-	<view class="content">
-		<wxc-tab
-				@tabchange="onClick"
-				animate="true"
-				class="tab"
-				default-index="{{conditionId}}"
-		>
-			<view slot="tablabel">
-				<repeat for="{{tabs}}" key="index" index="index" item="item">
-					<wxc-tab-label tab-index="{{index}}">
-						<view class="label {{ conditionId === index ? 'active' : ''}}">
-							{{item.c_name}}
-						</view>
-					</wxc-tab-label>
-				</repeat>
-			</view>
-
+	<wxc-tab
+			@tabchange="onClick"
+			animate="true"
+			class="tab"
+			default-index="{{conditionId}}"
+	>
+		<view slot="tablabel">
 			<repeat for="{{tabs}}" key="index" index="index" item="item">
-				<wxc-tab-panel tab-index="{{index}}">
-					<view class="filter_bar">
-						<filterBar @handleSort.user="handleSort"></filterBar>
+				<wxc-tab-label tab-index="{{index}}">
+					<view class="label {{ conditionId === index ? 'active' : ''}}">
+						{{item.c_name}}
 					</view>
-					{{item.c_name}}
-				</wxc-tab-panel>
+				</wxc-tab-label>
 			</repeat>
+		</view>
 
-		</wxc-tab>
+		<repeat for="{{tabs}}" key="index" index="index" item="item">
+			<wxc-tab-panel tab-index="{{index}}">
+				<view class="filter_bar">
+					<filterBar @handleSort.user="handleSort"></filterBar>
+				</view>
+				<view class="goods">
+					<goodsList :goodsList.sync="goods"></goodsList>
+				</view>
+			</wxc-tab-panel>
+		</repeat>
 
-	</view>
+	</wxc-tab>
+
 </template>
 
 <script>
 	import wepy from 'wepy';
 	import FilterBar from './common/FilterBar'
+	import GoodsList from './common/GoodsList'
 	import tip from '../utils/tip'
 	import HTTPUtil from '../utils/HTTPUtil'
 	export default class HomeList extends wepy.component {
 		components = {
 			filterBar: FilterBar,
+			goodsList: GoodsList,
 		}
 		data = {
-			sortId: "0",
+			sortId: 0,
 			conditionId: 0,
-			tabs:[
-				{c_id:0,c_name:'默认'},
-				{c_id:1,c_name:'女装'},
-				{c_id:2,c_name:'男装'},
-				{c_id:3,c_name:'内衣'},
-				{c_id:4,c_name:'母婴'},
-				{c_id:5,c_name:'美妆'},
-				{c_id:6,c_name:'居家'},
-				{c_id:7,c_name:'鞋包'},
-				{c_id:8,c_name:'美食'},
-				{c_id:9,c_name:'文体'},
-				{c_id:10,c_name:'数码'},
-				{c_id:11,c_name:'户外'},
-				{c_id:12,c_name:'其他'},
+			page: 1,
+			goods: [
+				{
+					"iid": "563457265871",
+					"name": "冬装新款男士风衣韩版中长款修身呢子大衣帅气加绒加厚男外套衣服",
+					"pic": "http://img.alicdn.com/imgextra/i2/3511587683/TB2A3Uvjz3z9KJjy0FmXXXiwXXa_!!3511587683.jpg",
+					"price": 238,
+					"sales": 8,
+					"rate": 20,
+					"coupon_price": 60,
+					"cid": 0,
+					"content": "防滑抗皱好面料，帅气有型修身，保暖新风尚，3D剪裁，立体修身，穿着舒适，时尚潮流",
+					"is_tmall": 1
+				},
+				{
+					"iid": "561467625072",
+					"name": "2017冬装新款韩范纯棉白衬衫女长袖职业立领加绒加厚衬衣打底衫",
+					"pic": "http://img.alicdn.com/imgextra/i3/2086988050/TB266avddzJ8KJjSspkXXbF7VXa_!!2086988050.jpg",
+					"price": 39,
+					"sales": 76,
+					"rate": 20.5,
+					"coupon_price": 10,
+					"cid": 0,
+					"content": "2017冬装新款，韩范纯棉白衬衫，女长袖职业立领，加绒加厚衬衣打底衫",
+					"is_tmall": 1
+				},
+				{
+					"iid": "555981561241",
+					"name": "500g山东东阿即食型阿胶糕固元糕膏新春节过年送礼年货食品佳礼盒",
+					"pic": "http://img.alicdn.com/imgextra/i3/1678361457/TB2OuuuahHI8KJjy1zbXXaxdpXa_!!1678361457.jpg",
+					"price": 59,
+					"sales": 675,
+					"rate": 30,
+					"coupon_price": 100,
+					"cid": 50020275,
+					"content": "传承古法熬制，精选上等核仁红枣枸杞，足量阿胶，胶香浓郁，口感醇香，软糯香甜，真空独立包装，手提礼盒，精美大气，送礼倍有面子。",
+					"is_tmall": 0
+				},
+			],
+			tabs: [
+				{c_id: 0, c_name: '默认'},
+				{c_id: 1, c_name: '女装'},
+				{c_id: 2, c_name: '男装'},
+				{c_id: 3, c_name: '内衣'},
+				{c_id: 4, c_name: '母婴'},
+				{c_id: 5, c_name: '美妆'},
+				{c_id: 6, c_name: '居家'},
+				{c_id: 7, c_name: '鞋包'},
+				{c_id: 8, c_name: '美食'},
+				{c_id: 9, c_name: '文体'},
+				{c_id: 10, c_name: '数码'},
+				{c_id: 11, c_name: '户外'},
+				{c_id: 12, c_name: '其他'},
 			]
 		}
 		methods = {
@@ -67,9 +108,29 @@
 				tip.success("状态:" + obj);
 			},
 		}
+
+		onReachBottom() {
+			console.log("onReachBottom");
+		}
+
+		getGoodsList(){
+			let params = {
+				url: 'agent/main_goods_list',
+				isLoading: false,
+				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
+				scb: (res) => {
+					this.goods = res;
+					this.$apply();
+					console.log("goodsLIst:", res);
+				}
+			}
+			HTTPUtil.get(params);
+		}
+
 		onLoad() {
 
 		}
+
 		watch = {
 			sortId(newValue) {
 				this.$emit("handleSort", newValue);
@@ -80,10 +141,8 @@
 
 <style lang="less" rel="stylesheet/less">
 	@import "../styles/theme.less";
-	.filter_bar{
-		padding:12rpx 0 15rpx 0;
-		background-color: #ffe8ee;
-	}
+
+
 
 	.tab {
 		.label {
@@ -97,6 +156,13 @@
 		}
 		.active {
 			color: #ff0077;
+		}
+		.filter_bar {
+			padding: 12rpx 0 15rpx 0;
+			background-color: #ffe8ee;
+		}
+		.goods{
+			padding: 20rpx 0;
 		}
 	}
 </style>
