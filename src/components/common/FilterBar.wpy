@@ -28,7 +28,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less"  rel="stylesheet/less">
 	@import "../../styles/theme.less";
 	.filter {
 		width: 100%;
