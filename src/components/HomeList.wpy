@@ -5,24 +5,24 @@
 				@tabchange="onClick"
 				animate="true"
 				class="tab"
-				default-index="{{activeKey}}"
+				default-index="{{conditionId}}"
 		>
 			<view slot="tablabel">
-				<repeat for="{{tabs}}" key="index" index="index" item="tab">
+				<repeat for="{{tabs}}" key="index" index="index" item="item">
 					<wxc-tab-label tab-index="{{index}}">
-						<view class="label {{ activeKey === index ? 'active' : ''}}">
-							{{tab.c_name}}
+						<view class="label {{ conditionId === index ? 'active' : ''}}">
+							{{item.c_name}}
 						</view>
 					</wxc-tab-label>
 				</repeat>
 			</view>
 
-			<repeat for="{{tabs}}" key="index" index="index" item="tab">
+			<repeat for="{{tabs}}" key="index" index="index" item="item">
 				<wxc-tab-panel tab-index="{{index}}">
 					<view class="filter_bar">
 						<filterBar @handleSort.user="handleSort"></filterBar>
 					</view>
-					{{tab.c_id}}
+					{{item.c_name}}
 				</wxc-tab-panel>
 			</repeat>
 
@@ -42,29 +42,33 @@
 		}
 		data = {
 			sortId: "0",
-			activeKey: '0',
-			tabs: [
-				{c_id: '0', c_name: '默认'},
+			conditionId: 0,
+			tabs:[
+				{c_id:0,c_name:'默认'},
+				{c_id:1,c_name:'女装'},
+				{c_id:2,c_name:'男装'},
+				{c_id:3,c_name:'内衣'},
+				{c_id:4,c_name:'母婴'},
+				{c_id:5,c_name:'美妆'},
+				{c_id:6,c_name:'居家'},
+				{c_id:7,c_name:'鞋包'},
+				{c_id:8,c_name:'美食'},
+				{c_id:9,c_name:'文体'},
+				{c_id:10,c_name:'数码'},
+				{c_id:11,c_name:'户外'},
+				{c_id:12,c_name:'其他'},
 			]
 		}
 		methods = {
 			onClick: function (e) {
-				this.activeKey = e.detail.key;
+				this.conditionId = e.detail.key;
 			},
 			handleSort(obj) {
 				tip.success("状态:" + obj);
 			},
 		}
 		onLoad() {
-			let params = {
-				url:'agent/lunbotu',
-				isLoading:false,
-				scb:(res)=>{
-					this.adList = res;
-					this.$apply();
-				}
-			}
-			HTTPUtil.get(params);
+
 		}
 		watch = {
 			sortId(newValue) {
