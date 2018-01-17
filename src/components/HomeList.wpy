@@ -125,23 +125,7 @@
 			},
 		}
 
-		onReachBottom() {
-			console.log("onReachBottom");
-		}
 
-		getGoodsList(){
-			let params = {
-				url: 'agent/main_goods_list',
-				isLoading: false,
-				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
-				scb: (res) => {
-					this.goods = res;
-					this.$apply();
-					console.log("goodsLIst:", res);
-				}
-			}
-			HTTPUtil.get(params);
-		}
 
 		onLoad() {
 
