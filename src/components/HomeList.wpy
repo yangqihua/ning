@@ -35,6 +35,7 @@
 	import wepy from 'wepy';
 	import FilterBar from './common/FilterBar'
 	import tip from '../utils/tip'
+	import HTTPUtil from '../utils/HTTPUtil'
 	export default class HomeList extends wepy.component {
 		components = {
 			filterBar: FilterBar,
@@ -63,6 +64,9 @@
 			currentType(obj) {
 				tip.success("状态:" + obj);
 			},
+		}
+		onLoad() {
+
 		}
 		watch = {
 			currentType(newValue) {

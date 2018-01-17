@@ -1,4 +1,4 @@
-<style lang="less">
+<style lang="less"  rel="stylesheet/less">
 	@import "./styles/base";
 	@import "./styles/icon";
 	@import "./styles/style";

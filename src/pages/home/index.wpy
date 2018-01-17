@@ -7,7 +7,7 @@
 		        autoplay="true" interval="3000" duration="300" circular="true">
 			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
 				<swiper-item>
-					<image src="{{item.picUrl}}" mode="aspectFill" class="slide-image" style="width: 100%;" @tap="goToAd({{item.adUrl}})"/>
+					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.iid}})"/>
 				</swiper-item>
 			</repeat>
 		</swiper>
@@ -47,6 +47,7 @@
 	import Search from '../../components/common/search'
 	import HomeList from '../../components/HomeList'
 	import tip from '../../utils/tip'
+	import HTTPUtil from '../../utils/HTTPUtil'
 
 	export default class Index extends wepy.page {
 		config = {
@@ -67,11 +68,7 @@
 			userInfo: {
 				nickName: '加载中...'
 			},
-			adList:[
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/37/818a59764011d6eeb89a192e150f466a.jpg",adUrl:'xxx1/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx2/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx3/xx'},
-			],
+			adList:[],
 			toastText:'提示'
 		}
 
@@ -99,18 +96,28 @@
 		}
 
 		onLoad() {
-			this.userInfo = this.$parent.getUserInfo();
-			console.log("on load userInfo",this.userInfo);
-			this.$apply();
+			let params = {
+				url:'agent/lunbotu',
+				isLoading:false,
+				scb:(res)=>{
+					this.adList = res;
+					this.$apply();
+				}
+			}
+			HTTPUtil.get(params);
+
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less"  rel="stylesheet/less">
 	@import "../../styles/theme.less";
 
 	.swiper{
 		padding-top: 84rpx;
+		.slide_image{
+			width: 100%;
+		}
 	}
 
 	.nav_list {
