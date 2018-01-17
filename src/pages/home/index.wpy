@@ -2,39 +2,37 @@
 <template>
 	<view class="container">
 		<search @searchValue.user="doSearch"></search>
-		<scroll-view scroll-y="true" class="swiper-item-box">
-			<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
-			        autoplay="true" interval="3000" duration="300" circular="true">
-				<repeat for="{{adList}}" key="adUrl" index="index" item="item">
-					<swiper-item>
-						<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.iid}})"/>
-					</swiper-item>
-				</repeat>
-			</swiper>
+		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
+		        autoplay="true" interval="3000" duration="300" circular="true">
+			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
+				<swiper-item>
+					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.iid}})"/>
+				</swiper-item>
+			</repeat>
+		</swiper>
 
-			<view class="nav_list">
-				<navigator open-type="navigate" url="/pages/sign_in">
-					<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
-					<view class="nav_text">大牌券</view>
-				</navigator>
-				<navigator open-type="navigate" url="/pages/exchange_goods">
-					<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
-					<view class="nav_text">九块九</view>
-				</navigator>
-				<navigator open-type="navigate" url="/pages/wholesale">
-					<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
-					<view class="nav_text">人气榜</view>
-				</navigator>
-				<navigator open-type="navigate" url="/pages/replenishment_goods">
-					<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
-					<view class="nav_text">聚划算</view>
-				</navigator>
-			</view>
+		<view class="nav_list">
+			<navigator open-type="navigate" url="/pages/sign_in">
+				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
+				<view class="nav_text">大牌券</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/exchange_goods">
+				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
+				<view class="nav_text">九块九</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/wholesale">
+				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
+				<view class="nav_text">人气榜</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/replenishment_goods">
+				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
+				<view class="nav_text">聚划算</view>
+			</navigator>
+		</view>
 
-			<view class="home_list">
-				<homeList/>
-			</view>
-		</scroll-view>
+		<view class="home_list">
+			<homeList/>
+		</view>
 
 		<wxc-toast
 				class="J_toast"
@@ -106,8 +104,12 @@
 				}
 			}
 			HTTPUtil.get(params);
-
 		}
+
+		onReachBottom(){
+			console.log("index onReachBottom")
+		}
+
 	}
 </script>
 
