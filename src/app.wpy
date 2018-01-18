@@ -109,6 +109,7 @@
 
 				let params = {
 					code: res.code,
+					request_code:'1',
 					avatarUrl: userInfo.avatarUrl,
 					city: userInfo.city,
 					province: userInfo.province,

@@ -32,7 +32,7 @@
 
 		<view class="home_list">
 			<wxc-tab
-					@tabchange="onClick"
+					@tabchange="handCondition"
 					animate="true"
 					class="tab"
 					default-index="{{conditionId}}"
@@ -52,7 +52,7 @@
 						<view class="filter_bar">
 							<filterBar @handleSort.user="handleSort"></filterBar>
 						</view>
-						<view class="goods" wx:if="{{index==0}}">
+						<view class="goods">
 							<goodsList :goodsList.sync="goods"></goodsList>
 						</view>
 					</wxc-tab-panel>
@@ -143,19 +143,28 @@
 				console.log('url:',url);
 			},
 
-			onClick: function (e) {
+			handCondition: function (e) {
 				this.conditionId = e.detail.key;
+				console.log('this.conditionId:',this.conditionId);
+				tip.success("this.conditionId:" + e.detail.key);
 			},
 			handleSort(obj) {
+				this.sortId = obj;
 				tip.success("状态:" + obj);
 			}
 
 		}
 
 		watch = {
-			sortId(newValue) {
-				this.handleSort(newValue);
+			conditionId(){
+				this.sortId = 0;
+				this.goods = [];
+				this.getGoodsList();
 			},
+			sortId(){
+				this.goods = [];
+				this.getGoodsList();
+			}
 		}
 
 
@@ -194,7 +203,6 @@
 				}
 			}
 			HTTPUtil.get(params);
-
 			this.getGoodsList();
 		}
 

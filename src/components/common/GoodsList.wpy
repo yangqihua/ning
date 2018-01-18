@@ -23,10 +23,10 @@
 							</view>
 						</view>
 						<view class="third">
-							<view class="quan">券￥{{item.price}}</view>
+							<view class="quan">券￥{{item.coupon_price}}</view>
 							<view class="rate">
 								<view class="rate_text">佣金</view>
-								<view class="rate_value">{{item.price}}元</view>
+								<view class="rate_value">{{item.commission}}元</view>
 							</view>
 						</view>
 					</view>

@@ -35,13 +35,13 @@
 		align-items: center;
 
 		text {
-			font-size: 28rpx;
+			font-size: 30rpx;
 			color: #999;
 			margin-left: 10rpx;
 		}
 		image {
-			width: 35rpx;
-			height: 35rpx;
+			width: 40rpx;
+			height: 40rpx;
 		}
 	}
 </style>
