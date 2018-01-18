@@ -139,9 +139,9 @@
 				console.log("tap");
 			},
 			doSearch(value) {
-				console.log("search value:",value)
-				this.toastText = value;
-				this.showToast();
+				wx.navigateTo({
+					url: '/pages/search_details?key='+value
+				})
 			},
 			goToAd(url){
 				console.log('url:',url);

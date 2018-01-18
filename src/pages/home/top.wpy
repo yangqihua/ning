@@ -102,7 +102,7 @@
 			let params = {
 				url: 'agent/good_coupon_list',
 				isLoading: false,
-				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
+				params: {page: this.page, sort: this.sortId},
 				scb: (res) => {
 					this.isLoading = false;
 					if(res.length==0){

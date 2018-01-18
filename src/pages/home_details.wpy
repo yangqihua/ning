@@ -69,7 +69,6 @@
 			url:'',
 			scrollTop:0,
 			sortId: 0,
-			conditionId: 0,
 			page: 1,
 			goodsList: [],
 			loadingMore:true,
@@ -99,7 +98,7 @@
 			let params = {
 				url: this.url,
 				isLoading: false,
-				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
+				params: {page: this.page, sort: this.sortId},
 				scb: (res) => {
 					this.isLoading = false;
 					if(res.length==0){
