@@ -12,19 +12,19 @@
 		</swiper>
 
 		<view class="nav_list">
-			<navigator open-type="navigate" url="/pages/sign_in">
+			<navigator open-type="navigate" url="/pages/home_details?titleId=0" hover-class="none">
 				<image src="../../images/home/dapai.png" class="nav_icon"></image>
 				<view class="nav_text">大牌券</view>
 			</navigator>
-			<navigator open-type="navigate" url="/pages/exchange_goods">
+			<navigator open-type="navigate" url="/pages/home_details?titleId=1" hover-class="none">
 				<image src="../../images/home/present.png" class="nav_icon"></image>
 				<view class="nav_text">九块九</view>
 			</navigator>
-			<navigator open-type="navigate" url="/pages/wholesale">
+			<navigator open-type="navigate" url="/pages/home_details?titleId=2" hover-class="none">
 				<image src="../../images/home/sale.png" class="nav_icon"></image>
 				<view class="nav_text">人气榜</view>
 			</navigator>
-			<navigator open-type="navigate" url="/pages/replenishment_goods">
+			<navigator open-type="navigate" url="/pages/home_details?titleId=3" hover-class="none">
 				<image src="../../images/home/shop.png" class="nav_icon"></image>
 				<view class="nav_text">聚划算</view>
 			</navigator>
@@ -104,9 +104,6 @@
 		}
 
 		data = {
-			userInfo: {
-				nickName: '加载中...'
-			},
 			adList:[],
 			toastText:'提示',
 			scrollTop:0,
@@ -185,7 +182,6 @@
 					this.goods = [...this.goods,...res];
 					this.$apply();
 					this.page++;
-					console.log("this.goods:", this.goods);
 				},
 				ecb:(err)=>{this.isLoading = false;}
 			}

@@ -1,0 +1,148 @@
+
+<template>
+	<view class="home_details_container">
+		<view class="filter">
+			<view class="nav  {{sortId=='0' ? 'nav_active' : ''}}" data-current="0" @tap="handleSort">默认</view>
+			<view class="nav  {{sortId=='1' ? 'nav_active' : ''}}" data-current="1" @tap="handleSort">价格</view>
+			<view class="nav  {{sortId=='2' ? 'nav_active' : ''}}" data-current="2" @tap="handleSort">销量</view>
+			<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" @tap="handleSort">券额</view>
+		</view>
+		<view class="goods">
+			<goodsList :goodsList.sync="goodsList" :scrollTop.sync="scrollTop"></goodsList>
+		</view>
+		<!--加载更多时动画-->
+		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import tip from '../utils/tip'
+	import HTTPUtil from '../utils/HTTPUtil'
+
+	import GoodsList from '../components/common/GoodsList'
+	import LoadingMore from '../components/common/LoadingMore'
+
+	export default class HomeDetails extends wepy.page {
+		config = {
+			navigationBarTitleText: '',
+		}
+		components = {
+			goodsList: GoodsList,
+			loadingMore: LoadingMore,
+		}
+
+		data = {
+			url:'',
+			scrollTop:0,
+			sortId: 0,
+			conditionId: 0,
+			page: 1,
+			goodsList: [],
+			loadingMore:true,
+			isLoading:false,
+		}
+
+		methods = {
+			handleSort(e) {
+				this.sortId = e.target.dataset.current;
+				this.goodsList = [];
+				this.page = 1;
+				this.getGoodsList();
+			}
+		}
+
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
+		}
+
+		getGoodsList(){
+			this.isLoading = true;
+			let params = {
+				url: this.url,
+				isLoading: false,
+				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
+				scb: (res) => {
+					this.isLoading = false;
+					if(res.length==0){
+						this.loadingMore =false;
+					}
+					this.goodsList = [...this.goodsList,...res];
+					this.$apply();
+					this.page++;
+					tip.success(this.goodsList.length+'',3000);
+					console.log("this.goodgoodsLists:", this.goodsList);
+				},
+				ecb:(err)=>{this.isLoading = false;}
+			}
+			HTTPUtil.get(params);
+		}
+
+		onLoad(options) {
+			console.log('options:',options);
+			let title = '';
+			switch (options.titleId){
+				case '0':
+					this.url = 'agent/dapaiquan';
+					title = '大牌券';
+					break;
+				case '1':
+					this.url = 'agent/k99';
+					title = '九块九包邮';
+					break;
+				case '2':
+					this.url = 'agent/top100';
+					title = '人气榜';
+					break;
+				case '3':
+					this.url = 'agent/juhuasuan';
+					title = '聚划算';
+					break;
+			}
+			wx.setNavigationBarTitle({
+				title: title
+			})
+			this.getGoodsList();
+		}
+
+		onReachBottom(){
+			if(!this.loadingMore || this.isLoading){
+				return;
+			}
+			this.getGoodsList();
+		}
+
+	}
+</script>
+
+<style lang="less"  rel="stylesheet/less">
+	@import "../styles/theme.less";
+	.home_details_container {
+		.filter {
+			position: fixed;
+			top:0;
+			right: 0;
+			left: 0;
+			z-index: 999;
+
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			background: #fff;
+			border-bottom: 1rpx solid #efe8ee;
+			.nav {
+				flex:1;
+				color: #333;
+				font-size: 26rpx;
+				padding: 10px 20px;
+				text-align: center;
+			}
+			.nav_active {
+				color: #ff0077;
+			}
+		}
+		.goods{
+			margin-top: 77rpx;
+		}
+	}
+</style>
