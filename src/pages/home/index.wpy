@@ -154,7 +154,7 @@
 				this.goods = [];
 				setTimeout(()=>{
 					this.getGoodsList();
-				},120);
+				},200);
 			},
 			handleSort(e) {
 				this.sortId = e.target.dataset.current;

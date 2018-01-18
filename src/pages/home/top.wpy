@@ -1,129 +1,300 @@
 
 <template>
-	<view class="container">
-		<search @searchValue.user="doSearch"></search>
-
-		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
-		        autoplay="true" interval="3000" duration="300" circular="true">
-			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
-				<swiper-item>
-					<image src="{{item.picUrl}}" mode="aspectFill" class="slide-image" style="width: 100%;" @tap="goToAd({{item.adUrl}})"/>
-				</swiper-item>
-			</repeat>
-		</swiper>
-
-		<view class="nav_list">
-			<navigator open-type="navigate" url="/pages/sign_in">
-				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
-				<view class="nav_text">签到有礼</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/exchange_goods">
-				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
-				<view class="nav_text">换货专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/wholesale">
-				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
-				<view class="nav_text">特价专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/replenishment_goods">
-				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
-				<view class="nav_text">我要补货</view>
-			</navigator>
+	<view class="top_container">
+		<view class="ad">
+			<image src="../../images/hot.png" mode="widthFix"/>
 		</view>
-
-		<view class="userinfo" @tap="handleViewTap">
-			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+		<view class="filter">
+			<view class="nav  {{sortId=='0' ? 'nav_active' : ''}}" data-current="0" @tap="handleSort">默认</view>
+			<view class="nav  {{sortId=='1' ? 'nav_active' : ''}}" data-current="1" @tap="handleSort">价格</view>
+			<view class="nav  {{sortId=='2' ? 'nav_active' : ''}}" data-current="2" @tap="handleSort">销量</view>
+			<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" @tap="handleSort">券额</view>
 		</view>
+		<scroll-view scroll-y="true">
+			<view class="goods_list_container">
+				<repeat for="{{goodsList}}" key="index" index="index" item="item">
+					<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
+						<view class="image_box">
+							<image src="{{item.pic}}"></image>
+						</view>
+						<view class="goods">
+							<view class="title">
+								<image src="{{item.is_tmall==1?'../../images/tianmao.jpg':'../../images/taobao.jpg'}}" class="logo"></image>
+								<view class="product_name">
+									{{item.name}}
+								</view>
+							</view>
+							<view class="second">
+								<view class="quanhou">
+									<view class="price">￥{{item.price}}</view>券后
+								</view>
+								<view class="sales">
+									<view>销量</view>
+									<view class="label_value">{{item.sales}}</view>
+								</view>
+							</view>
+							<view class="third">
+								<view class="quan">券￥{{item.coupon_price}}</view>
+								<view class="rate">
+									<view class="rate_text">佣金</view>
+									<view class="rate_value">{{item.commission}}元</view>
+								</view>
+							</view>
+						</view>
+					</navigator>
+				</repeat>
+			</view>
+		</scroll-view>
+		<view class="totop">
+			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>1500}}"/>
+		</view>
+		<!--加载更多时动画-->
+		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
 	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-	import Search from '../../components/common/search'
+	import tip from '../../utils/tip'
+	import HTTPUtil from '../../utils/HTTPUtil'
 
-	export default class Index extends wepy.page {
+	import LoadingMore from '../../components/common/LoadingMore'
+
+	export default class Top extends wepy.page {
 		config = {
-			navigationBarTitleText: '好货精选'
+			navigationBarTitleText: '好货精选',
 		}
 		components = {
-			search: Search,
+			loadingMore: LoadingMore,
 		}
 
 		data = {
-			userInfo: {
-				nickName: '加载中...'
-			},
-			adList:[
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/37/818a59764011d6eeb89a192e150f466a.jpg",adUrl:'xxx1/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx2/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx3/xx'},
-			]
-		}
-
-		computed = {
+			url:'',
+			scrollTop:0,
+			sortId: 0,
+			conditionId: 0,
+			page: 1,
+			goodsList: [],
+			loadingMore:true,
+			isLoading:false,
 		}
 
 		methods = {
-			handleViewTap(){
-				console.log("tap");
+			handleSort(e) {
+				this.sortId = e.target.dataset.current;
+				this.goodsList = [];
+				this.page = 1;
+				this.getGoodsList();
 			},
-			doSearch(value) {
-				console.log("search value:",value)
-			},
-			goToAd(url){
-				console.log('url:',url);
+			goTop(e){
+				wx.pageScrollTo({
+					scrollTop: 0
+				})
 			}
 		}
 
-		onLoad() {
-			this.userInfo = this.$parent.getUserInfo();
-			console.log("on load userInfo",this.userInfo);
-			this.$apply();
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
 		}
+
+		getGoodsList(){
+			this.isLoading = true;
+			let params = {
+				url: 'agent/good_coupon_list',
+				isLoading: false,
+				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
+				scb: (res) => {
+					this.isLoading = false;
+					if(res.length==0){
+						this.loadingMore =false;
+					}
+					this.goodsList = [...this.goodsList,...res];
+					this.$apply();
+					this.page++;
+				},
+				ecb:(err)=>{this.isLoading = false;}
+			}
+			HTTPUtil.get(params);
+		}
+
+		onLoad() {
+			this.getGoodsList();
+		}
+		onUnload(){
+			this.resetData();
+		}
+
+		resetData(){
+			this.scrollTop = 0;
+			this.sortId= 0;
+			this.conditionId= 0;
+			this.page= 1;
+			this.goodsList= [];
+			this.loadingMore=true;
+			this.isLoading=false;
+		}
+
+		onReachBottom(){
+			if(!this.loadingMore || this.isLoading){
+				return;
+			}
+			this.getGoodsList();
+		}
+
 	}
 </script>
 
-<style lang="less">
+<style lang="less"  rel="stylesheet/less">
 	@import "../../styles/theme.less";
+	.top_container {
+		.ad{
+			margin-top:100rpx;
+			width: 100%;
+			image{
+				width: 750rpx;
+			}
+		}
+		.filter {
+			position: fixed;
+			top:0;
+			right: 0;
+			left: 0;
+			z-index: 999;
 
-	.nav_list {
-		color: #404040;
-		display: flex;
-		font-size: 26rpx;
-		justify-content: space-between;
-		padding: 17rpx 50rpx;
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			background: #fff;
+			border-bottom: 1rpx solid #efe8ee;
+			.nav {
+				flex:1;
+				color: #333;
+				font-size: 26rpx;
+				padding: 10px 20px;
+				text-align: center;
+			}
+			.nav_active {
+				color: #ff0077;
+			}
+		}
+		.totop{
+			image{
+				background: #000;
+				border-radius: 50%;
+				position: fixed;
+				bottom: 82rpx;
+				right: 32rpx;
+				width: 40rpx;
+				height: 40rpx;
+				padding:16rpx;
+				opacity: 0.6;
+				z-index:999999;
+			}
+		}
 
-	navigator {
-		text-align: center
-	}
+		.goods_list_container {
+			padding: 0rpx 10rpx;
+			background: #f7f7f7;
+			display: flex;
+			flex-wrap: wrap;
+			/*padding-bottom: 30rpx;*/
+		}
 
-	.nav_icon {
-		height: 80rpx;
-		width: 80rpx;
-		margin: 0 auto;
-		margin-bottom: 14rpx;
-	}
+		.list:nth-child(odd) {
+			margin-right: 10rpx;
+		}
 
-	.nav_text {
-		font-size: 26rpx
-	}
+		.list {
+			background: #fff;
+			width: 356rpx;
+			margin-top: 10rpx;
+			border:1px solid #efe8ee;
+			.image_box {
+				image {
+					width: 100%;
+					height: 356rpx;
+				}
+			}
+			.goods {
+				padding: 6rpx 12rpx 15rpx 12rpx;
+				.title{
+					display: flex;
+					height: 28rpx;
+					.logo{
+						width: 28rpx;
+						height: 28rpx;
+						margin-right: 4rpx;
+					}
+					.product_name {
+						flex:1;
+						color: #333;
+						font-size: 28rpx;
+						line-height: 28rpx;
+						overflow: hidden;
+						display: -webkit-box;
+						-webkit-line-clamp: 1;
+						-webkit-box-orient: vertical;
+					}
+				}
+				.second{
+					display: flex;
+					justify-content: space-between;
+					color: #999;
+					font-size: 22rpx;
+					line-height: 32rpx;
+					margin:18rpx 0;
+					.quanhou{
+						/*width: 400rpx;*/
+						.price{
+							padding-right: 6rpx;
+							color: #ff0077;
+							font-size: 32rpx;
+							float:left;
+						}
+					}
+					.sales{
+						/*width: 350rpx;*/
+						display: flex;
+						.label_value{
+							margin-left: 6rpx;
+						}
+					}
+				}
 
-	}
+				.third{
+					display: flex;
+					justify-content: space-between;
+					font-size: 25rpx;
+					line-height: 36rpx;
+					text-align: center;
+					margin-bottom: 10rpx;
+					.quan{
+						width: 300rpx;
+						color: #fff;
+						background-color: #ff5777;
+						border:1px solid #ff5777;
+						border-radius: 6rpx;
+						margin-right: 10rpx;
+					}
+					.rate{
+						width: 380rpx;
+						display: flex;
+						margin-left: 20rpx;
+						border:1px solid #f38a33;
+						border-radius: 6rpx;
+						.rate_text{
+							padding:0 8rpx;
+							background-color: #f38a33;
+							color: #fff;
+						}
+						.rate_value{
+							flex:1;
+							color: #f38a33;
+						}
+					}
+				}
 
-	.userinfo {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.userinfo-avatar {
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 50%;
-	}
-
-	.userinfo-nickname {
-		color: #aaa;
+			}
+		}
 	}
 </style>
