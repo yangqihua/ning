@@ -39,7 +39,7 @@
 			>
 				<view slot="tablabel">
 					<repeat for="{{tabs}}" key="index" index="index" item="item">
-						<wxc-tab-label tab-index="{{index}}">
+						<wxc-tab-label tab-index="{{index}}" >
 							<view class="label {{ conditionId === index ? 'active' : ''}}">
 								{{item.c_name}}
 							</view>
@@ -49,10 +49,15 @@
 
 				<repeat for="{{tabs}}" key="index" index="index" item="item">
 					<wxc-tab-panel tab-index="{{index}}">
-						<view class="filter_bar">
-							<filterBar @handleSort.user="handleSort"></filterBar>
+						<view class="filter_bar" wx:if="{{conditionId==index}}">
+							<view class="filter">
+								<view class="nav  {{sortId=='0' ? 'nav_active' : ''}}" data-current="0" @tap="handleSort">默认</view>
+								<view class="nav  {{sortId=='1' ? 'nav_active' : ''}}" data-current="1" @tap="handleSort">价格</view>
+								<view class="nav  {{sortId=='2' ? 'nav_active' : ''}}" data-current="2" @tap="handleSort">销量</view>
+								<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" @tap="handleSort">券额</view>
+							</view>
 						</view>
-						<view class="goods">
+						<view class="goods" wx:if="{{conditionId==index}}">
 							<goodsList :goodsList.sync="goods"></goodsList>
 						</view>
 					</wxc-tab-panel>
@@ -125,6 +130,7 @@
 				{c_id: 12, c_name: '其他'},
 			],
 			loadingMore:true,
+			isLoading:false,
 		}
 
 		computed = {
@@ -145,37 +151,33 @@
 
 			handCondition: function (e) {
 				this.conditionId = e.detail.key;
-				console.log('this.conditionId:',this.conditionId);
-				tip.success("this.conditionId:" + e.detail.key);
+				this.sortId = 0;
+				this.page = 1;
+				this.goods = [];
+				this.getGoodsList();
 			},
-			handleSort(obj) {
-				this.sortId = obj;
-				tip.success("状态:" + obj);
+			handleSort(e) {
+				this.sortId = e.target.dataset.current;
+				this.goods = [];
+				this.page = 1;
+				this.getGoodsList();
 			}
-
 		}
 
 		watch = {
-			conditionId(){
-				this.sortId = 0;
-				this.goods = [];
-				this.getGoodsList();
-			},
-			sortId(){
-				this.goods = [];
-				this.getGoodsList();
-			}
 		}
 
 
 
 		getGoodsList(){
+			this.isLoading = true;
 			let params = {
 				url: 'agent/main_goods_list',
 				isLoading: false,
 				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
 				scb: (res) => {
-					if(res.length==0 || this.page==15){
+					this.isLoading = false;
+					if(res.length==0){
 						this.loadingMore =false;
 					}
 					this.goods = [...this.goods,...res];
@@ -183,7 +185,7 @@
 					this.page++;
 					console.log("this.goods:", this.goods);
 				},
-				ecb:(err)=>{}
+				ecb:(err)=>{this.isLoading = false;}
 			}
 			HTTPUtil.get(params);
 		}
@@ -203,11 +205,10 @@
 				}
 			}
 			HTTPUtil.get(params);
-			this.getGoodsList();
 		}
 
 		onReachBottom(){
-			if(!this.loadingMore){
+			if(!this.loadingMore || this.isLoading){
 				return;
 			}
 			this.getGoodsList();
@@ -223,7 +224,7 @@
 		background-color: #f7f7f7;
 	}
 	.swiper{
-		padding-top: 84rpx;
+		margin-top: 84rpx;
 		.slide_image{
 			width: 100%;
 		}
@@ -255,16 +256,16 @@
 	}
 
 	.home_list{
-		background-color:#fff;
 		.tab {
 			.label {
 				width: 100%;
-				margin: 18rpx 0;
+				padding: 18rpx 0;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				font-size: 26rpx;
 				color: #333;
+				background-color: #fff;
 			}
 			.active {
 				color: #ff0077;
@@ -272,6 +273,22 @@
 			.filter_bar {
 				padding: 12rpx 0 0 0;
 				background-color: #f7f7f7;
+				.filter {
+					width: 100%;
+					display: flex;
+					justify-content: space-between;
+					background: #fff;
+					.nav {
+						flex:1;
+						color: #333;
+						font-size: 26rpx;
+						padding: 10px 20px;
+						text-align: center;
+					}
+					.nav_active {
+						color: #ff0077;
+					}
+				}
 			}
 			.goods{
 			}
