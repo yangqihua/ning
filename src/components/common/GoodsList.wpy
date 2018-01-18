@@ -1,58 +1,83 @@
 <template>
-	<scroll-view scroll-y="true" class="swiper-item-box">
-		<view class="goods_list_container">
-			<repeat for="{{goodsList}}" key="index" index="index" item="item">
-				<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
-					<view class="image_box">
-						<image src="{{item.pic}}"></image>
-					</view>
-					<view class="goods">
-						<view class="title">
-							<image src="{{item.is_tmall==1?'../../images/tianmao.jpg':'../../images/taobao.jpg'}}" class="logo"></image>
-							<view class="product_name">
-								{{item.name}}
+	<view>
+		<scroll-view scroll-y="true" @scroll="scroll" style="height: 100%">
+			<view class="goods_list_container">
+				<repeat for="{{goodsList}}" key="index" index="index" item="item">
+					<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
+						<view class="image_box">
+							<image src="{{item.pic}}"></image>
+						</view>
+						<view class="goods">
+							<view class="title">
+								<image src="{{item.is_tmall==1?'../../images/tianmao.jpg':'../../images/taobao.jpg'}}" class="logo"></image>
+								<view class="product_name">
+									{{item.name}}
+								</view>
+							</view>
+							<view class="second">
+								<view class="quanhou">
+									<view class="price">￥{{item.price}}</view>券后
+								</view>
+								<view class="sales">
+									<view>销量</view>
+									<view class="label_value">{{item.sales}}</view>
+								</view>
+							</view>
+							<view class="third">
+								<view class="quan">券￥{{item.coupon_price}}</view>
+								<view class="rate">
+									<view class="rate_text">佣金</view>
+									<view class="rate_value">{{item.commission}}元</view>
+								</view>
 							</view>
 						</view>
-						<view class="second">
-							<view class="quanhou">
-								<view class="price">￥{{item.price}}</view>券后
-							</view>
-							<view class="sales">
-								<view>销量</view>
-								<view class="label_value">{{item.sales}}</view>
-							</view>
-						</view>
-						<view class="third">
-							<view class="quan">券￥{{item.coupon_price}}</view>
-							<view class="rate">
-								<view class="rate_text">佣金</view>
-								<view class="rate_value">{{item.commission}}元</view>
-							</view>
-						</view>
-					</view>
-				</navigator>
-			</repeat>
+					</navigator>
+				</repeat>
+			</view>
+		</scroll-view>
+		<view class="totop">
+			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>1500}}"/>
 		</view>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
 	import wepy from 'wepy';
 	export default class GoodsList extends wepy.component {
 		props = {
-			goodsList: Array
+			goodsList: Array,
+			scrollTop:Number
 		}
-		method = {
-			getLogo(is_tmall){
-				return is_tmall?'../../images/tianmao.jpg':'../../images/taobao.jpg'
-			},
+		data = {
+			scrollTop:0,
 		}
-
+		methods = {
+			goTop(e){
+				wx.pageScrollTo({
+					scrollTop: 0
+				})
+			}
+		}
 	}
 </script>
 
 <style lang="less" rel="stylesheet/less">
 	@import "../../styles/theme.less";
+
+	.totop{
+		image{
+			background: #000;
+			border-radius: 50%;
+			position: fixed;
+			bottom: 82rpx;
+			right: 32rpx;
+			width: 40rpx;
+			height: 40rpx;
+			padding:16rpx;
+			opacity: 0.6;
+			z-index:999999;
+		}
+	}
 
 	.goods_list_container {
 		padding: 0rpx 10rpx;

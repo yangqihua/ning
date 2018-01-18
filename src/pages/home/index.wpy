@@ -58,7 +58,7 @@
 							</view>
 						</view>
 						<view class="goods" wx:if="{{conditionId==index}}">
-							<goodsList :goodsList.sync="goods"></goodsList>
+							<goodsList :goodsList.sync="goods" :scrollTop.sync="scrollTop"></goodsList>
 						</view>
 					</wxc-tab-panel>
 				</repeat>
@@ -109,6 +109,7 @@
 			},
 			adList:[],
 			toastText:'提示',
+			scrollTop:0,
 
 			sortId: 0,
 			conditionId: 0,
@@ -164,10 +165,9 @@
 			}
 		}
 
-		watch = {
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
 		}
-
-
 
 		getGoodsList(){
 			this.isLoading = true;
