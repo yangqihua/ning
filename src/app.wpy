@@ -43,26 +43,26 @@
 					{
 						pagePath: 'pages/home/index',
 						text: "首页",
-						iconPath: "images/icon_home.png",
-						selectedIconPath: "images/icon_home_active.png"
+						iconPath: "images/home/homepage.png",
+						selectedIconPath: "images/home/homepage_fill.png"
 					},
 					{
 						pagePath: 'pages/home/top',
 						text: "好货精选",
-						iconPath: "images/icon_classify.png",
-						selectedIconPath: "images/icon_classify_active.png"
+						iconPath: "images/home/integral.png",
+						selectedIconPath: "images/home/integral_fill.png"
 					},
 					{
 						pagePath: 'pages/home/search',
 						text: "搜索",
-						iconPath: "images/icon_shop_cart.png",
-						selectedIconPath: "images/icon_shop_cart_active.png"
+						iconPath: "images/home/search.png",
+						selectedIconPath: "images/home/search_fill.png"
 					},
 					{
 						pagePath: 'pages/home/me',
 						text: "个人中心",
-						iconPath: "images/icon_info.png",
-						selectedIconPath: "images/icon_info_active.png"
+						iconPath: "images/home/people.png",
+						selectedIconPath: "images/home/people_fill.png"
 					}
 				]
 			}

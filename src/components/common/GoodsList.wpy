@@ -157,33 +157,5 @@
 			}
 
 		}
-
-		/*.price {*/
-			/*color: #de0000;*/
-			/*font-size: 35rpx;*/
-			/*font-weight: 600;*/
-		/*}*/
-		/*.cost_price {*/
-			/*color: #666666;*/
-			/*font-size: 24rpx;*/
-			/*text-decoration: line-through;*/
-			/*font-weight: 600;*/
-		/*}*/
-		/*.sale_num {*/
-			/*color: #666666;*/
-			/*font-size: 22rpx;*/
-		/*}*/
-
-		/*.product_info {*/
-			/*padding-top: 20rpx;*/
-			/*display: flex;*/
-			/*align-items: flex-end;*/
-		/*}*/
-		/*.cost_price {*/
-			/*padding-left: 20rpx;*/
-		/*}*/
-		/*.sale_num {*/
-			/*padding-left: 20rpx;*/
-		/*}*/
 	}
 </style>

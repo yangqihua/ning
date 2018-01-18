@@ -13,19 +13,19 @@
 
 		<view class="nav_list">
 			<navigator open-type="navigate" url="/pages/sign_in">
-				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
+				<image src="../../images/home/dapai.png" class="nav_icon"></image>
 				<view class="nav_text">大牌券</view>
 			</navigator>
 			<navigator open-type="navigate" url="/pages/exchange_goods">
-				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
+				<image src="../../images/home/present.png" class="nav_icon"></image>
 				<view class="nav_text">九块九</view>
 			</navigator>
 			<navigator open-type="navigate" url="/pages/wholesale">
-				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
+				<image src="../../images/home/sale.png" class="nav_icon"></image>
 				<view class="nav_text">人气榜</view>
 			</navigator>
 			<navigator open-type="navigate" url="/pages/replenishment_goods">
-				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
+				<image src="../../images/home/shop.png" class="nav_icon"></image>
 				<view class="nav_text">聚划算</view>
 			</navigator>
 		</view>
@@ -234,8 +234,8 @@
 		}
 
 		.nav_icon {
-			height: 80rpx;
-			width: 80rpx;
+			height: 100rpx;
+			width: 100rpx;
 			margin: 0 auto;
 			margin-bottom: 14rpx;
 		}
