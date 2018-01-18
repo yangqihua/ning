@@ -1,0 +1,47 @@
+<template>
+	<view class="loadMoreGif">
+		<image wx:if="{{show}}" src="../../images/loading.gif"/>
+		<text>{{show?message:'暂无更多 ~'}}</text>
+	</view>
+</template>
+<script>
+	import wepy from 'wepy'
+	export default class LoadingMore extends wepy.component {
+		props = {
+			show: {
+				type: Boolean,
+				default: false
+			},
+			message: {
+				type: String,
+				default: '正在加载'
+			}
+		};
+		watch = {
+			show(newValue){
+				if(!newValue){
+					this.message = '暂无更多 ~';
+				}
+			}
+		}
+	}
+</script>
+<style lang="less" rel="stylesheet/less">
+	.loadMoreGif {
+		padding: 15rpx 0 40rpx 0;
+		width: 750rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		text {
+			font-size: 28rpx;
+			color: #999;
+			margin-left: 10rpx;
+		}
+		image {
+			width: 35rpx;
+			height: 35rpx;
+		}
+	}
+</style>

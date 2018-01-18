@@ -61,6 +61,9 @@
 			</wxc-tab>
 		</view>
 
+		<!--加载更多时动画-->
+		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
+
 		<wxc-toast
 				class="J_toast"
 				text="{{toastText}}">
@@ -76,6 +79,7 @@
 
 	import FilterBar from '../../components/common/FilterBar'
 	import GoodsList from '../../components/common/GoodsList'
+	import LoadingMore from '../../components/common/LoadingMore'
 
 	export default class Index extends wepy.page {
 		config = {
@@ -91,6 +95,7 @@
 			search: Search,
 			filterBar: FilterBar,
 			goodsList: GoodsList,
+			loadingMore: LoadingMore,
 		}
 
 		data = {
@@ -103,60 +108,7 @@
 			sortId: 0,
 			conditionId: 0,
 			page: 1,
-			goods: [
-				{
-					"id": "563457265871",
-					"iid": "563457265871",
-					"name": "冬装新款男士风衣韩版中长款修身呢子大衣帅气加绒加厚男外套衣服",
-					"pic": "http://img.alicdn.com/imgextra/i2/3511587683/TB2A3Uvjz3z9KJjy0FmXXXiwXXa_!!3511587683.jpg",
-					"price": 238,
-					"sales": 8,
-					"rate": 20,
-					"coupon_price": 60,
-					"cid": 0,
-					"content": "防滑抗皱好面料，帅气有型修身，保暖新风尚，3D剪裁，立体修身，穿着舒适，时尚潮流",
-					"is_tmall": 1
-				},
-				{
-					"id": "561467625072",
-					"iid": "561467625072",
-					"name": "2017冬装新款韩范纯棉白衬衫女长袖职业立领加绒加厚衬衣打底衫",
-					"pic": "http://img.alicdn.com/imgextra/i3/2086988050/TB266avddzJ8KJjSspkXXbF7VXa_!!2086988050.jpg",
-					"price": 39,
-					"sales": 76,
-					"rate": 20.5,
-					"coupon_price": 10,
-					"cid": 0,
-					"content": "2017冬装新款，韩范纯棉白衬衫，女长袖职业立领，加绒加厚衬衣打底衫",
-					"is_tmall": 1
-				},
-				{
-					"id": "555981561241",
-					"iid": "555981561241",
-					"name": "500g山东东阿即食型阿胶糕固元糕膏新春节过年送礼年货食品佳礼盒",
-					"pic": "http://img.alicdn.com/imgextra/i3/1678361457/TB2OuuuahHI8KJjy1zbXXaxdpXa_!!1678361457.jpg",
-					"price": 59,
-					"sales": 675,
-					"rate": 30,
-					"coupon_price": 100,
-					"cid": 50020275,
-					"content": "传承古法熬制，精选上等核仁红枣枸杞，足量阿胶，胶香浓郁，口感醇香，软糯香甜，真空独立包装，手提礼盒，精美大气，送礼倍有面子。",
-					"is_tmall": 0
-				},
-				{
-					"id": "555981561241",
-					"iid": "555981561241",
-					"name": "500g山东东阿即食型阿胶糕固元糕膏新春节过年送礼年货食品佳礼盒",
-					"pic": "http://img.alicdn.com/imgextra/i3/1678361457/TB2OuuuahHI8KJjy1zbXXaxdpXa_!!1678361457.jpg",
-					"price": 59,
-					"sales": 675,
-					"rate": 30,
-					"coupon_price": 100,
-					"cid": 50020275,
-					"content": "传承古法熬制，精选上等核仁红枣枸杞，足量阿胶，胶香浓郁，口感醇香，软糯香甜，真空独立包装，手提礼盒，精美大气，送礼倍有面子。",
-					"is_tmall": 0
-				},
-			],
+			goods: [],
 			tabs: [
 				{c_id: 0, c_name: '默认'},
 				{c_id: 1, c_name: '女装'},
@@ -171,7 +123,8 @@
 				{c_id: 10, c_name: '数码'},
 				{c_id: 11, c_name: '户外'},
 				{c_id: 12, c_name: '其他'},
-			]
+			],
+			loadingMore:true,
 		}
 
 		computed = {
@@ -193,6 +146,9 @@
 			onClick: function (e) {
 				this.conditionId = e.detail.key;
 			},
+			handleSort(obj) {
+				tip.success("状态:" + obj);
+			}
 
 		}
 
@@ -202,9 +158,7 @@
 			},
 		}
 
-		handleSort(obj) {
-			tip.success("状态:" + obj);
-		}
+
 
 		getGoodsList(){
 			let params = {
@@ -212,11 +166,15 @@
 				isLoading: false,
 				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
 				scb: (res) => {
+					if(res.length==0 || this.page==15){
+						this.loadingMore =false;
+					}
 					this.goods = [...this.goods,...res];
 					this.$apply();
 					this.page++;
 					console.log("this.goods:", this.goods);
-				}
+				},
+				ecb:(err)=>{}
 			}
 			HTTPUtil.get(params);
 		}
@@ -236,10 +194,14 @@
 				}
 			}
 			HTTPUtil.get(params);
+
+			this.getGoodsList();
 		}
 
 		onReachBottom(){
-			console.log("index onReachBottom")
+			if(!this.loadingMore){
+				return;
+			}
 			this.getGoodsList();
 		}
 
@@ -249,6 +211,9 @@
 <style lang="less"  rel="stylesheet/less">
 	@import "../../styles/theme.less";
 
+	.container{
+		background-color: #f7f7f7;
+	}
 	.swiper{
 		padding-top: 84rpx;
 		.slide_image{
@@ -257,6 +222,7 @@
 	}
 
 	.nav_list {
+		background-color:#fff;
 		color: #333;
 		display: flex;
 		font-size: 26rpx;
@@ -281,6 +247,7 @@
 	}
 
 	.home_list{
+		background-color:#fff;
 		.tab {
 			.label {
 				width: 100%;

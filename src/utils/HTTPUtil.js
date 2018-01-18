@@ -39,6 +39,7 @@ class HTTPUtil {
 			if(isLoading) {
 				tip.loaded();
 			}
+			tip.error("错误："+err);
 			ecb && ecb(err);
 		})
 	}
