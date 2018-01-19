@@ -80,7 +80,7 @@
 					if(res['hasdata']==0 && this.page ==1){
 						this.loadingStatus =LoadingMore.ONE_PAGE;
 					}else if(res['hasdata']==0){
-						this.loadingStatus =LoadingMore.FINISHED;
+						this.loadingStatus =LoadingMore.NO_MORE;
 					}
 					this.goods = [...this.goods,...res['list']];
 					this.$apply();
