@@ -13,8 +13,9 @@
 			</view>
 			<view class="second">
 				<view class="quanhou">
-					<view class="price">￥{{item.price}}</view>
-					券后
+					<view class="price" wx:if="{{isAgent}}">￥{{item.price}}</view>
+					<view class="s_price" wx:else>￥{{item.s_price}}</view>
+					{{isAgent?'券后':'原价'}}
 				</view>
 				<view class="sales">
 					<view>销量</view>
@@ -23,9 +24,13 @@
 			</view>
 			<view class="third">
 				<view class="quan">券￥{{item.coupon_price}}</view>
-				<view class="rate">
+				<view class="rate" wx:if="{{isAgent}}">
 					<view class="rate_text">佣金</view>
 					<view class="rate_value">{{item.commission}}元</view>
+				</view>
+				<view class="not_agent" wx:else>
+					<view class="label_text">券后</view>
+					<view class="label_value">￥{{item.price}}</view>
 				</view>
 			</view>
 		</view>
@@ -99,6 +104,10 @@
 					font-size: 32rpx;
 					float: left;
 				}
+				.s_price{
+					padding-right: 6rpx;
+					float: left;
+				}
 			}
 			.sales {
 				/*width: 350rpx;*/
@@ -115,9 +124,9 @@
 			font-size: 25rpx;
 			line-height: 36rpx;
 			text-align: center;
-			margin-bottom: 10rpx;
+			margin-bottom: 5rpx;
 			.quan {
-				width: 300rpx;
+				width: 280rpx;
 				color: #fff;
 				background-color: #ff5777;
 				border: 1px solid #ff5777;
@@ -138,6 +147,21 @@
 				.rate_value {
 					flex: 1;
 					color: #f38a33;
+				}
+			}
+			.not_agent{
+				width: 450rpx;
+				margin-left: 5rpx;
+				display: flex;
+				justify-content: flex-end;
+				line-height: 40rpx;
+				.label_text {
+					font-size: 22rpx;
+				}
+				.label_value {
+					font-size: 32rpx;
+					margin-left: 2rpx;
+					color:#ff5777;
 				}
 			}
 		}
