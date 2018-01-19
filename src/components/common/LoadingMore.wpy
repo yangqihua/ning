@@ -10,7 +10,7 @@
 		props = {
 			show: {
 				type: Boolean,
-				default: false
+				default: true
 			},
 			message: {
 				type: String,
@@ -28,12 +28,13 @@
 </script>
 <style lang="less" rel="stylesheet/less">
 	.loadMoreGif {
-		padding: 15rpx 0 40rpx 0;
+		padding: 15rpx 0 45rpx 0;
 		width: 750rpx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		z-index: 99;
+		background-color: #f7f7f7;
 
 		text {
 			font-size: 30rpx;

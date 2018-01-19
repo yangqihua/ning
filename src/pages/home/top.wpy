@@ -136,7 +136,7 @@
 			background: #f7f7f7;
 			display: flex;
 			flex-wrap: wrap;
-			padding-bottom: 30rpx;
+			padding-bottom: 36rpx;
 		}
 
 	}
