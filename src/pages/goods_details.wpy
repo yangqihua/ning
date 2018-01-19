@@ -12,6 +12,12 @@
 			navigationBarTitleText: '商品详情',
 		}
 		data = {
+			goodsDetails:{
+
+			},
+		}
+		getGoodsDetails(goodsId){
+
 		}
 		onLoad(options) {
 			console.log("options:",options);

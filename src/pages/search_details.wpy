@@ -18,7 +18,7 @@
 			</view>
 		</scroll-view>
 		<view class="totop">
-			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
 		</view>
 		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
