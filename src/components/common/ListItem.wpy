@@ -5,7 +5,7 @@
 		</view>
 		<view class="goods">
 			<view class="title">
-				<image lazy-load src="{{item.is_tmall==1?'../../images/tianmao.jpg':'../../images/taobao.jpg'}}"
+				<image lazy-load src="{{item.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}"
 				       class="logo"></image>
 				<view class="product_name">
 					{{item.name}}

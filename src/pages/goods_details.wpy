@@ -10,6 +10,10 @@
 	export default class GoodsDetails extends wepy.page {
 		config = {
 			navigationBarTitleText: '商品详情',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
+			backgroundColor: '#EFEFEF'
 		}
 		data = {
 			goodsDetails:{
