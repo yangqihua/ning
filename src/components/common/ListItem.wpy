@@ -1,5 +1,5 @@
 <template>
-	<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
+	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&type=0':item.iid+'&type=1'}}">
 		<view class="image_box">
 			<image src="{{item.pic}}"></image>
 		</view>

@@ -1,12 +1,15 @@
 <template>
 	<view class="container">
+		<view>
+			<image src="{{goodsDetails.pic}}"/>
+		</view>
 		<view>详情页面</view>
 	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-
+	import HTTPUtil from '../utils/HTTPUtil'
 	export default class GoodsDetails extends wepy.page {
 		config = {
 			navigationBarTitleText: '商品详情',
@@ -17,15 +20,37 @@
 		}
 		data = {
 			goodsDetails:{
-
+				iid: '',
+				name: '',
+				pic: '',
+				price: '',
+				sales: '',
+				rate: '',
+				coupon_price: '',
+				is_tmall: '',
+				cid: '',
+				s_price: '',
+				commission: ''
 			},
 		}
-		getGoodsDetails(goodsId){
-
+		getGoodsDetails(id,type){
+			let params = {
+				url: 'agent/goods_details',
+				isLoading: true,
+				params: {id:id,type:type},
+				scb: (res) => {
+					console.log('res:',res)
+					this.goodsDetails = res;
+					this.$apply();
+				},
+			}
+			HTTPUtil.get(params);
 		}
 		onLoad(options) {
 			console.log("options:",options);
-			let goods_id = options['goods_id'];
+			let id = options['id'];
+			let type = options['type'];
+			this.getGoodsDetails(id,type);
 		}
 		methods = {
 		}
