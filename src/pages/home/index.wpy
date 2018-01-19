@@ -57,7 +57,7 @@
 								<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" @tap="handleSort">券额</view>
 							</view>
 						</view>
-						<view class="goods" wx:if="{{conditionId==index}}">
+						<view wx:if="{{conditionId==index}}">
 							<goodsList :goodsList.sync="goods" :scrollTop.sync="scrollTop"></goodsList>
 						</view>
 					</wxc-tab-panel>
