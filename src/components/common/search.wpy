@@ -13,6 +13,7 @@
 </template>
 <script>
 	import wepy from 'wepy';
+	import tip from '../../utils/tip'
 	export default class Search extends wepy.component {
 		data = {
 			focus:false,
@@ -35,9 +36,11 @@
 				this.search_input_value = "";
 				this.$apply();
 			},
+			setValue(value){
+				this.search_input_value = value;
+//				tip.success('输入框值：'+this.search_input_value,2000);
+			}
 		}
-
-		onLoad() {}
 	}
 
 </script>

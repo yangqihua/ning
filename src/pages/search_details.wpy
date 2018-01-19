@@ -13,40 +13,12 @@
 		<scroll-view scroll-y="true">
 			<view class="goods_list_container">
 				<repeat for="{{goods}}" key="index" index="index" item="item">
-					<navigator class="list" url="/pages/goods_details?goods_id={{item.id}}">
-						<view class="image_box">
-							<image src="{{item.pic}}"></image>
-						</view>
-						<view class="goods">
-							<view class="title">
-								<image src="{{item.is_tmall==1?'../../images/tianmao.jpg':'../../images/taobao.jpg'}}" class="logo"></image>
-								<view class="product_name">
-									{{item.name}}
-								</view>
-							</view>
-							<view class="second">
-								<view class="quanhou">
-									<view class="price">￥{{item.price}}</view>券后
-								</view>
-								<view class="sales">
-									<view>销量</view>
-									<view class="label_value">{{item.sales}}</view>
-								</view>
-							</view>
-							<view class="third">
-								<view class="quan">券￥{{item.coupon_price}}</view>
-								<view class="rate">
-									<view class="rate_text">佣金</view>
-									<view class="rate_value">{{item.commission}}元</view>
-								</view>
-							</view>
-						</view>
-					</navigator>
+					<listItem :item.sync="item" :isAgent.sync="isAgent"/>
 				</repeat>
 			</view>
 		</scroll-view>
 		<view class="totop">
-			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>1500}}"/>
+			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
 		</view>
 		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
 	</view>
@@ -58,6 +30,8 @@
 	import tip from '../utils/tip'
 	import HTTPUtil from '../utils/HTTPUtil'
 	import LoadingMore from '../components/common/LoadingMore'
+	import ListItem from '../components/common/ListItem'
+	import commonMixins from '../mixins/common'
 
 	export default class SearchDetails extends wepy.page {
 		config = {
@@ -66,54 +40,48 @@
 		components = {
 			search: Search,
 			loadingMore: LoadingMore,
+			listItem: ListItem,
 		}
-
+		mixins = [commonMixins];
 		data = {
-			scrollTop:0,
 			sortId: 0,
 			page: 1,
 			goods: [],
 			loadingMore:true,
 			isLoading:false,
-			key:'',
+			searchKey:'',
 		}
 
 		methods = {
 			doSearch(value) {
-				console.log("search value:",value)
-				this.toastText = value;
-				this.showToast();
+				this.searchKey = value;
+				this.sortId = 0;
+				this.goods = [];
+				this.page = 1;
+				this.getGoodsList(value);
 			},
-
-			goTop(e){
-				wx.pageScrollTo({
-					scrollTop: 0
-				})
-			},
-
 			handleSort(e) {
 				this.sortId = e.target.dataset.current;
 				this.goods = [];
 				this.page = 1;
-				this.getGoodsList();
+				this.getGoodsList(this.searchKey);
 			}
 		}
-
 		onPageScroll(e){
 			this.scrollTop = e.scrollTop;
 		}
-
-		getGoodsList(){
+		getGoodsList(key){
 			this.isLoading = true;
 			let params = {
+				isLoading:this.page ===1,
 				url: 'agent/super_search',
-				params: {key:this.key, page:this.page, sort: this.sortId},
+				params: {key:key, page:this.page, sort: this.sortId},
 				scb: (res) => {
 					this.isLoading = false;
 					if(res.length==0){
 						this.loadingMore =false;
 					}
-					this.goods = [...this.goods,...res];
+					this.goods = [...this.goods,...res['list']];
 					this.$apply();
 					console.log("this.goods:",this.goods);
 					this.page++;
@@ -123,15 +91,30 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
-			this.key = options.key;
-			this.getGoodsList();
+			this.searchKey = options.key;
+			this.$invoke('search', 'setValue', this.searchKey);
+			this.getGoodsList(options.key);
+		}
+
+		onUnload(){
+			this.resetData();
+		}
+
+		resetData(){
+			this.scrollTop = 0;
+			this.sortId= 0;
+			this.page= 1;
+			this.goods= [];
+			this.loadingMore=true;
+			this.isLoading=false;
+			this.searchKey = '';
 		}
 
 		onReachBottom(){
 			if(!this.loadingMore || this.isLoading){
 				return;
 			}
-			this.getGoodsList();
+			this.getGoodsList(this.searchKey);
 		}
 
 	}
@@ -166,125 +149,14 @@
 				color: #ff0077;
 			}
 		}
-		.totop{
-			image{
-				background: #000;
-				border-radius: 50%;
-				position: fixed;
-				bottom: 82rpx;
-				right: 32rpx;
-				width: 40rpx;
-				height: 40rpx;
-				padding:16rpx;
-				opacity: 0.6;
-				z-index:999999;
-			}
-		}
-
 		.goods_list_container {
 			padding: 0rpx 10rpx;
 			background: #f7f7f7;
 			display: flex;
 			flex-wrap: wrap;
 			margin-top: 160rpx;
-			/*padding-bottom: 30rpx;*/
+			padding-bottom: 36rpx;
 
-			.list:nth-child(odd) {
-				margin-right: 10rpx;
-			}
-
-			.list {
-				background: #fff;
-				width: 356rpx;
-				margin-top: 10rpx;
-				border:1px solid #efe8ee;
-				.image_box {
-					image {
-						width: 100%;
-						height: 356rpx;
-					}
-				}
-				.goods {
-					padding: 6rpx 12rpx 15rpx 12rpx;
-					.title{
-						display: flex;
-						height: 28rpx;
-						.logo{
-							width: 28rpx;
-							height: 28rpx;
-							margin-right: 4rpx;
-						}
-						.product_name {
-							flex:1;
-							color: #333;
-							font-size: 28rpx;
-							line-height: 28rpx;
-							overflow: hidden;
-							display: -webkit-box;
-							-webkit-line-clamp: 1;
-							-webkit-box-orient: vertical;
-						}
-					}
-					.second{
-						display: flex;
-						justify-content: space-between;
-						color: #999;
-						font-size: 22rpx;
-						line-height: 32rpx;
-						margin:18rpx 0;
-						.quanhou{
-							/*width: 400rpx;*/
-							.price{
-								padding-right: 6rpx;
-								color: #ff0077;
-								font-size: 32rpx;
-								float:left;
-							}
-						}
-						.sales{
-							/*width: 350rpx;*/
-							display: flex;
-							.label_value{
-								margin-left: 6rpx;
-							}
-						}
-					}
-
-					.third{
-						display: flex;
-						justify-content: space-between;
-						font-size: 25rpx;
-						line-height: 36rpx;
-						text-align: center;
-						margin-bottom: 10rpx;
-						.quan{
-							width: 300rpx;
-							color: #fff;
-							background-color: #ff5777;
-							border:1px solid #ff5777;
-							border-radius: 6rpx;
-							margin-right: 10rpx;
-						}
-						.rate{
-							width: 380rpx;
-							display: flex;
-							margin-left: 20rpx;
-							border:1px solid #f38a33;
-							border-radius: 6rpx;
-							.rate_text{
-								padding:0 8rpx;
-								background-color: #f38a33;
-								color: #fff;
-							}
-							.rate_value{
-								flex:1;
-								color: #f38a33;
-							}
-						}
-					}
-
-				}
-			}
 		}
 	}
 
