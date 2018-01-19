@@ -17,8 +17,7 @@
 		<view class="totop">
 			<image src="../images/totop.png" @tap="goTop" wx:if="{{scrollTop>1500}}"/>
 		</view>
-		<!--加载更多时动画-->
-		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -45,8 +44,7 @@
 			sortId: 0,
 			page: 1,
 			goodsList: [],
-			loadingMore:true,
-			isLoading:false,
+			loadingStatus:LoadingMore.LOADING,
 		}
 
 		methods = {
@@ -56,11 +54,6 @@
 				this.page = 1;
 				this.getGoodsList();
 			},
-			goTop(e){
-				wx.pageScrollTo({
-					scrollTop: 0
-				})
-			}
 		}
 
 		onPageScroll(e){
@@ -68,21 +61,21 @@
 		}
 
 		getGoodsList(){
-			this.isLoading = true;
+			this.loadingStatus = LoadingMore.LOADING;
 			let params = {
 				url: this.url,
 				isLoading: false,
 				params: {page: this.page, sort: this.sortId},
 				scb: (res) => {
-					this.isLoading = false;
+					this.loadingStatus = LoadingMore.FINISHED;
 					if(res.length==0){
-						this.loadingMore =false;
+						this.loadingStatus =LoadingMore.NO_MORE;
 					}
 					this.goodsList = [...this.goodsList,...res];
 					this.$apply();
 					this.page++;
 				},
-				ecb:(err)=>{this.isLoading = false;}
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
 			}
 			HTTPUtil.get(params);
 		}
@@ -122,12 +115,11 @@
 			this.conditionId= 0;
 			this.page= 1;
 			this.goodsList= [];
-			this.loadingMore=true;
-			this.isLoading=false;
+			this.loadingStatus=LoadingMore.LOADING;
 		}
 
 		onReachBottom(){
-			if(!this.loadingMore || this.isLoading){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
 				return;
 			}
 			this.getGoodsList();

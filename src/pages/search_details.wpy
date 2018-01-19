@@ -20,7 +20,7 @@
 		<view class="totop">
 			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
 		</view>
-		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -47,8 +47,7 @@
 			sortId: 0,
 			page: 1,
 			goods: [],
-			loadingMore:true,
-			isLoading:false,
+			loadingStatus:LoadingMore.LOADING,
 			searchKey:'',
 		}
 
@@ -71,22 +70,24 @@
 			this.scrollTop = e.scrollTop;
 		}
 		getGoodsList(key){
-			this.isLoading = true;
+			this.loadingStatus = LoadingMore.LOADING;
 			let params = {
 				isLoading:this.page ===1,
 				url: 'agent/super_search',
 				params: {key:key, page:this.page, sort: this.sortId},
 				scb: (res) => {
-					this.isLoading = false;
-					if(res.length==0){
-						this.loadingMore =false;
+					this.loadingStatus = LoadingMore.FINISHED;
+					if(res['hasdata']==0 && this.page ==1){
+						this.loadingStatus =LoadingMore.ONE_PAGE;
+					}else if(res['hasdata']==0){
+						this.loadingStatus =LoadingMore.FINISHED;
 					}
 					this.goods = [...this.goods,...res['list']];
 					this.$apply();
 					console.log("this.goods:",this.goods);
 					this.page++;
 				},
-				ecb:(err)=>{this.isLoading = false;}
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
 			}
 			HTTPUtil.get(params);
 		}
@@ -105,13 +106,12 @@
 			this.sortId= 0;
 			this.page= 1;
 			this.goods= [];
-			this.loadingMore=true;
-			this.isLoading=false;
+			this.loadingStatus=LoadingMore.LOADING;
 			this.searchKey = '';
 		}
 
 		onReachBottom(){
-			if(!this.loadingMore || this.isLoading){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
 				return;
 			}
 			this.getGoodsList(this.searchKey);

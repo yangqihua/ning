@@ -20,8 +20,7 @@
 		<view class="totop">
 			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
 		</view>
-		<!--加载更多时动画-->
-		<loadingMore :show.sync="loadingMore" message="加载中..."></loadingMore>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -47,8 +46,7 @@
 			sortId: 0,
 			page: 1,
 			goodsList: [],
-			loadingMore:true,
-			isLoading:false,
+			loadingStatus:LoadingMore.LOADING,
 		}
 
 		methods = {
@@ -65,21 +63,21 @@
 		}
 
 		getGoodsList(){
-			this.isLoading = true;
+			this.loadingStatus = LoadingMore.LOADING;
 			let params = {
 				url: 'agent/good_coupon_list',
 				isLoading: false,
 				params: {page: this.page, sort: this.sortId},
 				scb: (res) => {
-					this.isLoading = false;
+					this.loadingStatus = LoadingMore.FINISHED;
 					if(res.length==0){
-						this.loadingMore =false;
+						this.loadingStatus =LoadingMore.NO_MORE;
 					}
 					this.goodsList = [...this.goodsList,...res];
 					this.$apply();
 					this.page++;
 				},
-				ecb:(err)=>{this.isLoading = false;}
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
 			}
 			HTTPUtil.get(params);
 		}
@@ -89,7 +87,7 @@
 		}
 
 		onReachBottom(){
-			if(!this.loadingMore || this.isLoading){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
 				return;
 			}
 			this.getGoodsList();

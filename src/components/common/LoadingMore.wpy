@@ -1,28 +1,47 @@
 <template>
 	<view class="loadMoreGif">
 		<image wx:if="{{show}}" src="../../images/loading.gif"/>
-		<text>{{show?message:'暂无更多 ~'}}</text>
+		<view class="loading_text">{{text}}</view>
 	</view>
 </template>
 <script>
 	import wepy from 'wepy'
 	export default class LoadingMore extends wepy.component {
+		static LOADING = 0;
+		static NO_MORE = 1;
+		static ONE_PAGE = 2;
+		static FINISHED = 3;
+		static ERROR = 3;
 		props = {
-			show: {
-				type: Boolean,
-				default: true
+			loadingStatus: {
+				type: Number,
+				default: 0        // 0 代表正在加载，1 代表暂无更多 2代表隐藏loading
 			},
 			message: {
 				type: String,
-				default: '正在加载'
+				default: '正在加载 ...'
+			},
+			noMore:{
+				type: String,
+				default: '暂无更多 ~'
 			}
 		};
-		watch = {
-			show(newValue){
-				if(!newValue){
-					this.message = '暂无更多 ~';
+		computed = {
+			text(){
+				if(this.loadingStatus==LoadingMore.LOADING || this.loadingStatus==LoadingMore.FINISHED){
+					return this.message;
+				}else if(this.loadingStatus==LoadingMore.NO_MORE){
+					return this.noMore;
 				}
+				return '';
+			},
+			show(){
+				if(this.loadingStatus==LoadingMore.LOADING || this.loadingStatus==LoadingMore.FINISHED){
+					return true;
+				}
+				return false;
 			}
+
 		}
 	}
 </script>
@@ -36,7 +55,7 @@
 		z-index: 99;
 		background-color: #f7f7f7;
 
-		text {
+		.loading_text {
 			font-size: 30rpx;
 			color: #999;
 			margin-left: 10rpx;
