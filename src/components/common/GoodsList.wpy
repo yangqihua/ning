@@ -8,7 +8,7 @@
 			</view>
 		</scroll-view>
 		<view class="totop">
-			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>1500}}"/>
+			<image src="../../images/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
 		</view>
 	</view>
 </template>
@@ -40,22 +40,6 @@
 
 <style lang="less" rel="stylesheet/less">
 	@import "../../styles/theme.less";
-
-	.totop{
-		image{
-			background: #000;
-			border-radius: 50%;
-			position: fixed;
-			bottom: 82rpx;
-			right: 32rpx;
-			width: 40rpx;
-			height: 40rpx;
-			padding:16rpx;
-			opacity: 0.6;
-			z-index:999999;
-		}
-	}
-
 	.goods_list_container {
 		padding: 0rpx 10rpx;
 		background: #f7f7f7;
