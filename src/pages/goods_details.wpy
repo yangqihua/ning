@@ -25,7 +25,7 @@
 							<view class="sales_value">{{goodsDetails.sales}}</view>
 					</view>
 				</view>
-				<view class="operation">
+				<view class="operation" @tap="generate">
 					<image src="http://ozb2xxoij.bkt.clouddn.com/share.png" class="share_icon"/>
 					<view class="share_text">分享图文</view>
 				</view>
@@ -48,12 +48,12 @@
 			<view class="price_box">
 				￥{{goodsDetails.price}}
 			</view>
-			<view class="share_box">
+			<button class="share_box" open-type="share" plain>
 				<view class="icon_container">
 					<image src="http://ozb2xxoij.bkt.clouddn.com/share2.png" class="share_icon"/>
 				</view>
 				<view class="share_text">分享</view>
-			</view>
+			</button>
 			<view class="buy_box">
 				复制淘口令
 			</view>
@@ -64,6 +64,7 @@
 <script>
 	import wepy from 'wepy'
 	import HTTPUtil from '../utils/HTTPUtil'
+	import tip from '../utils/tip'
 	export default class GoodsDetails extends wepy.page {
 		config = {
 			navigationBarTitleText: '商品详情',
@@ -73,6 +74,8 @@
 			backgroundColor: '#EFEFEF'
 		}
 		data = {
+			id:'10419',
+			type:'0',
 			goodsDetails:{
 				iid: '',
 				name: '',
@@ -93,7 +96,6 @@
 				isLoading: true,
 				params: {id:id,type:type},
 				scb: (res) => {
-					console.log('res:',res)
 					this.goodsDetails = res;
 					this.$apply();
 					wx.setNavigationBarTitle({title: res.name})
@@ -102,14 +104,21 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
-			console.log("options:",options);
-			let id = options['id'];
-			let type = options['type'];
-			id = 10419;
-			type = 0;
-			this.getGoodsDetails(id,type);
+//			this.id = options['id'];
+//			this.type = options['type'];
+			this.getGoodsDetails(this.id,this.type);
 		}
 		methods = {
+			generate(){
+				tip.confirm({text:"生成的图文包含小程序二维码，生成之后将保存至相册，可发送给好友或发表朋友圈"}).then((payload)=>{
+					tip.success('已成功保存')
+				}).catch(()=>{
+					tip.error('取消保存')
+				});
+			}
+		}
+		onShareAppMessage(res) {
+			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type)
 		}
 		computed = {}
 	}
@@ -279,11 +288,13 @@
 			}
 			.share_box{
 				width: 169rpx;
+				border:none;
 				border-right:1rpx solid #ececec;
 				display: flex;
 				justify-content: center;
 				flex-direction: column;
 				padding-top: 4rpx;
+
 				.icon_container{
 					line-height: 36rpx;
 					text-align: center;

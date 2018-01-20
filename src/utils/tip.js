@@ -10,28 +10,19 @@ export default class Tips {
 	 * 弹出提示框
 	 */
 
-	static success(title, duration = 500) {
-		setTimeout(() => {
-			wx.showToast({
-				title: title,
-				icon: "success",
-				mask: true,
-				duration: duration
-			});
-		}, 300);
-		if (duration > 0) {
-			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					resolve();
-				}, duration);
-			});
-		}
+	static success(title, duration = 1500) {
+		wx.showToast({
+			title: title,
+			image: "../images/yes.png",
+			mask: true,
+			duration: duration
+		});
 	}
 
 	/**
 	 * 弹出确认窗口
 	 */
-	static confirm(text, payload = {}, title = "提示") {
+	static confirm({text, payload = {}, title = "提示"}) {
 		return new Promise((resolve, reject) => {
 			wx.showModal({
 				title: title,
@@ -51,53 +42,46 @@ export default class Tips {
 		});
 	}
 
-	static toast(title, onHide, icon = "success") {
-		setTimeout(() => {
-			wx.showToast({
-				title: title,
-				icon: icon,
-				mask: true,
-				duration: 500
-			});
-		}, 300);
-
-		// 隐藏结束回调
-		if (onHide) {
-			setTimeout(() => {
-				onHide();
-			}, 500);
-		}
-	}
 
 	/**
-	 * 警告框
+	 * 弹出窗口
 	 */
-	static alert(title) {
+	static alert({text, payload = {}, title = "提示"}) {
+		return new Promise((resolve, reject) => {
+			wx.showModal({
+				title: title,
+				content: text,
+				showCancel: false,
+				success: res => {
+					resolve(payload);
+				},
+				fail: res => {
+					reject(payload);
+				}
+			});
+		});
+	}
+
+	static toast(title) {
 		wx.showToast({
 			title: title,
-			image: "../images/alert.png",
-			mask: true,
+			image: "../images/info.png",
+			mask: false,
 			duration: 1500
 		});
 	}
 
+
 	/**
 	 * 错误框
 	 */
-
 	static error(title, onHide) {
 		wx.showToast({
 			title: title,
 			image: "../images/error.png",
 			mask: true,
-			duration: 500
+			duration: 1500
 		});
-		// 隐藏结束回调
-		if (onHide) {
-			setTimeout(() => {
-				onHide();
-			}, 500);
-		}
 	}
 
 	/**
@@ -124,13 +108,17 @@ export default class Tips {
 		}
 	}
 
-	static share(title, url, desc) {
+	static share(title, desc,imageUrl,path) {
 		return {
 			title: title,
-			path: url,
+			path: path,
 			desc: desc,
-			success: function (res) {
-				Tips.toast("分享成功");
+			imageUrl:imageUrl,
+			success: (res)=>{
+				Tips.success("分享成功");
+			},
+			fail:(err)=>{
+				// Tips.error("取消分享");
 			}
 		};
 	}
