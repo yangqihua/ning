@@ -67,7 +67,7 @@
 			</view>
 		</view>
 
-		<navigator open-type="redirect" url="/pages/home/index" class="home_btn">
+		<navigator open-type="switchTab" url="/pages/home/index" class="home_btn">
 			首页
 		</navigator>
 	</view>
@@ -120,10 +120,9 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
-//			this.id = options['id'];
-//			this.type = options['type'];
+			this.id = options['id'];
+			this.type = options['type'];
 			this.getGoodsDetails(this.id,this.type);
-			console.log('isAgent:',this.isAgent);
 		}
 		methods = {
 			generate(){
@@ -146,8 +145,9 @@
 					wx.setClipboardData({
 						data: res,
 						success: (res)=>{
-							tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'我知道了',confirmText:'看看教程'}).then((res)=>{
-								wx.navigateTo({url: '/pages/help/jiaocheng'})
+							tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
+							}).catch((res)=>{
+								wx.navigateTo({url: '/pages/help/jiaocheng'});
 							})
 						}
 					})
@@ -372,7 +372,7 @@
 			border-radius: 50%;
 			position: fixed;
 			top: 550rpx;
-			right: 10rpx;
+			right: 15rpx;
 			width: 50rpx;
 			height: 50rpx;
 			padding: 16rpx;

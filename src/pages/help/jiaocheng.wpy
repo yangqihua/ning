@@ -1,6 +1,6 @@
 <template>
 	<view class="tip_details_container">
-		<image src="http://ozb2xxoij.bkt.clouddn.com/chaquan.jpg" mode="widthFix"/>
+		<image src="http://ozb2xxoij.bkt.clouddn.com/xiadan.jpg" mode="widthFix"/>
 	</view>
 </template>
 

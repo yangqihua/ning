@@ -2,39 +2,7 @@
 <template>
 	<view class="container">
 		<search @searchValue.user="doSearch"></search>
-
-		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
-		        autoplay="true" interval="3000" duration="300" circular="true">
-			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
-				<swiper-item>
-					<image src="{{item.picUrl}}" mode="aspectFill" class="slide-image" style="width: 100%;" @tap="goToAd({{item.adUrl}})"/>
-				</swiper-item>
-			</repeat>
-		</swiper>
-
-		<view class="nav_list">
-			<navigator open-type="navigate" url="/pages/sign_in">
-				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
-				<view class="nav_text">签到有礼</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/exchange_goods">
-				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
-				<view class="nav_text">换货专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/wholesale">
-				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
-				<view class="nav_text">特价专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/replenishment_goods">
-				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
-				<view class="nav_text">我要补货</view>
-			</navigator>
-		</view>
-
-		<view class="userinfo" @tap="handleViewTap">
-			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
-		</view>
+		<image src="http://ozb2xxoij.bkt.clouddn.com/chaquan.jpg" mode="widthFix" style="width: 100%"/>
 	</view>
 </template>
 
@@ -44,7 +12,7 @@
 
 	export default class Index extends wepy.page {
 		config = {
-			navigationBarTitleText: '搜索'
+			navigationBarTitleText: '超级搜索'
 		}
 		components = {
 			search: Search,
