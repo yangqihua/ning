@@ -1,97 +1,124 @@
 
 <template>
-	<view class="container">
-		<search @searchValue.user="doSearch"></search>
+	<view class="search_container">
+		<view class="search_box">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/search_background.jpg" mode="widthFix" style="width: 100%"/>
+			<view class="search">
+				<view class="search_content">
+					<i class="iconfont icon-search"></i>
+					<input placeholder-class="search_placeholder" type="text" name="search_input" bindinput="searchInput" class="search_input" focus="{{focus}}"
+					       value="{{search_input_value}}" confirm-type="search" bindconfirm="confirmInput" placeholder="输入或粘贴淘宝/天猫标题"/>
+					<i wx:if="{{search_input_value!=''}}" @tap="delText" class="iconfont icon-del"></i>
+				</view>
+				<view class="btn_search" @tap="search()">搜索</view>
+			</view>
+		</view>
 		<image src="http://ozb2xxoij.bkt.clouddn.com/chaquan.jpg" mode="widthFix" style="width: 100%"/>
 	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-	import Search from '../../components/common/search'
 
 	export default class Index extends wepy.page {
 		config = {
-			navigationBarTitleText: '超级搜索'
-		}
-		components = {
-			search: Search,
+			navigationBarTitleText: '超级搜索',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#9178FF',
+			enablePullDownRefresh: false,
+			backgroundColor: '#EFEFEF',
 		}
 
 		data = {
-			userInfo: {
-				nickName: '加载中...'
-			},
-			adList:[
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/37/818a59764011d6eeb89a192e150f466a.jpg",adUrl:'xxx1/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx2/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx3/xx'},
-			]
+			focus:false,
+			search_input_value: '',
 		}
 
 		computed = {
 		}
 
 		methods = {
-			handleViewTap(){
-				console.log("tap");
+			searchInput(e) {
+				this.search_input_value = e.detail.value;
+				this.$apply();
 			},
-			doSearch(value) {
-				console.log("search value:",value)
+			confirmInput(e){
+				this.search_input_value = e.detail.value;
+				this.$apply();
+				wx.navigateTo({
+					url: '/pages/search_details?key='+this.search_input_value
+				})
 			},
-			goToAd(url){
-				console.log('url:',url);
-			}
-		}
-
-		onLoad() {
-			this.userInfo = this.$parent.getUserInfo();
-			console.log("on load userInfo",this.userInfo);
-			this.$apply();
+			search() {
+				wx.navigateTo({
+					url: '/pages/search_details?key='+this.search_input_value
+				})
+			},
+			delText() {
+				this.search_input_value = "";
+				this.$apply();
+			},
 		}
 	}
 </script>
 
-<style lang="less">
-	@import "../../styles/theme.less";
+<style lang="less"  rel="stylesheet/less">
+	.search_container{
+		.search_box{
+			position:relative;
+			font-size: 40rpx;
+			line-height: 46rpx;
+			.search {
+				position: absolute;
+				bottom: 80rpx;
+				align-items: center;
+				display: flex;
+				margin: 0 36rpx;
+				width: 680rpx;
+				.search_content {
+					flex:1;
+					display: flex;
+					align-items: center;
+					border-bottom-left-radius: 36rpx;
+					border-top-left-radius: 36rpx;
+					color: #3b333b;
+					background: #fff;
+					padding: 5rpx 2rpx 5rpx 12rpx;
+					height: 62rpx;
+					.search_input {
+						font-size: 26rpx;
+						width: 100%;
+					}
+					.search_placeholder{
+						color: #b2b2b2;
+						text-align: center;
+						margin-left: 10rpx;
+					}
+					.icon-search {
+						color: #b2b2b2;
+						font-size: 40rpx;
+					}
+					.icon-del {
+						color: #b2b2b2;
+						height: 72rpx;
+						width: 72rpx;
+						text-align: center;
+						line-height: 72rpx;
+						font-size: 40rpx;
+					}
+				}
 
-	.nav_list {
-		color: #404040;
-		display: flex;
-		font-size: 26rpx;
-		justify-content: space-between;
-		padding: 17rpx 50rpx;
+				.btn_search {
+					border-bottom-right-radius: 36rpx;
+					border-top-right-radius: 36rpx;
+					color: #fff;
+					background: #ff5777;
+					font-size: 28rpx;
+					line-height: 70rpx;
+					padding: 0 32rpx;
+				}
 
-	navigator {
-		text-align: center
-	}
-
-	.nav_icon {
-		height: 80rpx;
-		width: 80rpx;
-		margin: 0 auto;
-		margin-bottom: 14rpx;
-	}
-
-	.nav_text {
-		font-size: 26rpx
-	}
-
-	}
-
-	.userinfo {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.userinfo-avatar {
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 50%;
-	}
-
-	.userinfo-nickname {
-		color: #aaa;
+			}
+		}
 	}
 </style>

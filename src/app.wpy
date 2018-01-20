@@ -35,7 +35,7 @@
 				navigationBarTitleText: '柠檬好物',
 				navigationBarTextStyle: '#fff',
 				enablePullDownRefresh: false,
-				backgroundColor: '#EFEFEF',
+				backgroundColor: '#f7f7f7',
 			},
 			tabBar: {
 				color: "#666",
