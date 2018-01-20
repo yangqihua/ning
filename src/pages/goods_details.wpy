@@ -19,18 +19,15 @@
 						<view class="s_price">￥{{goodsDetails.s_price}}</view>
 					</view>
 					<view class="sales_info">
-						<!--<view class="quan">-->
 							<view class="quan_label">券</view>
 							<view class="quan_value">￥{{goodsDetails.coupon_price}}</view>
-
-						<!--</view>-->
-						<!--<view class="sales">-->
 							<view class="sales_label">销量:</view>
 							<view class="sales_value">{{goodsDetails.sales}}</view>
-						<!--</view>-->
 					</view>
 				</view>
 				<view class="operation">
+					<image src="http://ozb2xxoij.bkt.clouddn.com/share.png" class="share_icon"/>
+					<view class="share_text">分享图文</view>
 				</view>
 			</view>
 			<view class="you">
@@ -46,6 +43,20 @@
 		<view class="goods_content">
 			<view class="recommend">推荐</view>
 			{{goodsDetails.content}}
+		</view>
+		<view class="bottom_container">
+			<view class="price_box">
+				￥{{goodsDetails.price}}
+			</view>
+			<view class="share_box">
+				<view class="icon_container">
+					<image src="http://ozb2xxoij.bkt.clouddn.com/share2.png" class="share_icon"/>
+				</view>
+				<view class="share_text">分享</view>
+			</view>
+			<view class="buy_box">
+				复制淘口令
+			</view>
 		</view>
 	</view>
 </template>
@@ -106,7 +117,7 @@
 
 <style lang="less" rel="stylesheet/less">
 	.goods_details_container{
-		padding-bottom: 100rpx;
+		padding-bottom: 150rpx;
 		.goods_info{
 			padding: 12rpx 25rpx 12rpx 25rpx;
 			.title {
@@ -186,7 +197,16 @@
 					}
 				}
 				.operation{
-
+					margin-right: 16rpx;
+					text-align: center;
+					.share_icon{
+						margin-top: 8rpx;
+						width:50rpx;height: 50rpx;
+					}
+					.share_text{
+						margin-top: -8rpx;
+						font-size: 24rpx;
+					}
 				}
 			}
 			.you{
@@ -238,6 +258,58 @@
 			background-color:#ececec;
 			width: 750rpx;
 			height: 12rpx;
+		}
+
+		.bottom_container{
+			width: 100%;
+			border-top: 1px solid #ececec;
+			position: fixed;
+			display: flex;
+			bottom: 0;
+			background: #fff;
+			z-index: 9999;
+			height: 100rpx;
+			text-align: center;
+			line-height: 100rpx;
+			.price_box {
+				width: 329rpx;
+				color: #ff5777;
+				font-size: 40rpx;
+				border-right:1rpx solid #ececec;
+			}
+			.share_box{
+				width: 169rpx;
+				border-right:1rpx solid #ececec;
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				padding-top: 4rpx;
+				.icon_container{
+					line-height: 36rpx;
+					text-align: center;
+					height: 50rpx;
+					width: 100%;
+					.share_icon{
+						margin-top: 10rpx;
+						height: 36rpx;
+						width: 36rpx;
+					}
+				}
+				.share_text{
+					margin-bottom: 10rpx;
+					line-height: 36rpx;
+					height: 50rpx;
+					flex:1;
+					color:#666;
+					font-size: 24rpx;
+				}
+			}
+			.buy_box{
+				width: 350rpx;
+				background-color: #ff5777;
+				color: #fff;
+				font-size: 32rpx;
+			}
 		}
 	}
 </style>
