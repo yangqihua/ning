@@ -1,11 +1,11 @@
 <template>
 	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&type=0':item.iid+'&type=1'}}">
 		<view class="image_box">
-			<image src="{{item.pic}}"></image>
+			<image lazy-load src="{{item.pic}}"></image>
 		</view>
 		<view class="goods">
 			<view class="title">
-				<image lazy-load src="{{item.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}"
+				<image src="{{item.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}"
 				       class="logo"></image>
 				<view class="product_name">
 					{{item.name}}

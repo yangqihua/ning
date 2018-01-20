@@ -1,9 +1,52 @@
 <template>
-	<view class="container">
+	<view class="goods_details_container">
 		<view>
-			<image src="{{goodsDetails.pic}}"/>
+			<image src="{{goodsDetails.pic}}" mode="widthFix"  class="goods_pic" style="width: 750rpx;"/>
 		</view>
-		<view>详情页面</view>
+		<view class="goods_info">
+			<view class="title">
+				<view class="product_name">
+					<image src="{{goodsDetails.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}"
+					       class="logo"></image>
+					{{goodsDetails.name}}
+				</view>
+			</view>
+			<view class="details">
+				<view class="info">
+					<view class="price">
+						<view class="x_price_label">券后价</view>
+						<view class="x_price">￥{{goodsDetails.price}}</view>
+						<view class="s_price">￥{{goodsDetails.s_price}}</view>
+					</view>
+					<view class="sales_info">
+						<!--<view class="quan">-->
+							<view class="quan_label">券</view>
+							<view class="quan_value">￥{{goodsDetails.coupon_price}}</view>
+
+						<!--</view>-->
+						<!--<view class="sales">-->
+							<view class="sales_label">销量:</view>
+							<view class="sales_value">{{goodsDetails.sales}}</view>
+						<!--</view>-->
+					</view>
+				</view>
+				<view class="operation">
+				</view>
+			</view>
+			<view class="you">
+				<image src="http://ozb2xxoij.bkt.clouddn.com/coupon.png" mode="widthFix" style="width: 100%;"/>
+				<view class="first_label">
+					<view class="first_value">{{goodsDetails.coupon_price}}</view>
+					<view style="color:#fff">元优惠券</view>
+				</view>
+				<view class="last_label">立即领券</view>
+			</view>
+		</view>
+		<view class="split"/>
+		<view class="goods_content">
+			<view class="recommend">推荐</view>
+			{{goodsDetails.content}}
+		</view>
 	</view>
 </template>
 
@@ -42,6 +85,7 @@
 					console.log('res:',res)
 					this.goodsDetails = res;
 					this.$apply();
+					wx.setNavigationBarTitle({title: res.name})
 				},
 			}
 			HTTPUtil.get(params);
@@ -50,6 +94,8 @@
 			console.log("options:",options);
 			let id = options['id'];
 			let type = options['type'];
+			id = 10419;
+			type = 0;
 			this.getGoodsDetails(id,type);
 		}
 		methods = {
@@ -58,5 +104,140 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" rel="stylesheet/less">
+	.goods_details_container{
+		padding-bottom: 100rpx;
+		.goods_info{
+			padding: 12rpx 25rpx 12rpx 25rpx;
+			.title {
+				.product_name {
+					line-height: 36rpx;
+					color: #333;
+					font-size: 28rpx;
+					word-wrap:break-word;
+					.logo {
+						padding-top:3rpx;
+						width: 30rpx;
+						height: 30rpx;
+						margin-right: 6rpx;
+						float:left;
+					}
+				}
+			}
+			.details{
+				display: flex;
+				justify-content: space-between;
+				.info{
+					line-height: 40rpx;
+					color: #999;
+					.price{
+						display: flex;
+						padding:12rpx 0;
+						.x_price_label{
+							margin:4rpx 4rpx 4rpx 0;
+							line-height: 28rpx;
+							padding:2rpx 10rpx;
+							color:#fff;
+							font-size: 18rpx;
+							background: linear-gradient(to right,#f38a33, #ff5777);
+							border-radius: 6rpx;
+						}
+						.x_price{
+							color: #ff0077;
+							font-size: 40rpx;
+							margin-right: 15rpx;
+						}
+						.s_price{
+							padding-top:2rpx;
+							line-height: 38rpx;
+							font-size: 26rpx;
+							text-decoration:line-through;
+						}
+					}
+					.sales_info{
+						line-height: 36rpx;
+						font-size: 28rpx;
+						.quan_label{
+							color: #ff0077;
+							float:left;
+							font-size: 22rpx;
+							width: 34rpx;
+							height: 34rpx;
+							text-align: center;
+							border-radius: 50%;
+							border:1rpx solid #ff5777;
+						}
+						.quan_value{
+							margin-left:2rpx;
+							float:left;
+							color: #ff5777;
+						}
+						.sales_label{
+							margin-left:18rpx;
+							font-size: 24rpx;
+							float:left;
+						}
+						.sales_value{
+							margin-left:8rpx;
+							float:left;
+							font-size: 24rpx;
+						}
+
+					}
+				}
+				.operation{
+
+				}
+			}
+			.you{
+				position:relative;
+				padding:30rpx 12rpx 6rpx 10rpx;
+				font-size: 40rpx;
+				line-height: 46rpx;
+				.first_label{
+					position:absolute;
+					display: flex;
+					justify-content: center;
+					z-index:2;
+					top:86rpx;
+					left:0;
+					width:485rpx;
+					text-align: center;
+					.first_value{
+						color:#fff;
+						font-size: 48rpx;
+						margin-right: 6rpx;
+					}
+				}
+				.last_label{
+					color:#fff;
+					position:absolute;
+					z-index:2;
+					top:86rpx;
+					right:52rpx;
+				}
+			}
+		}
+		.goods_content{
+			color:#666;
+			font-size: 24rpx;
+			line-height: 36rpx;
+			margin: 24rpx 0;
+			padding: 0 25rpx;
+			.recommend{
+				line-height: 34rpx;
+				padding:0 10rpx;
+				margin-right: 8rpx;
+				border: 1rpx solid #f38a33;
+				color: #f38a33;
+				font-size: 24rpx;
+				float: left;
+			}
+		}
+		.split{
+			background-color:#ececec;
+			width: 750rpx;
+			height: 12rpx;
+		}
+	}
 </style>
