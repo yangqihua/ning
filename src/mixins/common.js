@@ -2,7 +2,8 @@ import wepy from 'wepy'
 
 export default class testMixin extends wepy.mixin {
 	data = {
-		scrollTop: 0
+		scrollTop: 0,
+		// isAgent:'hf'
 	}
 	methods = {
 		goTop(e){

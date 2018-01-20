@@ -30,7 +30,15 @@
 					<view class="share_text">分享图文</view>
 				</view>
 			</view>
-			<view class="you">
+			<button wx:if="{{isAgent}}" class="you" open-type="share" plain>
+				<image src="http://ozb2xxoij.bkt.clouddn.com/coupon.png" mode="widthFix" style="width: 100%;"/>
+				<view class="first_label">
+					<view class="first_value">{{goodsDetails.commission}}</view>
+					<view style="color:#fff">元佣金</view>
+				</view>
+				<view class="last_label">立即推广</view>
+			</button>
+			<view class="you" @tap="copyCode" wx:else>
 				<image src="http://ozb2xxoij.bkt.clouddn.com/coupon.png" mode="widthFix" style="width: 100%;"/>
 				<view class="first_label">
 					<view class="first_value">{{goodsDetails.coupon_price}}</view>
@@ -54,10 +62,14 @@
 				</view>
 				<view class="share_text">分享</view>
 			</button>
-			<view class="buy_box">
+			<view class="buy_box" @tap="copyCode">
 				复制淘口令
 			</view>
 		</view>
+
+		<navigator open-type="redirect" url="/pages/home/index" class="home_btn">
+			首页
+		</navigator>
 	</view>
 </template>
 
@@ -65,6 +77,7 @@
 	import wepy from 'wepy'
 	import HTTPUtil from '../utils/HTTPUtil'
 	import tip from '../utils/tip'
+	import commonMixins from '../mixins/common'
 	export default class GoodsDetails extends wepy.page {
 		config = {
 			navigationBarTitleText: '商品详情',
@@ -73,7 +86,9 @@
 			navigationBarTextStyle: 'black',
 			backgroundColor: '#EFEFEF'
 		}
+		mixins = [commonMixins];
 		data = {
+			isAgent:true,
 			id:'10419',
 			type:'0',
 			goodsDetails:{
@@ -84,6 +99,7 @@
 				sales: '',
 				rate: '',
 				coupon_price: '',
+				coupon_link:'',
 				is_tmall: '',
 				cid: '',
 				s_price: '',
@@ -107,6 +123,7 @@
 //			this.id = options['id'];
 //			this.type = options['type'];
 			this.getGoodsDetails(this.id,this.type);
+			console.log('isAgent:',this.isAgent);
 		}
 		methods = {
 			generate(){
@@ -115,7 +132,29 @@
 				}).catch(()=>{
 					tip.error('取消保存')
 				});
+			},
+			copyCode(){
+				this.getTKL();
+			},
+		}
+
+		getTKL(){
+			let params = {
+				url: 'agent/get_tkl',
+				params: {openid:'',iid:this.goodsDetails.iid,title:this.goodsDetails.name,pic:this.goodsDetails.pic,coupon_link:this.goodsDetails.coupon_link},
+				scb: (res) => {
+					wx.setClipboardData({
+						data: res,
+						success: (res)=>{
+							tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'我知道了',confirmText:'看看教程'}).then((res)=>{
+								wx.navigateTo({url: '/pages/help/jiaocheng'})
+							})
+						}
+					})
+				},
+				ecb:(err)=>{tip.error('网络异常')}
 			}
+			HTTPUtil.get(params);
 		}
 		onShareAppMessage(res) {
 			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type)
@@ -223,6 +262,7 @@
 				padding:30rpx 12rpx 6rpx 10rpx;
 				font-size: 40rpx;
 				line-height: 46rpx;
+				border:none;
 				.first_label{
 					position:absolute;
 					display: flex;
@@ -321,6 +361,23 @@
 				color: #fff;
 				font-size: 32rpx;
 			}
+		}
+		.home_btn{
+			box-shadow: #666 0 0 12rpx;
+			text-align: center;
+			font-size: 24rpx;
+			line-height: 50rpx;
+			color:#fff;
+			background: #333;
+			border-radius: 50%;
+			position: fixed;
+			top: 550rpx;
+			right: 10rpx;
+			width: 50rpx;
+			height: 50rpx;
+			padding: 16rpx;
+			opacity: 0.8;
+			z-index: 999999;
 		}
 	}
 </style>

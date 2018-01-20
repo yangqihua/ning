@@ -27,6 +27,7 @@
 				'pages/home/me',
 				'pages/home_details',
 				'pages/search_details',
+				'pages/help/jiaocheng',
 			],
 			window: {
 				backgroundTextStyle: 'dark',
