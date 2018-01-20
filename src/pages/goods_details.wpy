@@ -54,7 +54,8 @@
 		</view>
 		<view class="bottom_container">
 			<view class="price_box">
-				￥{{goodsDetails.price}}
+				<view style="font-size: 24rpx;line-height: 100rpx;padding-left: 4rpx;">券后价</view>
+				<view style="color: #ff5777;">￥{{goodsDetails.price}}</view>
 			</view>
 			<button class="share_box" open-type="share" plain>
 				<view class="icon_container">
@@ -322,9 +323,10 @@
 			line-height: 100rpx;
 			.price_box {
 				width: 329rpx;
-				color: #ff5777;
 				font-size: 40rpx;
 				border-right:1rpx solid #ececec;
+				display: flex;
+				justify-content: center;
 			}
 			.share_box{
 				width: 169rpx;
