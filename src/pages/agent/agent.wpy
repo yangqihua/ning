@@ -1,0 +1,31 @@
+
+<template>
+	<view class="tixian_container">
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import tip from '../../utils/tip'
+	import HTTPUtil from '../../utils/HTTPUtil'
+	import commonMixins from '../../mixins/common'
+	import LoadingMore from '../../components/common/LoadingMore'
+
+	export default class User extends wepy.page {
+		config = {
+			navigationBarTitleText: '推广记录',
+		}
+		data = {
+		}
+
+		methods = {
+		}
+
+		onLoad(options) {
+		}
+
+	}
+</script>
+
+<style lang="less"  rel="stylesheet/less">
+</style>
