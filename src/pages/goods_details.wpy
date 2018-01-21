@@ -63,8 +63,8 @@
 				</view>
 				<view class="share_text">分享</view>
 			</button>
-			<view class="buy_box" @tap="copyCode">
-				复制淘口令
+			<view class="buy_box {{hadCopy?'had_buy':''}}" @tap="copyCode">
+				{{hadCopy?"已复制":"复制淘口令"}}
 			</view>
 		</view>
 
@@ -90,6 +90,7 @@
 		mixins = [commonMixins];
 		data = {
 			isAgent:true,
+			hadCopy:false,
 			id:'10419',
 			type:'0',
 			goodsDetails:{
@@ -125,6 +126,9 @@
 			this.type = options['type'];
 			this.getGoodsDetails(this.id,this.type);
 		}
+		onUnload(){
+			this.hadCopy=false;
+		}
 		methods = {
 			generate(){
 				tip.confirm({text:"生成的图文包含小程序二维码，生成之后将保存至相册，可发送给好友或发表朋友圈"}).then((payload)=>{
@@ -134,18 +138,30 @@
 				});
 			},
 			copyCode(){
+				if(this.hadCopy){
+					tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
+					}).catch((res)=>{
+						wx.navigateTo({url: '/pages/help/jiaocheng'});
+					})
+					return;
+				}
 				this.getTKL();
 			},
 		}
 
 		getTKL(){
+			tip.loading();
 			let params = {
 				url: 'agent/get_tkl',
+				isLoading:false,
 				params: {openid:'',iid:this.goodsDetails.iid,title:this.goodsDetails.name,pic:this.goodsDetails.pic,coupon_link:this.goodsDetails.coupon_link},
 				scb: (res) => {
 					wx.setClipboardData({
 						data: res,
 						success: (res)=>{
+							tip.loaded();
+							this.hadCopy = true;
+							this.$apply();
 							tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
 							}).catch((res)=>{
 								wx.navigateTo({url: '/pages/help/jiaocheng'});
@@ -362,6 +378,9 @@
 				background-color: #ff5777;
 				color: #fff;
 				font-size: 32rpx;
+			}
+			.had_buy{
+				background-color: #cecece;
 			}
 		}
 		.home_btn{
