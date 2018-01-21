@@ -33,7 +33,11 @@ class HTTPUtil {
 					scb&&scb(res.data);
 				}
 			}else{
-				ecb&&ecb(json['errMsg']);
+				if(json['statusCode']==500){
+					ecb&&ecb('服务器异常');
+				}else{
+					ecb&&ecb('状态码: '+json['statusCode']);
+				}
 			}
 		}, (err) => {
 			if(isLoading) {

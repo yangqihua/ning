@@ -169,7 +169,10 @@
 						}
 					})
 				},
-				ecb:(err)=>{tip.error('网络异常')}
+				ecb:(err)=>{
+					console.log('err:',err);
+					tip.error(err)
+				}
 			}
 			HTTPUtil.get(params);
 		}

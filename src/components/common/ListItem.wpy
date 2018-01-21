@@ -128,7 +128,8 @@
 			.quan {
 				width: 280rpx;
 				color: #fff;
-				background-color: #ff5777;
+				/*background-color: #ff5777;*/
+				background: linear-gradient(to right,#ff5777, #ff0077);
 				border: 1px solid #ff5777;
 				border-radius: 6rpx;
 				margin-right: 10rpx;
