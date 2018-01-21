@@ -13,7 +13,7 @@
 						<image src="../../images/money.png"/>
 						<view>{{userData.money}}</view>
 					</view>
-					<view class="money_btn">提现</view>
+					<view class="money_btn" @tap="tixian">提现</view>
 				</view>
 			</view>
 			<view class="first" style="border:none">
@@ -23,7 +23,7 @@
 						<image src="../../images/money2.png"/>
 						<view>{{userData.tixian}}</view>
 					</view>
-					<view class="money_btn">查看</view>
+					<view class="money_btn" @tap="readTixian">查看</view>
 				</view>
 			</view>
 		</view>
@@ -58,11 +58,11 @@
 					<view class="data">{{timeData.incomes}}</view>
 				</view>
 			</view>
-			<view class="data_btn">点击查看详情 >></view>
+			<view class="data_btn" @tap="order">点击查看详情 >></view>
 		</view>
 		<view class="split"/>
 		<view class="group_list">
-			<view class="list_item">
+			<view class="list_item" @tap="user">
 				<view class="item_label">
 					<image src="../../images/group.png"/>
 					<view>我的用户</view>
@@ -73,7 +73,7 @@
 				</view>
 			</view>
 
-			<view class="list_item">
+			<view class="list_item" @tap="agent">
 				<view class="item_label">
 					<image src="../../images/reward.png"/>
 					<view>我的推广奖励</view>
@@ -86,7 +86,7 @@
 
 			<view class="split"/>
 
-			<view class="list_item">
+			<view class="list_item" @tap="help">
 				<view class="item_label">
 					<image src="../../images/book.png"/>
 					<view>查看教程</view>
@@ -118,7 +118,6 @@
 					<image src="../../images/right.png"/>
 				</view>
 			</view>
-
 		</view>
 
 		<view class="qr_code">
@@ -190,6 +189,24 @@
 		methods = {
 			handleTime(e){
 				this.activeTime = e.target.dataset.current;
+			},
+			tixian(){
+				wx.navigateTo({url: '/pages/agent/tixian'})
+			},
+			readTixian(){
+				wx.navigateTo({url: '/pages/agent/read_tixian'})
+			},
+			order(){
+				wx.navigateTo({url: '/pages/agent/order'})
+			},
+			user(){
+				wx.navigateTo({url: '/pages/agent/user'})
+			},
+			agent(){
+				wx.navigateTo({url: '/pages/agent/agent'})
+			},
+			help(){
+				wx.navigateTo({url: '/pages/agent/help'})
 			}
 		}
 

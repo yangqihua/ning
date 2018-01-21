@@ -28,6 +28,13 @@
 				'pages/goods_details',
 				'pages/search_details',
 				'pages/help/jiaocheng',
+
+				'pages/agent/tixian',
+				'pages/agent/read_tixian',
+				'pages/agent/order',
+				'pages/agent/user',
+				'pages/agent/agent',
+				'pages/agent/help',
 			],
 			window: {
 				backgroundTextStyle: 'dark',
