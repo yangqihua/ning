@@ -20,10 +20,10 @@
 	export default class extends wepy.app {
 		config = {
 			pages: [
+				'pages/home/me',
 				'pages/home/index',
 				'pages/home/top',
 				'pages/home/search',
-				'pages/home/me',
 				'pages/home_details',
 				'pages/goods_details',
 				'pages/search_details',
@@ -35,7 +35,7 @@
 				navigationBarTitleText: '柠檬好物',
 				navigationBarTextStyle: '#fff',
 				enablePullDownRefresh: false,
-				backgroundColor: '#f7f7f7',
+				backgroundColor: '#fefefe',
 			},
 			tabBar: {
 				color: "#666",
@@ -91,7 +91,7 @@
 //			console.log("userInfo:", userInfo);
 			wx.checkSession({
 				success: () => {
-					if ((!userInfo.openid) || (!userInfo.nickName)) {
+					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
 						this.login();
 					}
 				},

@@ -1,64 +1,146 @@
 
 <template>
-	<view class="container">
-		<search @searchValue.user="doSearch"></search>
-
-		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true"
-		        autoplay="true" interval="3000" duration="300" circular="true">
-			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
-				<swiper-item>
-					<image src="{{item.picUrl}}" mode="aspectFill" class="slide-image" style="width: 100%;" @tap="goToAd({{item.adUrl}})"/>
-				</swiper-item>
-			</repeat>
-		</swiper>
-
-		<view class="nav_list">
-			<navigator open-type="navigate" url="/pages/sign_in">
-				<image src="../../images/icon_nav_01_new.png" class="nav_icon"></image>
-				<view class="nav_text">签到有礼</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/exchange_goods">
-				<image src="../../images/icon_nav_02_new.png" class="nav_icon"></image>
-				<view class="nav_text">换货专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/wholesale">
-				<image src="../../images/icon_nav_03_new.png" class="nav_icon"></image>
-				<view class="nav_text">特价专区</view>
-			</navigator>
-			<navigator open-type="navigate" url="/pages/replenishment_goods">
-				<image src="../../images/icon_nav_04_new.png" class="nav_icon"></image>
-				<view class="nav_text">我要补货</view>
-			</navigator>
-		</view>
-
-		<view class="userinfo" @tap="handleViewTap">
+	<view class="me_container">
+		<view class="me_bg">
 			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
 			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+		</view>
+		<view class="money_container">
+			<view class="first">
+				<view>我的余额</view>
+				<view class="money_container">
+					<view class="money_value">
+						<image src="../../images/money.png"/>
+						<view>32113.22</view>
+					</view>
+					<view class="money_btn">提现</view>
+				</view>
+			</view>
+			<view class="first" style="border:none">
+				<view>累计提现</view>
+				<view class="money_container">
+					<view class="money_value">
+						<image src="../../images/money2.png"/>
+						<view>3263.22</view>
+					</view>
+					<view class="money_btn">查看</view>
+				</view>
+			</view>
+		</view>
+		<view class="income_container">
+			<view class="month">
+				<view class="income_label">上月预估收入</view>
+				<view class="income_value">￥8.30</view>
+			</view>
+			<view class="month" style="border: none">
+				<view class="income_label">本月预估收入</view>
+				<view class="income_value">￥723.30</view>
+			</view>
+		</view>
+		<view class="split"/>
+		<view class="data_container">
+			<view class="data_label">
+				<view class="view_active" style="border-right:1rpx solid #ddd;">今日</view>
+				<view style="border-right:1rpx solid #ddd;">本周</view>
+				<view>总计</view>
+			</view>
+			<view class="data_value">
+				<view>
+					<view>点击数</view>
+					<view class="data">230</view>
+				</view>
+				<view>
+					<view>付款笔数</view>
+					<view class="data">40</view>
+				</view>
+				<view>
+					<view>预估收入</view>
+					<view class="data">632</view>
+				</view>
+			</view>
+			<view class="data_btn">点击查看详情 >></view>
+		</view>
+		<view class="split"/>
+		<view class="group_list">
+			<view class="list_item">
+				<view class="item_label">
+					<image src="../../images/group.png"/>
+					<view>我的用户</view>
+				</view>
+				<view class="item_value">
+					<view>231 个</view>
+					<image src="../../images/right.png"/>
+				</view>
+			</view>
+
+			<view class="list_item">
+				<view class="item_label">
+					<image src="../../images/reward.png"/>
+					<view>我的推广奖励</view>
+				</view>
+				<view class="item_value">
+					<view>353 元</view>
+					<image src="../../images/right.png"/>
+				</view>
+			</view>
+
+			<view class="split"/>
+
+			<view class="list_item">
+				<view class="item_label">
+					<image src="../../images/book.png"/>
+					<view>查看教程</view>
+				</view>
+				<view class="item_value">
+					<view></view>
+					<image src="../../images/right.png"/>
+				</view>
+			</view>
+
+			<view class="list_item">
+				<view class="item_label">
+					<image src="../../images/kefu.png"/>
+					<view>联系客服</view>
+				</view>
+				<view class="item_value">
+					<view></view>
+					<image src="../../images/right.png"/>
+				</view>
+			</view>
+
+			<view class="list_item">
+				<view class="item_label">
+					<image src="../../images/code.png"/>
+					<view>我的邀请码</view>
+				</view>
+				<view class="item_value">
+					<view>fsdafa</view>
+					<image src="../../images/right.png"/>
+				</view>
+			</view>
+
+		</view>
+
+		<view class="qr_code">
+			获取我的推广码 >>
 		</view>
 	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-	import Search from '../../components/common/search'
 
-	export default class Index extends wepy.page {
+	export default class Me extends wepy.page {
 		config = {
-			navigationBarTitleText: '个人中心'
-		}
-		components = {
-			search: Search,
+			navigationBarTitleText: '个人中心',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#F7701A',
 		}
 
 		data = {
 			userInfo: {
 				nickName: '加载中...'
 			},
-			adList:[
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/37/818a59764011d6eeb89a192e150f466a.jpg",adUrl:'xxx1/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx2/xx'},
-				{picUrl:"http://ozg6xzz9f.bkt.clouddn.com/ad_pics/60/TB2E1.XeeKAUKJjSZFzXXXdQFXa_!!2000726094.jpg",adUrl:'xxx3/xx'},
-			]
 		}
 
 		computed = {
@@ -68,62 +150,190 @@
 			handleViewTap(){
 				console.log("tap");
 			},
-			doSearch(value) {
-				console.log("search value:",value)
-			},
-			goToAd(url){
-				console.log('url:',url);
-			}
 		}
 
 		onLoad() {
 			this.userInfo = this.$parent.getUserInfo();
 			console.log("on load userInfo",this.userInfo);
-			this.$apply();
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less"  rel="stylesheet/less">
 	@import "../../styles/theme.less";
+	.me_container{
+		padding-bottom: 120rpx;
+		.me_bg{
+			width: 750rpx;
+			height: 240rpx;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(to top,#F39172, #f7701a);
+			.userinfo-avatar {
+				width: 120rpx;
+				height: 120rpx;
+				border-radius: 50%;
+			}
+			.userinfo-nickname {
+				padding-top:20rpx;
+				color: #efefef;
+				font-size: 28rpx;
+			}
+		}
+		.money_container{
+			background-color: #fefefe;
+			display: flex;
+			.first{
+				padding:24rpx 22rpx;
+				flex:1;
+				font-size: 28rpx;
+				border-right:1rpx solid #ddd;
 
-	.nav_list {
-		color: #404040;
-		display: flex;
-		font-size: 26rpx;
-		justify-content: space-between;
-		padding: 17rpx 50rpx;
+				.money_container{
+					display: flex;
+					justify-content: space-between;
+					margin-top: 12rpx;
+					.money_value{
+						text-align: center;
+						display: flex;
+						image{
+							width: 32rpx;height:32rpx;
+							padding: 6rpx 6rpx 4rpx 0 ;
+						}
+						view{
+							color: red;
+							font-size: 35rpx;
+							line-height: 45rpx;
+						}
+					}
+					.money_btn{
+						color: #ff5777;
+						line-height: 40rpx;
+						padding:0rpx 22rpx;
+						border:2rpx solid #ff5777;
+						font-size: 24rpx;
+						border-radius: 8rpx;
+					}
+				}
+			}
+		}
+		.split{
+			background-color: #ececec;
+			width: 100%;
+			height: 18rpx;
+		}
+		.income_container{
+			border-top:1rpx solid #ddd;
+			display: flex;
+			background-color: #fefefe;
+			.month{
+				padding:22rpx;
+				flex:1;
+				border-right:1rpx solid #ddd;
+				.income_label{
+					font-size: 28rpx;
+				}
+				.income_value{
+					font-size: 35rpx;
+					color:#333;
+				}
+			}
+		}
+		.data_container{
+			padding:22rpx;
+			/*margin-top:10rpx;*/
+			background-color: #fefefe;
+			.data_label{
+				display: flex;
+				justify-content: space-between;
+				view{
+					flex:1;
+					padding: 8rpx;
+					text-align: center;
+					font-size: 30rpx;
+					line-height: 46rpx;
+					color: #333;
+				}
+				.view_active{
+					font-size: 38rpx;
+					color: red;
+				}
+			}
+			.data_value{
+				display: flex;
+				justify-content: space-between;
+				margin:25rpx 0 40rpx 0;
+				view{
+					flex:1;
+					text-align: center;
+					font-size: 26rpx;
+					.data{
+						padding-top: 12rpx;
+						color:red;
+						font-size:28rpx;
+					}
+				}
+			}
+			.data_btn{
+				margin:10rpx auto;
+				text-align: center;
+				width:240rpx;
+				color: #ff5777;
+				line-height: 55rpx;
+				padding:0rpx 22rpx;
+				border:2rpx solid #ff5777;
+				font-size: 24rpx;
+				border-radius: 12rpx;
+			}
+		}
+		.group_list{
+			background-color: #fefefe;
+			.list_item{
+				display: flex;
+				justify-content: space-between;
+				padding:24rpx 22rpx;
+				border-bottom:1rpx solid #ddd;
+				.item_label{
+					display: flex;
+					view{
+						line-height: 40rpx;
+						font-size: 30rpx;
+						padding-left: 20rpx;
+					}
+					image{
+						width: 40rpx;
+						height: 40rpx;
+						/*border-radius: 50%;*/
+					}
+				}
+				.item_value{
+					display: flex;
+					view{
+						line-height: 40rpx;
+						font-size: 28rpx;
+						padding-right: 12rpx;
+						color:#333;
+					}
+					image{
+						width: 40rpx;
+						height: 40rpx;
+					}
+				}
 
-	navigator {
-		text-align: center
-	}
-
-	.nav_icon {
-		height: 80rpx;
-		width: 80rpx;
-		margin: 0 auto;
-		margin-bottom: 14rpx;
-	}
-
-	.nav_text {
-		font-size: 26rpx
-	}
-
-	}
-
-	.userinfo {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.userinfo-avatar {
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 50%;
-	}
-
-	.userinfo-nickname {
-		color: #aaa;
+			}
+		}
+		.qr_code{
+			background-color: #fff;
+			margin:25rpx auto;
+			text-align: center;
+			width:400rpx;
+			line-height: 70rpx;
+			padding:0rpx 22rpx;
+			border:1rpx solid #ddd;
+			font-size: 28rpx;
+			border-radius: 40rpx;
+		}
 	}
 </style>

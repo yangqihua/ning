@@ -85,7 +85,7 @@
 			backgroundTextStyle: 'dark',
 			navigationBarBackgroundColor: '#FFFFFF',
 			navigationBarTextStyle: 'black',
-			backgroundColor: '#EFEFEF'
+			backgroundColor: '#fefefe'
 		}
 		mixins = [commonMixins];
 		data = {
@@ -186,6 +186,7 @@
 <style lang="less" rel="stylesheet/less">
 	.goods_details_container{
 		padding-bottom: 150rpx;
+		background-color: #fefefe;
 		.goods_info{
 			padding: 12rpx 25rpx 12rpx 25rpx;
 			.title {
