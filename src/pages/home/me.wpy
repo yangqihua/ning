@@ -197,7 +197,7 @@
 				wx.navigateTo({url: '/pages/agent/read_tixian'})
 			},
 			order(){
-				wx.navigateTo({url: '/pages/agent/order'})
+				wx.navigateTo({url: '/pages/agent/order?type='+this.activeTime})
 			},
 			user(){
 				wx.navigateTo({url: '/pages/agent/user'})
@@ -227,6 +227,7 @@
 			this.getData();
 			console.log("on load userInfo",this.userInfo);
 		}
+
 	}
 </script>
 

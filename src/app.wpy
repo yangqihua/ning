@@ -32,6 +32,7 @@
 				'pages/agent/tixian',
 				'pages/agent/read_tixian',
 				'pages/agent/order',
+
 				'pages/agent/user',
 				'pages/agent/agent',
 				'pages/agent/help',

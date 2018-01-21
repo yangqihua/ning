@@ -1,6 +1,48 @@
-
 <template>
-	<view class="tixian_container">
+	<view class="order_container">
+		<view class="filter">
+			<view class="nav  {{type=='0' ? 'nav_active' : ''}}" data-current="0" @tap="handType">今日</view>
+			<view class="nav  {{type=='1' ? 'nav_active' : ''}}" data-current="1" @tap="handType">本周</view>
+			<view class="nav  {{type=='2' ? 'nav_active' : ''}}" data-current="2" @tap="handType">总计</view>
+		</view>
+		<view class="list_container">
+			<repeat for="{{orderList}}" key="index" index="index" item="item">
+				<view class="order_item">
+					<view class="item_info">
+						<image src="{{item.pic}}"/>
+						<view class="info">
+							<view class="name">{{item.name}}</view>
+							<view class="shop">所属店铺: {{item.shop}}</view>
+							<view style="display: flex;justify-content: space-between">
+								<view class="order_id">订单号: {{item.order_num}}</view>
+								<view style="padding-right: 8rpx;color:#999;font-size: 24rpx;">{{item.goods_num}} 件</view>
+							</view>
+						</view>
+					</view>
+					<view class="money">
+						<view class="money_container">
+							<view class="money_label">付款金额</view>
+							<view class="money_value">￥{{item.pay_money}}</view>
+						</view>
+						<view class="money_container">
+							<view class="money_label">成交预估收入</view>
+							<view class="money_value">￥{{item.commission}}</view>
+						</view>
+						<view class="money_container">
+							<view class="money_label">提成</view>
+							<view class="money_value">{{item.rate_precent}}%</view>
+						</view>
+					</view>
+					<view style="padding-top:15rpx;color: #999;font-size: 24rpx;">
+						{{item.order_time}} 创建
+					</view>
+				</view>
+			</repeat>
+		</view>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
+		</view>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -14,18 +56,165 @@
 	export default class Order extends wepy.page {
 		config = {
 			navigationBarTitleText: '订单详情',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
 		}
+		components = {
+			loadingMore: LoadingMore,
+		}
+		mixins = [commonMixins];
 		data = {
+			type: '2',
+			page: 1,
+			orderList: [],
+			loadingStatus:LoadingMore.LOADING,
 		}
 
 		methods = {
+			handType(e){
+				this.type = e.target.dataset.current;
+				this.orderList = [];
+				this.page = 1;
+				this.getOrders();
+			}
+		}
+
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
+		}
+
+		getOrders() {
+			this.loadingStatus = LoadingMore.LOADING;
+			let params = {
+				url: 'auth/order_details',
+				params: {openid: 'system', page: this.page, type: this.type},
+				scb: (res) => {
+					this.loadingStatus = LoadingMore.FINISHED;
+					if(res['hasdata']==0 && this.page ==1){
+						this.loadingStatus =LoadingMore.ONE_PAGE;
+					}else if(res['hasdata']==0){
+						this.loadingStatus =LoadingMore.NO_MORE;
+					}
+					this.orderList = [...this.orderList,...res['list']];
+					this.$apply();
+					this.page++;
+				},
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
+			}
+			HTTPUtil.get(params);
 		}
 
 		onLoad(options) {
+			this.type = options.type || '0';
+			this.getOrders();
+		}
+
+		onUnload(){
+			this.page = 1
+			this.orderList=[]
+			this.loadingStatus = LoadingMore.LOADING
+		}
+
+		onReachBottom(){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
+				return;
+			}
+			this.getGoodsList(this.searchKey);
 		}
 
 	}
 </script>
 
-<style lang="less"  rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less">
+	.order_container {
+		.filter {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			z-index: 999;
+
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			background: #fff;
+			border-bottom: 1rpx solid #efe8ee;
+			.nav {
+				flex: 1;
+				color: #333;
+				font-size: 26rpx;
+				padding: 10px 20px;
+				text-align: center;
+			}
+			.nav_active {
+				color: #ff0077;
+			}
+		}
+		.list_container {
+			padding-top:80rpx;
+			.order_item {
+				background-color: #fefefe;
+				padding: 28rpx 20rpx 20rpx 20rpx;
+				margin-bottom: 25rpx;
+				.item_info{
+					display: flex;
+					image{
+						width: 130rpx;
+						height: 130rpx;
+					}
+					.info{
+						flex:1;
+						padding-left: 18rpx;
+						display: flex;
+						justify-content: space-between;
+						flex-direction: column;
+						.name{
+							color: #333;
+							font-size: 30rpx;
+							line-height: 30rpx;
+							height: 30rpx;
+							overflow: hidden;
+							display: -webkit-box;
+							-webkit-line-clamp: 1;
+							-webkit-box-orient: vertical;
+						}
+						.shop{
+							color: #999;
+							font-size: 24rpx;
+							line-height: 24rpx;
+							height: 24rpx;
+							overflow: hidden;
+							display: -webkit-box;
+							-webkit-line-clamp: 1;
+							-webkit-box-orient: vertical;
+						}
+						.order_id{
+							color: #999;
+							font-size: 24rpx;
+							line-height: 24rpx;
+						}
+					}
+				}
+				.money{
+					padding-top: 18rpx;
+					display: flex;
+					justify-content: space-between;
+					text-align: center;
+					.money_container{
+						line-height: 50rpx;
+						padding-right: 40rpx;
+						.money_label{
+							font-size: 24rpx;
+						}
+						.money_value{
+							color: #111;
+							font-size: 30rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+
 </style>
