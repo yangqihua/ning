@@ -160,7 +160,7 @@
 					order_num:0,
 					incomes:0
 				},
-				weed_detail:{
+				week_detail:{
 					click:0,
 					order_num:0,
 					incomes:0
@@ -175,10 +175,11 @@
 
 		watch = {
 			activeTime(newValue){
+				console.log('newValue:',newValue);
 				if(newValue=='0'){
 					this.timeData = this.userData['day_detail']
 				}else if(newValue=='1'){
-					this.timeData = this.userData['weed_detail']
+					this.timeData = this.userData['week_detail']
 				}else{
 					this.timeData = this.userData['total_detail']
 				}
