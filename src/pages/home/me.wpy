@@ -11,7 +11,7 @@
 				<view class="money_container">
 					<view class="money_value">
 						<image src="../../images/money.png"/>
-						<view>32113.22</view>
+						<view>{{userData.money}}</view>
 					</view>
 					<view class="money_btn">提现</view>
 				</view>
@@ -21,7 +21,7 @@
 				<view class="money_container">
 					<view class="money_value">
 						<image src="../../images/money2.png"/>
-						<view>3263.22</view>
+						<view>{{userData.tixian}}</view>
 					</view>
 					<view class="money_btn">查看</view>
 				</view>
@@ -30,32 +30,32 @@
 		<view class="income_container">
 			<view class="month">
 				<view class="income_label">上月预估收入</view>
-				<view class="income_value">￥8.30</view>
+				<view class="income_value">{{userData.total_lastm}}</view>
 			</view>
 			<view class="month" style="border: none">
 				<view class="income_label">本月预估收入</view>
-				<view class="income_value">￥723.30</view>
+				<view class="income_value">{{userData.total_m}}</view>
 			</view>
 		</view>
 		<view class="split"/>
 		<view class="data_container">
 			<view class="data_label">
-				<view class="view_active" style="border-right:1rpx solid #ddd;">今日</view>
-				<view style="border-right:1rpx solid #ddd;">本周</view>
-				<view>总计</view>
+				<view class="{{activeTime=='0' ? 'view_active' : ''}}" style="border-right:1rpx solid #ddd;" data-current="0" @tap="handleTime">今日</view>
+				<view class="{{activeTime=='1' ? 'view_active' : ''}}" style="border-right:1rpx solid #ddd;" data-current="1" @tap="handleTime">本周</view>
+				<view class="{{activeTime=='2' ? 'view_active' : ''}}" data-current="2" @tap="handleTime">总计</view>
 			</view>
 			<view class="data_value">
 				<view>
 					<view>点击数</view>
-					<view class="data">230</view>
+					<view class="data">{{timeData.click}}</view>
 				</view>
 				<view>
 					<view>付款笔数</view>
-					<view class="data">40</view>
+					<view class="data">{{timeData.order_num}}</view>
 				</view>
 				<view>
 					<view>预估收入</view>
-					<view class="data">632</view>
+					<view class="data">{{timeData.incomes}}</view>
 				</view>
 			</view>
 			<view class="data_btn">点击查看详情 >></view>
@@ -68,7 +68,7 @@
 					<view>我的用户</view>
 				</view>
 				<view class="item_value">
-					<view>231 个</view>
+					<view>{{userData.customer_count}} 个</view>
 					<image src="../../images/right.png"/>
 				</view>
 			</view>
@@ -79,7 +79,7 @@
 					<view>我的推广奖励</view>
 				</view>
 				<view class="item_value">
-					<view>353 元</view>
+					<view>{{userData.spread_money}} 元</view>
 					<image src="../../images/right.png"/>
 				</view>
 			</view>
@@ -114,7 +114,7 @@
 					<view>我的邀请码</view>
 				</view>
 				<view class="item_value">
-					<view>fsdafa</view>
+					<view>{{userData.request_code}}</view>
 					<image src="../../images/right.png"/>
 				</view>
 			</view>
@@ -129,7 +129,7 @@
 
 <script>
 	import wepy from 'wepy'
-
+	import HTTPUtil from '../../utils/HTTPUtil'
 	export default class Me extends wepy.page {
 		config = {
 			navigationBarTitleText: '个人中心',
@@ -138,29 +138,81 @@
 		}
 
 		data = {
+			activeTime:'0',
+			timeData:{
+				click:0,
+				order_num:0,
+				incomes:0
+			},
 			userInfo: {
 				nickName: '加载中...'
 			},
+			userData:{
+				money:0,
+				customer_count:0,
+				tixian:0,
+				spread_money:0, // 推广money
+				total_lastm:0,
+				total_m:0,
+				request_code:'',
+				day_detail:{
+					click:0,
+					order_num:0,
+					incomes:0
+				},
+				weed_detail:{
+					click:0,
+					order_num:0,
+					incomes:0
+				},
+				total_detail:{
+					click:0,
+					order_num:0,
+					incomes:0
+				}
+			}
 		}
 
-		computed = {
+		watch = {
+			activeTime(newValue){
+				if(newValue=='0'){
+					this.timeData = this.userData['day_detail']
+				}else if(newValue=='1'){
+					this.timeData = this.userData['weed_detail']
+				}else{
+					this.timeData = this.userData['total_detail']
+				}
+			}
+
 		}
 
 		methods = {
-			handleViewTap(){
-				console.log("tap");
-			},
+			handleTime(e){
+				this.activeTime = e.target.dataset.current;
+			}
+		}
+
+		getData(){
+			let params = {
+				url: 'auth/user_profile',
+				params: {openid:'system'},
+				scb: (res) => {
+					this.userData = res;
+					this.$apply();
+				},
+			}
+			HTTPUtil.get(params);
 		}
 
 		onLoad() {
 			this.userInfo = this.$parent.getUserInfo();
+			this.getData();
 			console.log("on load userInfo",this.userInfo);
 		}
 	}
 </script>
 
 <style lang="less"  rel="stylesheet/less">
-	@import "../../styles/theme.less";
 	.me_container{
 		padding-bottom: 120rpx;
 		.me_bg{
