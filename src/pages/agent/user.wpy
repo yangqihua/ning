@@ -1,6 +1,22 @@
 
 <template>
-	<view class="tixian_container">
+	<view class="user_container">
+		<repeat for="{{userList}}" key="index" index="index" item="item">
+			<view class="user_item">
+				<image src="{{item.head_img}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="name">{{item.nick}}</view>
+						<view class="city">{{item.province?item.province:''}} {{item.city?item.city:''}}</view>
+					</view>
+					<view class="create_time">首次访问: {{item.time}}</view>
+				</view>
+			</view>
+		</repeat>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
+		</view>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -14,18 +30,111 @@
 	export default class User extends wepy.page {
 		config = {
 			navigationBarTitleText: '我的用户',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
 		}
+
+		components = {
+			loadingMore: LoadingMore,
+		}
+		mixins = [commonMixins];
 		data = {
+			page: 1,
+			userList: [],
+			loadingStatus:LoadingMore.LOADING,
+		}
+
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
 		}
 
 		methods = {
 		}
 
+		getUserList() {
+			this.loadingStatus = LoadingMore.LOADING;
+			let params = {
+				url: 'auth/customer_details',
+				params: {openid: 'system', page: this.page,limit:'10'},
+				scb: (res) => {
+					this.loadingStatus = LoadingMore.FINISHED;
+					if(res['hasdata']==0 && this.page ==1){
+						this.loadingStatus =LoadingMore.ONE_PAGE;
+					}else if(res['hasdata']==0){
+						this.loadingStatus =LoadingMore.NO_MORE;
+					}
+					if(this.page==1){
+						wx.setNavigationBarTitle({title: '我的用户('+res.count+')'})
+					}
+					this.userList = [...this.userList,...res['list']];
+					this.$apply();
+					this.page++;
+				},
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
+			}
+			HTTPUtil.get(params);
+		}
+
 		onLoad(options) {
+			this.getUserList();
+		}
+
+		onUnload(){
+			this.page = 1
+			this.userList=[]
+			this.loadingStatus = LoadingMore.LOADING
+		}
+
+		onReachBottom(){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
+				return;
+			}
+			this.getUserList();
 		}
 
 	}
 </script>
 
 <style lang="less"  rel="stylesheet/less">
+	.user_item{
+		display: flex;
+		background-color: #fefefe;
+		padding: 30rpx;
+		margin-bottom: 25rpx;
+		image{
+			width: 120rpx;
+			height: 120rpx;
+			border-radius: 50%;
+		}
+		.info{
+			flex:1;
+			padding: 18rpx;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			.name{
+				line-height: 40rpx;
+				color: #333;
+				font-size: 30rpx;
+				height: 40rpx;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				padding-right: 8rpx;
+			}
+			.city{
+				line-height: 40rpx;
+				color: #999;
+				font-size: 24rpx;
+			}
+			.create_time{
+				color: #999;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				height: 24rpx;
+			}
+		}
+	}
 </style>

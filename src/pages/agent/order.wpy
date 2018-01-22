@@ -120,7 +120,7 @@
 			if(this.loadingStatus!=LoadingMore.FINISHED){
 				return;
 			}
-			this.getGoodsList(this.searchKey);
+			this.getOrders();
 		}
 
 	}
