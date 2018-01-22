@@ -30,7 +30,7 @@
 			text(){
 				if(this.loadingStatus==LoadingMore.LOADING || this.loadingStatus==LoadingMore.FINISHED){
 					return this.message;
-				}else if(this.loadingStatus==LoadingMore.NO_MORE){
+				}else if(this.loadingStatus==LoadingMore.NO_MORE || this.loadingStatus==LoadingMore.ONE_PAGE ){
 					return this.noMore;
 				}
 				return '';

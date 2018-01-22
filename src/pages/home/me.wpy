@@ -115,7 +115,7 @@
 				</view>
 				<view class="item_value">
 					<view>{{userData.request_code}}</view>
-					<image src="../../images/right.png"/>
+					<!--<image src="../../images/right.png"/>-->
 				</view>
 			</view>
 		</view>

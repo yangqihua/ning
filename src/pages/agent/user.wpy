@@ -130,9 +130,10 @@
 				font-size: 24rpx;
 			}
 			.create_time{
+				/*padding-top: 30rpx;*/
 				color: #999;
 				font-size: 24rpx;
-				line-height: 24rpx;
+				line-height: 40rpx;
 				height: 24rpx;
 			}
 		}
