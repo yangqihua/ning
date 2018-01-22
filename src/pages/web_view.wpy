@@ -1,6 +1,6 @@
 
 <template>
-	<web-view src="https://www.qu-gou.com/help.html"></web-view>
+	<web-view src="{{url}}"></web-view>
 </template>
 
 <script>
@@ -8,18 +8,24 @@
 
 	export default class User extends wepy.page {
 		config = {
-			navigationBarTitleText: '使用教程',
+			navigationBarTitleText: '',
 			backgroundTextStyle: 'dark',
 			navigationBarBackgroundColor: '#FFFFFF',
 			navigationBarTextStyle: 'black',
 		}
 		data = {
+			url:'',
 		}
 
 		methods = {
 		}
 
+		onUnload(){
+			this.url = '';
+		}
+
 		onLoad(options) {
+			this.url = options.url;
 		}
 
 	}
