@@ -94,18 +94,18 @@
 					<view>查看教程</view>
 				</view>
 				<view class="item_value">
-					<view></view>
 					<image src="../../images/right.png"/>
 				</view>
 			</view>
 
-			<view class="list_item">
-				<view class="item_label">
-					<image src="../../images/kefu.png"/>
-					<view>联系客服</view>
-				</view>
-				<view class="item_value">
-					<view></view>
+			<view class="list_item" style="padding:0;">
+				<button plain style="border:none;width: 100%;padding:24rpx 22rpx;" open-type="contact">
+					<view class="item_label">
+							<image src="../../images/kefu.png"/>
+							<view>联系客服</view>
+					</view>
+				</button>
+				<view class="item_value" style="margin-top:24rpx;margin-right: 24rpx;">
 					<image src="../../images/right.png"/>
 				</view>
 			</view>

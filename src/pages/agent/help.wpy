@@ -1,19 +1,17 @@
 
 <template>
-	<view class="tixian_container">
-	</view>
+	<web-view src="https://www.qu-gou.com/help.html"></web-view>
 </template>
 
 <script>
 	import wepy from 'wepy'
-	import tip from '../../utils/tip'
-	import HTTPUtil from '../../utils/HTTPUtil'
-	import commonMixins from '../../mixins/common'
-	import LoadingMore from '../../components/common/LoadingMore'
 
 	export default class User extends wepy.page {
 		config = {
-			navigationBarTitleText: '教程',
+			navigationBarTitleText: '使用教程',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
 		}
 		data = {
 		}
