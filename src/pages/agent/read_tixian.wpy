@@ -1,6 +1,25 @@
 
 <template>
 	<view class="tixian_container">
+		<repeat for="{{tixianList}}" key="index" index="index" item="item">
+			<view class="tixian_item">
+				<image src="{{item.type=='0'?'http://ozb2xxoij.bkt.clouddn.com/weixin.png':'http://ozb2xxoij.bkt.clouddn.com/zhifubao.png'}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="token">{{item.token}}</view>
+						<view class="money">￥{{item.money}}</view>
+					</view>
+					<view style="display: flex;justify-content: space-between">
+						<view class="create_time">提现时间: {{item.time}}</view>
+						<view class="status {{item.status=='审核中'? 'has_tixian' : ''}}" >{{item.status}}</view>
+					</view>
+				</view>
+			</view>
+		</repeat>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
+		</view>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -11,21 +30,115 @@
 	import commonMixins from '../../mixins/common'
 	import LoadingMore from '../../components/common/LoadingMore'
 
-	export default class ReadTixian extends wepy.page {
+	export default class Tixian extends wepy.page {
 		config = {
 			navigationBarTitleText: '提现记录',
 		}
+		components = {
+			loadingMore: LoadingMore,
+		}
+		mixins = [commonMixins];
 		data = {
+			page: 1,
+			tixianList: [],
+			loadingStatus:LoadingMore.LOADING,
+		}
+
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
 		}
 
 		methods = {
 		}
 
+		getTixianList() {
+			this.loadingStatus = LoadingMore.LOADING;
+			let params = {
+				url: 'auth/tixian_details',
+				params: {openid: 'system', page: this.page,limit:'10'},
+				scb: (res) => {
+					this.loadingStatus = LoadingMore.FINISHED;
+					if(res['hasdata']==0 && this.page ==1){
+						this.loadingStatus =LoadingMore.ONE_PAGE;
+					}else if(res['hasdata']==0){
+						this.loadingStatus =LoadingMore.NO_MORE;
+					}
+					this.tixianList = [...this.tixianList,...res['list']];
+					this.$apply();
+					this.page++;
+				},
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
+			}
+			HTTPUtil.get(params);
+		}
+
 		onLoad(options) {
+			this.getTixianList();
+		}
+
+		onUnload(){
+			this.page = 1
+			this.tixianList=[]
+			this.loadingStatus = LoadingMore.LOADING
+		}
+
+		onReachBottom(){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
+				return;
+			}
+			this.getTixianList();
 		}
 
 	}
 </script>
 
 <style lang="less"  rel="stylesheet/less">
+	.tixian_item{
+		display: flex;
+		background-color: #fefefe;
+		padding: 30rpx;
+		margin-bottom: 25rpx;
+		image{
+			width: 120rpx;
+			height: 120rpx;
+		}
+		.info{
+			flex:1;
+			padding: 0 18rpx;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			.token{
+				line-height: 50rpx;
+				color: #333;
+				font-size: 28rpx;
+				height: 40rpx;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				padding-right: 8rpx;
+			}
+			.money{
+				line-height: 50rpx;
+				color: red;
+				font-size: 36rpx;
+			}
+			.create_time{
+				color: #999;
+				font-size: 24rpx;
+				line-height: 40rpx;
+			}
+			.status{
+				background-color: #4792E0;
+				border-radius: 20rpx;
+				padding: 0rpx 18rpx;color: #fff;
+				font-size: 24rpx;
+				line-height: 40rpx;
+			}
+			.has_tixian{
+				background-color: #EAB221;
+			}
+		}
+	}
 </style>

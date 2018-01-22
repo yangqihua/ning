@@ -1,6 +1,34 @@
 
 <template>
 	<view class="tixian_container">
+		<view class="notice">{{info.notice}}</view>
+		<view class="form_container">
+			<view class="form_item">
+				<view class="t_label">当前余额</view>
+				<view class="t_value" style="color: red;">{{info.money}} 元</view>
+			</view>
+			<view class="form_item">
+				<radio-group style="margin-bottom: 8rpx;" @change="radioChange">
+					<label class="radio">
+						<radio value="0" checked/>微信
+					</label>
+					<label class="radio" style="margin-left: 200rpx;">
+						<radio value="1"/>支付宝
+					</label>
+				</radio-group>
+			</view>
+			<view class="form_item">
+				<view class="t_label">提现账户</view>
+				<input class="input_item {{moneyType=='0'?'active_input':''}}" bindinput="handleTokenInput" placeholder-class="input_placeholder" placeholder="请填写账户" value="{{token}}" disabled="{{moneyType=='0'}}"/>
+			</view>
+			<view class="form_item">
+				<view class="t_label">提现金额</view>
+				<input class="input_item" placeholder-class="input_placeholder" bindinput="handleMoneyInput" placeholder="{{placeholder}}" value="{{money}}"/>
+			</view>
+			<view class="submit_btn" @tap="handelTixian">
+				{{tip}}
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -8,24 +36,171 @@
 	import wepy from 'wepy'
 	import tip from '../../utils/tip'
 	import HTTPUtil from '../../utils/HTTPUtil'
-	import commonMixins from '../../mixins/common'
-	import LoadingMore from '../../components/common/LoadingMore'
 
 	export default class Tixian extends wepy.page {
 		config = {
 			navigationBarTitleText: '提现',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#F7701A',
 		}
 		data = {
+			info:{
+				money:'',
+				zhifubao:'',
+				wx_token:'',
+				min_tixian:'',
+				notice:'',
+			},
+			moneyType:'0',
+			token:'123',
+			money:'',
+		}
+
+		computed = {
+			tip(){
+				if(this.info.money<this.info.min_tixian){
+					return '余额不足';
+				}
+				return '申请提现';
+			},
+			placeholder(){
+				if(this.info.money<this.info.min_tixian){
+					return '当前余额不足';
+				}
+				return '请输入提现金额';
+			}
 		}
 
 		methods = {
+			radioChange(e){
+				this.moneyType = e.detail.value;
+			},
+			handleMoneyInput(e){
+				this.money = e.detail.value;
+			},
+			handleTokenInput(e){
+				this.token = e.detail.value;
+			},
+			handelTixian(){
+				if(this.info.money<this.info.min_tixian){
+					return;
+				}
+				if(this.money<this.info.min_tixian){
+					tip.alert({text:this.info.notice});
+					return
+				}
+				if(!this.token){
+					tip.alert({text:'提现账户不能为空'});
+					return
+				}
+				this.submit();
+
+			}
+		}
+		submit(){
+			let params = {
+				url: 'auth/submit_tixian',
+				params: {openid: 'system',tx_money:this.money,type:this.moneyType,token:this.token},
+				scb: (res) => {
+					tip.success('提交成功');
+					setTimeout(()=>{
+						wx.navigateBack({delta:1});
+					},1500);
+				},
+				ecb:(res)=>{tip.error('提交失败')}
+			}
+			HTTPUtil.post(params);
+		}
+
+		getInfo() {
+			let params = {
+				url: 'auth/request_tixian_data',
+				params: {openid: 'system'},
+				scb: (res) => {
+					this.info = res;
+					this.token = res.wx_token;
+					this.money = res.money;
+					this.$apply();
+				},
+			}
+			HTTPUtil.get(params);
 		}
 
 		onLoad(options) {
+			this.getInfo();
+		}
+
+		watch = {
+			moneyType(newValue){
+				if(newValue=='0'){
+					this.token = this.info.wx_token;
+				}else {
+					this.token = this.info.zhifubao;
+				}
+			}
 		}
 
 	}
 </script>
 
 <style lang="less"  rel="stylesheet/less">
+	.tixian_container{
+		.form_container{
+			background-color: #fefefe;
+			padding:40rpx;
+			/*margin-top: 20rpx;*/
+			font-size: 28rpx;
+			.form_item{
+				display: flex;
+				padding-top: 20rpx;
+				line-height: 56rpx;
+				.t_label{
+					padding-right: 140rpx;
+				}
+				.t_value{
+					padding-left: 100rpx;
+				}
+				.input_item{
+					border:1rpx solid #ff0077;
+					width: 300rpx;
+					border-radius: 10rpx;
+					font-size: 26rpx;
+					padding:0 16rpx;
+				}
+				.active_input{
+					background-color: #efefef;
+				}
+				.input_placeholder{
+					color: #b2b2b2;
+					text-align: center;
+					font-size: 26rpx;
+				}
+				.radio{
+					width: 20rpx;
+					height:20rpx;
+					font-size: 28rpx;
+				}
+			}
+			.submit_btn{
+				margin:60rpx auto;
+				background: linear-gradient(to right,#F39172, #f7701a);
+				color: #fff;
+				text-align: center;
+				width:400rpx;
+				line-height: 55rpx;
+				padding:8rpx 22rpx;
+				border:1rpx solid #ff5777;
+				font-size: 30rpx;
+				border-radius: 12rpx;
+			}
+		}
+		.notice{
+			font-size: 24rpx;
+			background-color: #FEF3E1;
+			line-height: 40rpx;
+			padding: 0 10rpx;
+			border-top:1rpx solid #ddd;
+			border-bottom:1rpx solid #ddd;
+		}
+	}
 </style>

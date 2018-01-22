@@ -5,6 +5,7 @@
 			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
 			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
 		</view>
+		<view style="font-size: 24rpx;background-color: #FEF3E1;line-height: 40rpx;padding: 0 10rpx;">{{userData.notice}}</view>
 		<view class="money_container">
 			<view class="first">
 				<view>我的余额</view>
@@ -30,13 +31,14 @@
 		<view class="income_container">
 			<view class="month">
 				<view class="income_label">上月预估收入</view>
-				<view class="income_value">{{userData.total_lastm}}</view>
+				<view class="income_value">￥{{userData.total_lastm}}</view>
 			</view>
 			<view class="month" style="border: none">
 				<view class="income_label">本月预估收入</view>
-				<view class="income_value">{{userData.total_m}}</view>
+				<view class="income_value">￥{{userData.total_m}}</view>
 			</view>
 		</view>
+
 		<view class="split"/>
 		<view class="data_container">
 			<view class="data_label">
@@ -147,6 +149,7 @@
 				nickName: '加载中...'
 			},
 			userData:{
+				notice:'',
 				money:0,
 				customer_count:0,
 				tixian:0,
@@ -254,6 +257,7 @@
 			}
 		}
 		.money_container{
+
 			background-color: #fefefe;
 			display: flex;
 			.first{

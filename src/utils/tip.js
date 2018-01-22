@@ -13,7 +13,7 @@ export default class Tips {
 	static success(title, duration = 1500) {
 		wx.showToast({
 			title: title,
-			image: "../images/yes.png",
+			image: "/images/yes.png",
 			mask: true,
 			duration: duration
 		});
@@ -69,7 +69,7 @@ export default class Tips {
 	static toast(title) {
 		wx.showToast({
 			title: title,
-			image: "../images/info.png",
+			image: "/images/info.png",
 			mask: false,
 			duration: 1500
 		});
@@ -82,7 +82,7 @@ export default class Tips {
 	static error(title, onHide) {
 		wx.showToast({
 			title: title,
-			image: "../images/error.png",
+			image: "/images/error.png",
 			mask: true,
 			duration: 1500
 		});
