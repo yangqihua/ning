@@ -23,7 +23,7 @@
 			</view>
 			<view class="form_item">
 				<view class="t_label">提现金额</view>
-				<input class="input_item" placeholder-class="input_placeholder" bindinput="handleMoneyInput" placeholder="{{placeholder}}" value="{{money}}"/>
+				<input class="input_item" type="digit" placeholder-class="input_placeholder" bindinput="handleMoneyInput" placeholder="{{placeholder}}" value="{{money}}"/>
 			</view>
 			<view class="submit_btn" @tap="handelTixian">
 				{{tip}}
@@ -89,11 +89,18 @@
 					tip.alert({text:this.info.notice});
 					return
 				}
+				if(this.money>this.info.money){
+					tip.alert({text:'余额不足'});
+					return
+				}
 				if(!this.token){
 					tip.alert({text:'提现账户不能为空'});
 					return
 				}
-				this.submit();
+				let text = this.moneyType=='0'?'微信':'支付宝';
+				tip.confirm({text:'确认提现到'+text+'账户: '+this.token+' ?'}).then((payload)=>{
+					this.submit();
+				}).catch(()=>{});
 
 			}
 		}
@@ -120,6 +127,7 @@
 					this.info = res;
 					this.token = res.wx_token;
 					this.money = res.money;
+					this.moneyType = '0';
 					this.$apply();
 				},
 			}
@@ -162,10 +170,11 @@
 				}
 				.input_item{
 					border:1rpx solid #ff0077;
-					width: 300rpx;
+					width: 360rpx;
 					border-radius: 10rpx;
-					font-size: 26rpx;
-					padding:0 16rpx;
+					font-size: 28rpx;
+					padding:4rpx 16rpx;
+					height:46rpx;
 				}
 				.active_input{
 					background-color: #efefef;

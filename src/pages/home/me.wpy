@@ -179,16 +179,19 @@
 
 		watch = {
 			activeTime(newValue){
-				console.log('newValue:',newValue);
-				if(newValue=='0'){
-					this.timeData = this.userData['day_detail']
-				}else if(newValue=='1'){
-					this.timeData = this.userData['week_detail']
-				}else{
-					this.timeData = this.userData['total_detail']
-				}
+				this.setActiveTime(newValue);
 			}
 
+		}
+
+		setActiveTime(value){
+			if(value=='0'){
+				this.timeData = this.userData['day_detail']
+			}else if(value=='1'){
+				this.timeData = this.userData['week_detail']
+			}else{
+				this.timeData = this.userData['total_detail']
+			}
 		}
 
 		methods = {
@@ -219,9 +222,12 @@
 			let params = {
 				url: 'auth/user_profile',
 				params: {openid:'system'},
+				isLoading:false,
 				scb: (res) => {
 					this.userData = res;
+					this.setActiveTime(this.activeTime);
 					this.$apply();
+
 				},
 			}
 			HTTPUtil.get(params);
@@ -247,9 +253,9 @@
 				isLoading:false,
 				params: {openid:'system'},
 				scb: (res) => {
-					console.log('(new Date()).valueOf()-curTime:',(new Date()).valueOf()-curTime);
 					if((new Date()).valueOf()-curTime>2000){
 						this.userData = res;
+						this.setActiveTime(this.activeTime);
 						this.$apply();
 						wx.hideNavigationBarLoading()
 						wx.stopPullDownRefresh()
@@ -257,6 +263,7 @@
 						let delay = parseInt(1000-((new Date()).valueOf()-curTime));
 						setTimeout(()=>{
 							this.userData = res;
+							this.setActiveTime(this.activeTime);
 							this.$apply();
 							wx.hideNavigationBarLoading()
 							wx.stopPullDownRefresh()
