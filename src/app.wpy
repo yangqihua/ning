@@ -20,6 +20,7 @@
 	export default class extends wepy.app {
 		config = {
 			pages: [
+				'pages/agent/agent',
 				'pages/home/me',
 				'pages/home/index',
 				'pages/home/top',
@@ -34,7 +35,6 @@
 				'pages/agent/order',
 				'pages/agent/user',
 
-				'pages/agent/agent',
 				'pages/agent/help',
 			],
 			window: {
@@ -45,38 +45,38 @@
 				enablePullDownRefresh: false,
 				backgroundColor: '#fefefe',
 			},
-			tabBar: {
-				color: "#666",
-				selectedColor: "#ff5777",
-				backgroundColor: "#ffffff",
-				borderStyle: "#b2b2b2",
-				list: [
-					{
-						pagePath: 'pages/home/index',
-						text: "首页",
-						iconPath: "images/home/homepage.png",
-						selectedIconPath: "images/home/homepage_fill.png"
-					},
-					{
-						pagePath: 'pages/home/top',
-						text: "好货精选",
-						iconPath: "images/home/integral.png",
-						selectedIconPath: "images/home/integral_fill.png"
-					},
-					{
-						pagePath: 'pages/home/search',
-						text: "搜索",
-						iconPath: "images/home/search.png",
-						selectedIconPath: "images/home/search_fill.png"
-					},
-					{
-						pagePath: 'pages/home/me',
-						text: "个人中心",
-						iconPath: "images/home/people.png",
-						selectedIconPath: "images/home/people_fill.png"
-					}
-				]
-			}
+//			tabBar: {
+//				color: "#666",
+//				selectedColor: "#ff5777",
+//				backgroundColor: "#ffffff",
+//				borderStyle: "#b2b2b2",
+//				list: [
+//					{
+//						pagePath: 'pages/home/index',
+//						text: "首页",
+//						iconPath: "images/home/homepage.png",
+//						selectedIconPath: "images/home/homepage_fill.png"
+//					},
+//					{
+//						pagePath: 'pages/home/top',
+//						text: "好货精选",
+//						iconPath: "images/home/integral.png",
+//						selectedIconPath: "images/home/integral_fill.png"
+//					},
+//					{
+//						pagePath: 'pages/home/search',
+//						text: "搜索",
+//						iconPath: "images/home/search.png",
+//						selectedIconPath: "images/home/search_fill.png"
+//					},
+//					{
+//						pagePath: 'pages/home/me',
+//						text: "个人中心",
+//						iconPath: "images/home/people.png",
+//						selectedIconPath: "images/home/people_fill.png"
+//					}
+//				]
+//			}
 		}
 
 		globalData = {

@@ -1,6 +1,22 @@
 
 <template>
-	<view class="tixian_container">
+	<view class="agent_container">
+		<repeat for="{{agentList}}" key="index" index="index" item="item">
+			<view class="agent_item">
+				<image src="{{item.head_img}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="name">{{item.nick}}</view>
+						<view class="reward">奖金: {{item.reward}}元</view>
+					</view>
+					<view class="create_time">首次访问: {{item.time}}</view>
+				</view>
+			</view>
+		</repeat>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" @tap="goTop" wx:if="{{scrollTop>2000}}"/>
+		</view>
+		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
 	</view>
 </template>
 
@@ -11,21 +27,112 @@
 	import commonMixins from '../../mixins/common'
 	import LoadingMore from '../../components/common/LoadingMore'
 
-	export default class User extends wepy.page {
+	export default class Agent extends wepy.page {
 		config = {
-			navigationBarTitleText: '推广记录',
+			navigationBarTitleText: '代理推广奖励',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
 		}
+
+		components = {
+			loadingMore: LoadingMore,
+		}
+		mixins = [commonMixins];
 		data = {
+			page: 1,
+			agentList: [],
+			loadingStatus:LoadingMore.LOADING,
+		}
+
+		onPageScroll(e){
+			this.scrollTop = e.scrollTop;
 		}
 
 		methods = {
 		}
 
+		getAgentList() {
+			this.loadingStatus = LoadingMore.LOADING;
+			let params = {
+				url: 'auth/spread_details',
+				params: {openid: 'system', page: this.page,limit:'10'},
+				scb: (res) => {
+					this.loadingStatus = LoadingMore.FINISHED;
+					if(res['hasdata']==0 && this.page ==1){
+						this.loadingStatus =LoadingMore.ONE_PAGE;
+					}else if(res['hasdata']==0){
+						this.loadingStatus =LoadingMore.NO_MORE;
+					}
+					this.agentList = [...this.agentList,...res['list']];
+					this.$apply();
+					this.page++;
+				},
+				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}
+			}
+			HTTPUtil.get(params);
+		}
+
 		onLoad(options) {
+			this.getAgentList();
+		}
+
+		onUnload(){
+			this.page = 1
+			this.agentList=[]
+			this.loadingStatus = LoadingMore.LOADING
+		}
+
+		onReachBottom(){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
+				return;
+			}
+			this.getAgentList();
 		}
 
 	}
 </script>
 
 <style lang="less"  rel="stylesheet/less">
+	.agent_item{
+		display: flex;
+		background-color: #fefefe;
+		padding: 30rpx;
+		margin-bottom: 25rpx;
+		image{
+			width: 120rpx;
+			height: 120rpx;
+			border-radius: 50%;
+		}
+		.info{
+			flex:1;
+			padding: 18rpx;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			.name{
+				line-height: 40rpx;
+				color: #333;
+				font-size: 30rpx;
+				height: 40rpx;
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				padding-right: 8rpx;
+			}
+			.reward{
+				line-height: 40rpx;
+				color: red;
+				font-size: 24rpx;
+			}
+			.create_time{
+				/*padding-top: 30rpx;*/
+				color: #999;
+				font-size: 24rpx;
+				line-height: 40rpx;
+				height: 24rpx;
+			}
+		}
+	}
 </style>

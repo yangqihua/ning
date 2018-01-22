@@ -76,7 +76,7 @@
 			<view class="list_item" @tap="agent">
 				<view class="item_label">
 					<image src="../../images/reward.png"/>
-					<view>我的推广奖励</view>
+					<view>代理推广奖励</view>
 				</view>
 				<view class="item_value">
 					<view>{{userData.spread_money}} 元</view>
