@@ -146,6 +146,10 @@
 			}
 		}
 
+		getRequestCode(){
+			//todo:获取邀请码
+		}
+
 		getAgentCode(){
 			let userInfo = this.getUserInfo();
 			let data = {

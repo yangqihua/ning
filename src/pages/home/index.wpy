@@ -142,8 +142,11 @@
 					url: '/pages/search_details?key='+value
 				})
 			},
-			goToAd(url){
-				console.log('url:',url);
+			goToAd(id){
+				let userInfo = this.$parent.getUserInfo();
+				wx.navigateTo({
+					url: '/pages/goods_details?id='+id+'&type=1&openid='+userInfo.openid
+				})
 			},
 
 			handCondition: function (e) {

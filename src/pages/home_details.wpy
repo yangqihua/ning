@@ -56,6 +56,13 @@
 			},
 		}
 
+		computed={
+			isAgent(){
+				let userInfo = this.$parent.getUserInfo();
+				return userInfo.agentCode=='1';
+			}
+		}
+
 		onPageScroll(e){
 			this.scrollTop = e.scrollTop;
 		}

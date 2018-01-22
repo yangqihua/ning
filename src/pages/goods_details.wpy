@@ -89,7 +89,6 @@
 		}
 		mixins = [commonMixins];
 		data = {
-			isAgent:true,
 			hadCopy:false,
 			id:'10419',
 			type:'0',
@@ -122,6 +121,7 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
+//			console.log('goods options:',decodeURIComponent(options));
 			this.id = options['id'];
 			this.type = options['type'];
 			this.getGoodsDetails(this.id,this.type);
@@ -166,6 +166,13 @@
 				}
 				this.getTKL();
 			},
+		}
+
+		computed={
+			isAgent(){
+				let userInfo = this.$parent.getUserInfo();
+				return userInfo.agentCode=='1';
+			}
 		}
 
 		getTKL(){

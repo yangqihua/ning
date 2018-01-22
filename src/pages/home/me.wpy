@@ -126,7 +126,7 @@
 			<view style="text-align: center;font-size: 18rpx;padding-bottom: 32rpx;">数据同步可能存在延迟，后台按时更新</view>
 		</view>
 		<view wx:else style="background-color: #efefef">
-			<view class="notice">{{userData.notice}}</view>
+			<view class="notice">{{normalUserData.notice}}</view>
 			<view class="group_list">
 				<view class="list_item" @tap="applyAgent">
 					<view class="item_label">
@@ -168,7 +168,7 @@
 						<view>邀请码</view>
 					</view>
 					<view class="item_value">
-						<view>{{userData.request_code}}</view>
+						<view>{{normalUserData.code}}</view>
 					</view>
 				</view>
 			</view>
@@ -200,6 +200,10 @@
 				agentCode:'0',
 				avatarUrl:'',
 				nickName: '加载中...'
+			},
+			normalUserData:{
+				notice:'',
+				code:'',
 			},
 			userData:{
 				notice:'',
@@ -241,8 +245,10 @@
 					return '成为合伙人'
 				}else if(this.userInfo.agentCode=='2'){
 					return '合伙人申请中';
+				}else if(this.userInfo.agentCode=='1'){
+					return '已经成为合伙人';
 				}
-				return '已经成为合伙人';
+				return '成为合伙人';
 			}
 		}
 
@@ -278,7 +284,7 @@
 			applyAgent(){
 				if(this.userInfo.agentCode=='2'){
 					tip.alert({text:'合伙人申请审核中...'});
-				}else if(this.userInfo.agentCode=='1'){
+				}else if(this.userInfo.agentCode=='0'){
 					wx.navigateTo({url: '/pages/web_view?url=https://www.qu-gou.com/study/apply_agent.html'})
 				}
 			}
@@ -287,7 +293,7 @@
 		getData(){
 			let params = {
 				url: 'auth/user_profile',
-				params: {openid:'system'},
+				params: {openid:this.userInfo.openid},
 				isLoading:false,
 				scb: (res) => {
 					this.userData = res;
@@ -299,18 +305,78 @@
 			HTTPUtil.get(params);
 		}
 
-		onLoad() {
+		getNormalData(){
+			let params = {
+				url: 'auth/normal_user_info',
+				params: {openid:this.userInfo.openid},
+				isLoading:false,
+				scb: (res) => {
+					this.normalUserData = res;
+					this.$apply();
+
+				},
+			}
+			HTTPUtil.get(params);
 		}
 
 
 
 		onShow(){
 			this.userInfo = this.$parent.getUserInfo();
-			this.getData();
+			if(this.userInfo.agentCode=='1'){
+				this.getData();
+			}else{
+				this.getNormalData();
+			}
 		}
 
 		onPullDownRefresh(){
-			this.getPullDownData();
+			if(this.userInfo.agentCode=='1'){
+				this.getPullDownData();
+			}else{
+				this.getNormalPullDownData();
+			}
+
+		}
+
+		getNormalPullDownData(){
+			let curTime = (new Date()).valueOf();
+			wx.showNavigationBarLoading()
+			let params = {
+				url: 'auth/normal_user_info',
+				isLoading:false,
+				params: {openid:this.userInfo.openid},
+				scb: (res) => {
+					if((new Date()).valueOf()-curTime>2000){
+						this.normalUserData = res;
+						this.$apply();
+						wx.hideNavigationBarLoading()
+						wx.stopPullDownRefresh()
+					}else{
+						let delay = parseInt(1000-((new Date()).valueOf()-curTime));
+						setTimeout(()=>{
+							this.normalUserData = res;
+							this.$apply();
+							wx.hideNavigationBarLoading()
+							wx.stopPullDownRefresh()
+						},parseInt(delay))
+					}
+
+				},
+				ecb:(err)=>{
+					if((new Date()).valueOf()-curTime>2000){
+						wx.hideNavigationBarLoading()
+						wx.stopPullDownRefresh()
+					}else{
+						let delay = parseInt(1000-((new Date()).valueOf()-curTime));
+						setTimeout(()=>{
+							wx.hideNavigationBarLoading()
+							wx.stopPullDownRefresh()
+						},delay)
+					}
+				}
+			}
+			HTTPUtil.get(params);
 		}
 
 		getPullDownData(){
@@ -319,7 +385,7 @@
 			let params = {
 				url: 'auth/user_profile',
 				isLoading:false,
-				params: {openid:'system'},
+				params: {openid:this.userInfo.openid},
 				scb: (res) => {
 					if((new Date()).valueOf()-curTime>2000){
 						this.userData = res;

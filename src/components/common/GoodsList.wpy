@@ -16,6 +16,11 @@
 <script>
 	import wepy from 'wepy';
 	import ListItem from './ListItem'
+	import {
+		BASE_URL,
+		USER_INFO,
+		SYSTEM_INFO,
+	} from "../../utils/constant";
 	export default class GoodsList extends wepy.component {
 		props = {
 			goodsList: Array,
@@ -27,6 +32,12 @@
 		data = {
 			scrollTop:0,
 			isAgent:false,
+		}
+		computed={
+			isAgent(){
+				let userInfo = wepy.getStorageSync(USER_INFO);
+				return userInfo.agentCode=='1';
+			}
 		}
 		methods = {
 			goTop(e){
