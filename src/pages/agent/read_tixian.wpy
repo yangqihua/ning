@@ -33,6 +33,8 @@
 	export default class Tixian extends wepy.page {
 		config = {
 			navigationBarTitleText: '提现记录',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#F7701A',
 		}
 		components = {
 			loadingMore: LoadingMore,

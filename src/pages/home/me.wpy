@@ -130,12 +130,14 @@
 
 <script>
 	import wepy from 'wepy'
+	import tip from '../../utils/tip'
 	import HTTPUtil from '../../utils/HTTPUtil'
 	export default class Me extends wepy.page {
 		config = {
 			navigationBarTitleText: '个人中心',
 			backgroundTextStyle: 'dark',
 			navigationBarBackgroundColor: '#F7701A',
+			enablePullDownRefresh:true,
 		}
 
 		data = {
@@ -227,8 +229,55 @@
 
 		onLoad() {
 			this.userInfo = this.$parent.getUserInfo();
+		}
+
+		onShow(){
 			this.getData();
-			console.log("on load userInfo",this.userInfo);
+		}
+
+		onPullDownRefresh(){
+			this.getPullDownData();
+		}
+
+		getPullDownData(){
+			let curTime = (new Date()).valueOf();
+			wx.showNavigationBarLoading()
+			let params = {
+				url: 'auth/user_profile',
+				isLoading:false,
+				params: {openid:'system'},
+				scb: (res) => {
+					console.log('(new Date()).valueOf()-curTime:',(new Date()).valueOf()-curTime);
+					if((new Date()).valueOf()-curTime>2000){
+						this.userData = res;
+						this.$apply();
+						wx.hideNavigationBarLoading()
+						wx.stopPullDownRefresh()
+					}else{
+						let delay = parseInt(1000-((new Date()).valueOf()-curTime));
+						setTimeout(()=>{
+							this.userData = res;
+							this.$apply();
+							wx.hideNavigationBarLoading()
+							wx.stopPullDownRefresh()
+						},parseInt(delay))
+					}
+
+				},
+				ecb:(err)=>{
+					if((new Date()).valueOf()-curTime>2000){
+						wx.hideNavigationBarLoading()
+						wx.stopPullDownRefresh()
+					}else{
+						let delay = parseInt(1000-((new Date()).valueOf()-curTime));
+						setTimeout(()=>{
+							wx.hideNavigationBarLoading()
+							wx.stopPullDownRefresh()
+						},delay)
+					}
+				}
+			}
+			HTTPUtil.get(params);
 		}
 
 	}
