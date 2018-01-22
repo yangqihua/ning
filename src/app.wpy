@@ -13,17 +13,15 @@
 		SYSTEM_INFO,
 	} from "./utils/constant";
 
-	import {
-		wxRequest
-	} from './utils/wxRequest';
+	import HTTPUtil from './utils/HTTPUtil'
 
 	export default class extends wepy.app {
 		config = {
 			pages: [
-				'pages/home/me',
 				'pages/home/index',
 				'pages/home/top',
 				'pages/home/search',
+				'pages/home/me',
 				'pages/home_details',
 				'pages/goods_details',
 				'pages/search_details',
@@ -101,6 +99,8 @@
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
 						this.login();
+					}else{
+						this.getAgentCode();
 					}
 				},
 				fail: () => {
@@ -120,22 +120,45 @@
 
 				let params = {
 					code: res.code,
-					request_code:'1',
+					request_code:'',
 					avatarUrl: userInfo.avatarUrl,
 					city: userInfo.city,
 					province: userInfo.province,
 					gender: userInfo.gender,
 					nickName: userInfo.nickName
 				};
-				this.globalData.userInfo = userInfo;
-				wepy.setStorageSync(USER_INFO, userInfo);
-//				wxRequest(params, BASE_URL + 'auth/login').then((result) => {
-//					console.log("openid:", result.data.data);
-//					userInfo['openid'] = result.data.data;
-//					this.globalData.userInfo = userInfo;
-//					wepy.setStorageSync(USER_INFO, userInfo);
-//				})
+//				this.globalData.userInfo = userInfo;
+//				wepy.setStorageSync(USER_INFO, userInfo);
+				let data = {
+					url: 'auth/login',
+					params: params,
+					scb: (result) => {
+						console.log("result:", result);
+						userInfo['openid'] = result['openid'];
+						userInfo['agentCode'] = result['is_agent'];
+						userInfo['requestCode'] = result['request_code'];
+						this.globalData.userInfo = userInfo;
+						wepy.setStorageSync(USER_INFO, userInfo);
+
+					},
+				}
+				HTTPUtil.get(data);
 			}
+		}
+
+		getAgentCode(){
+			let userInfo = this.getUserInfo();
+			let data = {
+				url: 'auth/check_agent',
+				params:{openid:userInfo.openid},
+				scb: (result) => {
+					userInfo['agentCode'] = result['is_agent'];
+					userInfo['requestCode'] = result['request_code'];
+					this.globalData.userInfo = userInfo;
+					wepy.setStorageSync(USER_INFO, userInfo);
+				},
+			}
+			HTTPUtil.get(data);
 		}
 
 		getUserInfo() {

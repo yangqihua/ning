@@ -132,10 +132,29 @@
 		methods = {
 			generate(){
 				tip.confirm({text:"生成的图文包含小程序二维码，生成之后将保存至相册，可发送给好友或发表朋友圈"}).then((payload)=>{
-					tip.success('已成功保存')
-				}).catch(()=>{
-					tip.error('取消保存')
-				});
+					wx.downloadFile({
+						url: 'https://www.qu-gou.com/agent/public/temp/muban.jpg',
+						success:function(res){
+							console.log(res)
+							wx.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success: function (res) {
+									tip.success('已成功保存')
+									console.log(res)
+								},
+								fail: function (res) {
+									tip.error('保存失败')
+									console.log(res)
+									console.log('fail')
+								}
+							})
+						},
+						fail:function(){
+							tip.error('下载失败')
+							console.log('fail')
+						}
+					})
+				}).catch(()=>{});
 			},
 			copyCode(){
 				if(this.hadCopy){

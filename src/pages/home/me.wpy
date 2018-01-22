@@ -5,7 +5,7 @@
 			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
 			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
 		</view>
-		<view wx:if="{{isAgent}}">
+		<view wx:if="{{userInfo.agentCode==1}}">
 			<view class="notice">{{userData.notice}}</view>
 			<view class="money_container">
 				<view class="first">
@@ -128,15 +128,15 @@
 		<view wx:else style="background-color: #efefef">
 			<view class="notice">{{userData.notice}}</view>
 			<view class="group_list">
-				<navigator class="list_item" url="/pages/web_view?url=https://www.qu-gou.com/study/apply_agent.html">
+				<view class="list_item" @tap="applyAgent">
 					<view class="item_label">
 						<image src="../../images/code.png"/>
-						<view>成为合伙人</view>
+						<view>{{applyText}}</view>
 					</view>
 					<view class="item_value">
 						<image src="../../images/right.png"/>
 					</view>
-				</navigator>
+				</view>
 
 				<view class="list_item" style="padding:0;">
 					<button plain style="border:none;width: 100%;padding:24rpx 22rpx;" open-type="contact">
@@ -190,7 +190,6 @@
 		}
 
 		data = {
-			isAgent:false,
 			activeTime:'0',
 			timeData:{
 				click:0,
@@ -198,6 +197,8 @@
 				incomes:0
 			},
 			userInfo: {
+				agentCode:'0',
+				avatarUrl:'',
 				nickName: '加载中...'
 			},
 			userData:{
@@ -234,6 +235,17 @@
 
 		}
 
+		computed={
+			applyText(){
+				if(this.userInfo.agentCode=='0'){
+					return '成为合伙人'
+				}else if(this.userInfo.agentCode=='2'){
+					return '合伙人申请中';
+				}
+				return '已经成为合伙人';
+			}
+		}
+
 		setActiveTime(value){
 			if(value=='0'){
 				this.timeData = this.userData['day_detail']
@@ -263,8 +275,12 @@
 			agent(){
 				wx.navigateTo({url: '/pages/agent/agent'})
 			},
-			help(){
-				wx.navigateTo({url: '/pages/agent/help'})
+			applyAgent(){
+				if(this.userInfo.agentCode=='2'){
+					tip.alert({text:'合伙人申请审核中...'});
+				}else if(this.userInfo.agentCode=='1'){
+					wx.navigateTo({url: '/pages/web_view?url=https://www.qu-gou.com/study/apply_agent.html'})
+				}
 			}
 		}
 
@@ -284,10 +300,12 @@
 		}
 
 		onLoad() {
-			this.userInfo = this.$parent.getUserInfo();
 		}
 
+
+
 		onShow(){
+			this.userInfo = this.$parent.getUserInfo();
 			this.getData();
 		}
 
