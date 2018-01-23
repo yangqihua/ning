@@ -1,6 +1,6 @@
 <template>
 	<view class="tip_details_container">
-		<image src="http://ozb2xxoij.bkt.clouddn.com/xiadan.jpg" mode="widthFix"/>
+		<image src="http://ozb2xxoij.bkt.clouddn.com/apply_agent.jpg" mode="widthFix"/>
 		<navigator class="apply" url="/pages/agent/apply_agent">
 			申请成为合伙人
 		</navigator>

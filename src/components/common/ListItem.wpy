@@ -47,7 +47,7 @@
 	export default class ListItem extends wepy.component {
 		props = {
 			item: Object,
-		}
+		},
 		computed={
 			isAgent(){
 				let userInfo = wepy.getStorageSync(USER_INFO);

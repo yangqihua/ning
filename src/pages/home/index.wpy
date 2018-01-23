@@ -134,9 +134,6 @@
 		}
 
 		methods = {
-			handleViewTap(){
-				console.log("tap");
-			},
 			doSearch(value) {
 				wx.navigateTo({
 					url: '/pages/search_details?key='+value
