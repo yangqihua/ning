@@ -96,24 +96,25 @@
 		}
 
 		initApp(options) {
-			let requestCode = this.getRequestCode(options);
+
 			let userInfo = wepy.getStorageSync(USER_INFO) || {};
 //			console.log("userInfo:", userInfo);
 			wx.checkSession({
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
-						this.login(requestCode);
+						this.login();
 					}else{
 						this.getAgentCode();
 					}
 				},
 				fail: () => {
-					this.login(requestCode);
+					this.login();
 				}
 			})
 		}
 
-		async login(requestCode) {
+		async login() {
+			let requestCode = this.getRequestCode(options);
 			let res = await wepy.login();
 			if (res.code) {
 				let userResult = await wepy.getUserInfo();
@@ -152,11 +153,20 @@
 
 		getRequestCode(options){
 			let query = options['query'];
-			let requestCode = '未知';
+			let requestCode = '';
 			if(query.hasOwnProperty('request_code')){
 				requestCode = query['request_code'];
 			}else{
 				// 从小程序码进来读取scene
+				let scene = decodeURIComponent(options['scene']);
+				if(scene.indexOf('_')>-1){
+					let arr = scene.split('_');
+					requestCode = arr[0];
+				}else{
+					if(scene.length==6){
+						requestCode = scene
+					}
+				}
 			}
 			tip.success(requestCode);
 			return requestCode;

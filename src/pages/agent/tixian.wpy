@@ -45,14 +45,14 @@
 		}
 		data = {
 			info:{
-				money:'',
+				money:'0',
 				zhifubao:'',
 				wx_token:'',
 				min_tixian:'',
 				notice:'',
 			},
 			moneyType:'0',
-			token:'123',
+			token:'',
 			money:'',
 		}
 
@@ -119,9 +119,10 @@
 		}
 
 		getInfo() {
+			let userInfo = this.$parent.getUserInfo();
 			let params = {
 				url: 'auth/request_tixian_data',
-				params: {openid: 'system'},
+				params: {openid: userInfo.openid},
 				scb: (res) => {
 					this.info = res;
 					this.token = res.wx_token;

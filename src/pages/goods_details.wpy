@@ -122,9 +122,23 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
-//			console.log('goods options:',decodeURIComponent(options));
-			this.id = options['id'];
-			this.type = options['type'];
+			if(options.hasOwnProperty('id') && options.hasOwnProperty('type')){
+				this.id = options['id'];
+				this.type = options['type'];
+			}else{
+				let scene = decodeURIComponent(options['scene']);
+				if(scene.indexOf('_')>-1){
+					let arr = scene.split('_');
+					if(arr.length!=3){
+						tip.error('二维码参数有误！');
+					}
+					this.id = arr[1];
+					this.type = arr[2];
+				}else{
+					tip.error('错误:'+scene);
+				}
+			}
+
 			this.getGoodsDetails(this.id,this.type);
 		}
 		onUnload(){
