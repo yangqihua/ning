@@ -102,18 +102,18 @@
 			wx.checkSession({
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
-						this.login();
+						this.login(options);
 					}else{
-						this.getAgentCode();
+						this.getAgentCode(options);
 					}
 				},
 				fail: () => {
-					this.login();
+					this.login(options);
 				}
 			})
 		}
 
-		async login() {
+		async login(options) {
 			let requestCode = this.getRequestCode(options);
 			let res = await wepy.login();
 			if (res.code) {
@@ -172,7 +172,7 @@
 			return requestCode;
 		}
 
-		getAgentCode(){
+		getAgentCode(options){
 			let userInfo = this.getUserInfo();
 			let data = {
 				url: 'auth/check_agent',
@@ -181,7 +181,7 @@
 				scb: (result) => {
 					let agentCode = result['is_agent'];
 					if(agentCode=='-1'){
-						this.login();
+						this.login(options);
 					}else{
 						userInfo['agentCode'] = agentCode;
 						userInfo['requestCode'] = result['request_code'];
