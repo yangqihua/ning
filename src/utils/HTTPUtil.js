@@ -75,6 +75,18 @@ class HTTPUtil {
 	static publicGet({url, params = {}, scb, ecb}) {
 	}
 
+	static deleteTempPic(url){
+		console.log("url:",url);
+		let params = {
+			url:'utils/delete_pic',
+			isLoading:false,
+			params:{
+				name:url,
+			}
+		}
+		HTTPUtil.post(params);
+	}
+
 
 }
 

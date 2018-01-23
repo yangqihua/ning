@@ -122,7 +122,7 @@
 				</view>
 			</view>
 
-			<view class="qr_code">获取我的推广小程序码 >></view>
+			<view class="qr_code" @tap="handleQrCode">获取我的推广小程序码 >></view>
 			<view style="text-align: center;font-size: 18rpx;padding-bottom: 32rpx;">数据同步可能存在延迟，后台按时更新</view>
 		</view>
 		<view wx:else style="background-color: #efefef">
@@ -179,6 +179,7 @@
 <script>
 	import wepy from 'wepy'
 	import tip from '../../utils/tip'
+	import {PUBLIC} from '../../utils/constant'
 	import HTTPUtil from '../../utils/HTTPUtil'
 	export default class Me extends wepy.page {
 		config = {
@@ -287,6 +288,33 @@
 				}else if(this.userInfo.agentCode=='0'){
 					wx.navigateTo({url: '/pages/agent/show_apply'})
 				}
+			},
+			handleQrCode(){
+				tip.confirm({text:'确定后将打开您的专属小程序码，请长按保存至相册或直接发送给好友'}).then((res)=>{
+					let params = {
+						url: 'utils/getwxacode',
+						params: {openid:this.userInfo.openid,scene:'',page:'pages/home/index'},
+						scb: (res) => {
+							let url = res['url']
+							wx.downloadFile({
+								url: PUBLIC+url,
+								success:function(res){
+									HTTPUtil.deleteTempPic(url);
+									wx.previewImage({
+										urls: [res.tempFilePath] ,
+										complete:()=>{
+//											tip.success('complete')
+										}
+									})
+								},
+								fail:function(){
+									tip.error('获取失败')
+								}
+							})
+						},
+					}
+					HTTPUtil.get(params);
+				}).catch((res)=>{})
 			}
 		}
 

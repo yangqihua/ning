@@ -77,6 +77,7 @@
 <script>
 	import wepy from 'wepy'
 	import HTTPUtil from '../utils/HTTPUtil'
+	import {PUBLIC} from '../utils/constant'
 	import tip from '../utils/tip'
 	import commonMixins from '../mixins/common'
 	export default class GoodsDetails extends wepy.page {
@@ -132,28 +133,41 @@
 		methods = {
 			generate(){
 				tip.confirm({text:"生成的图文包含小程序二维码，生成之后将保存至相册，可发送给好友或发表朋友圈"}).then((payload)=>{
-					wx.downloadFile({
-						url: 'https://www.qu-gou.com/agent/public/temp/muban.jpg',
-						success:function(res){
-							console.log(res)
-							wx.saveImageToPhotosAlbum({
-								filePath: res.tempFilePath,
-								success: function (res) {
-									tip.success('已成功保存')
-									console.log(res)
+					let userInfo = this.$parent.getUserInfo();
+					let params = {
+						url: 'utils/handle_share_pic',
+						params: {
+							openid:userInfo.openid,
+							page:'pages/goods_details',
+							id:this.id,
+							type:this.type,
+							pic:this.goodsDetails.pic,
+							title:this.goodsDetails.name,
+							s_price:this.goodsDetails.s_price,
+							price:this.goodsDetails.price,
+							coupon_price:this.goodsDetails.coupon_price,
+						},
+						scb: (res) => {
+							console.log('res:',res);
+							let url = res['url']
+							wx.downloadFile({
+								url: PUBLIC+url,
+								success:function(res){
+									HTTPUtil.deleteTempPic(url);
+									wx.previewImage({
+										urls: [res.tempFilePath] ,
+										complete:()=>{
+//											tip.success('complete')
+										}
+									})
 								},
-								fail: function (res) {
-									tip.error('保存失败')
-									console.log(res)
-									console.log('fail')
+								fail:function(){
+									tip.error('获取失败')
 								}
 							})
 						},
-						fail:function(){
-							tip.error('下载失败')
-							console.log('fail')
-						}
-					})
+					}
+					HTTPUtil.get(params);
 				}).catch(()=>{});
 			},
 			copyCode(){
