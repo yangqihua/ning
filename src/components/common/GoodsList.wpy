@@ -3,7 +3,7 @@
 		<scroll-view scroll-y>
 			<view class="goods_list_container">
 				<repeat for="{{goodsList}}" key="index" index="index" item="item">
-					<listItem :item.sync="item" :isAgent.sync="isAgent"/>
+					<listItem :item.sync="item"/>
 				</repeat>
 			</view>
 		</scroll-view>
@@ -32,12 +32,6 @@
 		data = {
 			scrollTop:0,
 			isAgent:false,
-		}
-		computed={
-			isAgent(){
-				let userInfo = wepy.getStorageSync(USER_INFO);
-				return userInfo.agentCode=='1';
-			}
 		}
 		methods = {
 			goTop(e){

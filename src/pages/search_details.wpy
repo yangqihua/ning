@@ -13,7 +13,7 @@
 		<scroll-view scroll-y="true">
 			<view class="goods_list_container">
 				<repeat for="{{goods}}" key="index" index="index" item="item">
-					<listItem :item.sync="item" :isAgent.sync="isAgent"/>
+					<listItem :item.sync="item"/>
 				</repeat>
 			</view>
 		</scroll-view>
@@ -64,12 +64,6 @@
 				this.goods = [];
 				this.page = 1;
 				this.getGoodsList(this.searchKey);
-			}
-		}
-		computed={
-			isAgent(){
-				let userInfo = this.$parent.getUserInfo();
-				return userInfo.agentCode=='1';
 			}
 		}
 

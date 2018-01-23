@@ -205,7 +205,6 @@
 		onShareAppMessage(res) {
 			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type)
 		}
-		computed = {}
 	}
 </script>
 

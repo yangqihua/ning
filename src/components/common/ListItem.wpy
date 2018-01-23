@@ -39,10 +39,20 @@
 
 <script>
 	import wepy from 'wepy';
+	import {
+		BASE_URL,
+		USER_INFO,
+		SYSTEM_INFO,
+	} from "../../utils/constant";
 	export default class ListItem extends wepy.component {
 		props = {
 			item: Object,
-			isAgent: Boolean,
+		}
+		computed={
+			isAgent(){
+				let userInfo = wepy.getStorageSync(USER_INFO);
+				return userInfo.agentCode=='1';
+			}
 		}
 	}
 </script>
