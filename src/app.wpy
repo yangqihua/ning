@@ -158,10 +158,15 @@
 				url: 'auth/check_agent',
 				params:{openid:userInfo.openid},
 				scb: (result) => {
-					userInfo['agentCode'] = result['is_agent'];
-					userInfo['requestCode'] = result['request_code'];
-					this.globalData.userInfo = userInfo;
-					wepy.setStorageSync(USER_INFO, userInfo);
+					let agentCode = result['is_agent'];
+					if(agentCode=='-1'){
+						this.login();
+					}else{
+						userInfo['agentCode'] = agentCode;
+						userInfo['requestCode'] = result['request_code'];
+						this.globalData.userInfo = userInfo;
+						wepy.setStorageSync(USER_INFO, userInfo);
+					}
 				},
 			}
 			HTTPUtil.get(data);

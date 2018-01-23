@@ -1,6 +1,9 @@
 <template>
 	<view class="tip_details_container">
 		<image src="http://ozb2xxoij.bkt.clouddn.com/xiadan.jpg" mode="widthFix"/>
+		<navigator class="apply" url="/pages/agent/apply_agent">
+			申请成为合伙人
+		</navigator>
 	</view>
 </template>
 
@@ -12,7 +15,7 @@
 			backgroundTextStyle: 'dark',
 			navigationBarBackgroundColor: '#FFFFFF',
 			navigationBarTextStyle: 'black',
-			backgroundColor: '#EFEFEF'
+			backgroundColor: '#fff'
 		}
 	}
 </script>
@@ -21,6 +24,20 @@
 	.tip_details_container{
 		image{
 			width: 750rpx;
+		}
+		.apply{
+			position: fixed;
+			bottom: 30rpx;
+			right: 100rpx;
+			left: 100rpx;
+			height: 80rpx;
+			line-height: 80rpx;
+			border-radius: 40rpx;
+			color:#fff;
+			font-size: 32rpx;
+			text-align: center;
+			background: #f7701a;
+			box-shadow: #999 0 0 12rpx;
 		}
 	}
 </style>
