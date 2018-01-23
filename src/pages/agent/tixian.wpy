@@ -105,14 +105,13 @@
 			}
 		}
 		submit(){
+			let userInfo = this.$parent.getUserInfo();
 			let params = {
 				url: 'auth/submit_tixian',
-				params: {openid: 'system',tx_money:this.money,type:this.moneyType,token:this.token},
+				params: {openid: userInfo.openid,tx_money:this.money,type:this.moneyType,token:this.token},
 				scb: (res) => {
 					tip.success('提交成功');
-					setTimeout(()=>{
-						wx.navigateBack({delta:1});
-					},1500);
+					setTimeout(()=>{wx.navigateBack({delta:1});},1500);
 				},
 				ecb:(res)=>{tip.error('提交失败')}
 			}

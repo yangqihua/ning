@@ -85,10 +85,11 @@
 		}
 
 		getOrders() {
+			let userInfo = this.$parent.getUserInfo();
 			this.loadingStatus = LoadingMore.LOADING;
 			let params = {
 				url: 'auth/order_details',
-				params: {openid: 'system', page: this.page, type: this.type},
+				params: {openid: userInfo.openid, page: this.page, type: this.type},
 				scb: (res) => {
 					this.loadingStatus = LoadingMore.FINISHED;
 					if(res['hasdata']==0 && this.page ==1){

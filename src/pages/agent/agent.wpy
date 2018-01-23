@@ -53,10 +53,11 @@
 		}
 
 		getAgentList() {
+			let userInfo = this.$parent.getUserInfo();
 			this.loadingStatus = LoadingMore.LOADING;
 			let params = {
 				url: 'auth/spread_details',
-				params: {openid: 'system', page: this.page,limit:'10'},
+				params: {openid: userInfo.openid, page: this.page,limit:'10'},
 				scb: (res) => {
 					this.loadingStatus = LoadingMore.FINISHED;
 					if(res['hasdata']==0 && this.page ==1){
