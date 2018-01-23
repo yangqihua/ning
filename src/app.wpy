@@ -34,6 +34,8 @@
 				'pages/agent/order',
 				'pages/agent/user',
 				'pages/agent/agent',
+				'pages/agent/show_apply',
+				'pages/agent/apply_agent',
 			],
 			window: {
 				backgroundTextStyle: 'dark',

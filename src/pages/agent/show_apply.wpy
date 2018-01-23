@@ -1,0 +1,26 @@
+<template>
+	<view class="tip_details_container">
+		<image src="http://ozb2xxoij.bkt.clouddn.com/xiadan.jpg" mode="widthFix"/>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	export default class ShowApply extends wepy.page {
+		config = {
+			navigationBarTitleText: '成为合伙人',
+			backgroundTextStyle: 'dark',
+			navigationBarBackgroundColor: '#FFFFFF',
+			navigationBarTextStyle: 'black',
+			backgroundColor: '#EFEFEF'
+		}
+	}
+</script>
+
+<style lang="less" rel="stylesheet/less">
+	.tip_details_container{
+		image{
+			width: 750rpx;
+		}
+	}
+</style>

@@ -285,7 +285,7 @@
 				if(this.userInfo.agentCode=='2'){
 					tip.alert({text:'合伙人申请审核中...'});
 				}else if(this.userInfo.agentCode=='0'){
-					wx.navigateTo({url: '/pages/web_view?url=https://www.qu-gou.com/study/apply_agent.html'})
+					wx.navigateTo({url: '/pages/agent/show_apply'})
 				}
 			}
 		}
