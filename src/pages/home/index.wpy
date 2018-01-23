@@ -6,7 +6,7 @@
 		        autoplay="true" interval="3000" duration="300" circular="true">
 			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
 				<swiper-item>
-					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.iid}})"/>
+					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.id}})"/>
 				</swiper-item>
 			</repeat>
 		</swiper>
@@ -145,7 +145,7 @@
 			goToAd(id){
 				let userInfo = this.$parent.getUserInfo();
 				wx.navigateTo({
-					url: '/pages/goods_details?id='+id+'&type=1&openid='+userInfo.openid
+					url: '/pages/goods_details?id='+id+'&type=0&openid='+userInfo.openid
 				})
 			},
 
