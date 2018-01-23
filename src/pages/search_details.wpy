@@ -118,6 +118,11 @@
 			this.getGoodsList(this.searchKey);
 		}
 
+		onShareAppMessage(res) {
+			let userInfo = this.$parent.getUserInfo();
+			return tip.share('淘宝天猫优惠券，速来围观！！！','','','/pages/home/index?request_code='+userInfo.requestCode);
+		}
+
 	}
 </script>
 

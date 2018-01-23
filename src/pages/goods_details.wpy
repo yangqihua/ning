@@ -110,7 +110,7 @@
 		getGoodsDetails(id,type){
 			let params = {
 				url: 'agent/goods_details',
-				isLoading: true,
+				isLoading: false,
 				params: {id:id,type:type},
 				scb: (res) => {
 					this.goodsDetails = res;
@@ -203,7 +203,8 @@
 			HTTPUtil.get(params);
 		}
 		onShareAppMessage(res) {
-			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type)
+			let userInfo = this.$parent.getUserInfo();
+			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type+'&request_code='+userInfo.requestCode)
 		}
 	}
 </script>

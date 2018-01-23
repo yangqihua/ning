@@ -14,6 +14,7 @@
 	} from "./utils/constant";
 
 	import HTTPUtil from './utils/HTTPUtil'
+	import tip from './utils/tip'
 
 	export default class extends wepy.app {
 		config = {
@@ -91,27 +92,28 @@
 
 		onLaunch(options) {
 //			console.log("options :", options)
-			this.initApp()
+			this.initApp(options)
 		}
 
-		initApp() {
+		initApp(options) {
+			let requestCode = this.getRequestCode(options);
 			let userInfo = wepy.getStorageSync(USER_INFO) || {};
 //			console.log("userInfo:", userInfo);
 			wx.checkSession({
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
-						this.login();
+						this.login(requestCode);
 					}else{
 						this.getAgentCode();
 					}
 				},
 				fail: () => {
-					this.login();
+					this.login(requestCode);
 				}
 			})
 		}
 
-		async login() {
+		async login(requestCode) {
 			let res = await wepy.login();
 			if (res.code) {
 				let userResult = await wepy.getUserInfo();
@@ -122,7 +124,7 @@
 
 				let params = {
 					code: res.code,
-					request_code:'',
+					request_code:requestCode,
 					avatarUrl: userInfo.avatarUrl,
 					city: userInfo.city,
 					province: userInfo.province,
@@ -148,14 +150,23 @@
 			}
 		}
 
-		getRequestCode(){
-			//todo:获取邀请码
+		getRequestCode(options){
+			let query = options['query'];
+			let requestCode = '未知';
+			if(query.hasOwnProperty('request_code')){
+				requestCode = query['request_code'];
+			}else{
+				// 从小程序码进来读取scene
+			}
+			tip.success(requestCode);
+			return requestCode;
 		}
 
 		getAgentCode(){
 			let userInfo = this.getUserInfo();
 			let data = {
 				url: 'auth/check_agent',
+				isLoading:false,
 				params:{openid:userInfo.openid},
 				scb: (result) => {
 					let agentCode = result['is_agent'];

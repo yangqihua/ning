@@ -99,7 +99,7 @@
 		}
 		submit(){
 			let userInfo = wepy.getStorageSync(USER_INFO);
-			let params = {
+			let data = {
 				url: 'auth/apply_agent',
 				params: {
 					openid: userInfo.openid,
@@ -112,11 +112,13 @@
 				scb: (res) => {
 					tip.success('提交成功');
 					this.$parent.getAgentCode();
-					setTimeout(()=>{wx.switchTab({url: '/pages/home/me'})},1500);
+					setTimeout(()=>{
+						wx.switchTab({url: '/pages/home/me'})
+					},1500);
 				},
 				ecb:(res)=>{tip.error('提交失败')}
 			}
-			HTTPUtil.post(params);
+			HTTPUtil.post(data);
 		}
 
 	}
