@@ -192,7 +192,7 @@
 			$toast && $toast.show()
 		}
 
-		onLoad() {
+		getLunBotu(){
 			let params = {
 				url:'agent/lunbotu',
 				isLoading:false,
@@ -202,6 +202,14 @@
 				}
 			}
 			HTTPUtil.get(params);
+		}
+
+		onLoad(options) {
+			let scene = decodeURIComponent(options['scene']);
+			if(this.$parent.globalData.isWxCode){
+				this.$parent.checkLogin(scene);
+			}
+			this.getLunBotu();
 		}
 
 		onReachBottom(){

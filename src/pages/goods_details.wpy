@@ -109,10 +109,11 @@
 			},
 		}
 		getGoodsDetails(id,type){
+			let userInfo = this.$parent.getUserInfo();
 			let params = {
 				url: 'agent/goods_details',
 				isLoading: false,
-				params: {id:id,type:type},
+				params: {id:id,type:type,openid:userInfo.openid},
 				scb: (res) => {
 					this.goodsDetails = res;
 					this.$apply();
@@ -132,13 +133,16 @@
 					if(arr.length!=3){
 						tip.error('二维码参数有误！');
 					}
+					let requestCode = arr[0];
 					this.id = arr[1];
 					this.type = arr[2];
+					if(this.$parent.globalData.isWxCode){
+						this.$parent.checkLogin(requestCode);
+					}
 				}else{
 					tip.error('错误:'+scene);
 				}
 			}
-
 			this.getGoodsDetails(this.id,this.type);
 		}
 		onUnload(){

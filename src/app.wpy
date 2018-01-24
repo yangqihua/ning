@@ -1,4 +1,4 @@
-<style lang="less"  rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less">
 	@import "./styles/base";
 	@import "./styles/icon";
 	@import "./styles/style";
@@ -82,6 +82,7 @@
 
 		globalData = {
 			userInfo: null,
+			isWxCode:false,
 		}
 
 		constructor() {
@@ -91,30 +92,34 @@
 		}
 
 		onLaunch(options) {
-//			console.log("options :", options)
-			this.initApp(options)
+			this.checkIsWxCode(options['scene']);
+			if (!this.globalData.isWxCode) {
+				let requestCode = this.getRequestCode(options);
+				this.checkLogin(requestCode)
+			}
 		}
 
-		initApp(options) {
+		checkIsWxCode(scene) {
+			this.globalData.isWxCode = scene == 1047 || scene == 1048 || scene == 1049;
+		}
 
+		checkLogin(requestCode) {
 			let userInfo = wepy.getStorageSync(USER_INFO) || {};
-//			console.log("userInfo:", userInfo);
 			wx.checkSession({
 				success: () => {
 					if ((!userInfo.openid) || (!userInfo.nickName) || (!userInfo.avatarUrl)) {
-						this.login(options);
-					}else{
-						this.getAgentCode(options);
+						this.login(requestCode);
+					} else {
+						this.getAgentCode(requestCode);
 					}
 				},
 				fail: () => {
-					this.login(options);
+					this.login(requestCode);
 				}
 			})
 		}
 
-		async login(options) {
-			let requestCode = this.getRequestCode(options);
+		async login(requestCode) {
 			let res = await wepy.login();
 			if (res.code) {
 				let userResult = await wepy.getUserInfo();
@@ -125,15 +130,13 @@
 
 				let params = {
 					code: res.code,
-					request_code:requestCode,
+					request_code: requestCode,
 					avatarUrl: userInfo.avatarUrl,
 					city: userInfo.city,
 					province: userInfo.province,
 					gender: userInfo.gender,
 					nickName: userInfo.nickName
 				};
-//				this.globalData.userInfo = userInfo;
-//				wepy.setStorageSync(USER_INFO, userInfo);
 				let data = {
 					url: 'auth/login',
 					params: params,
@@ -151,38 +154,27 @@
 			}
 		}
 
-		getRequestCode(options){
+		getRequestCode(options) {
 			let query = options['query'];
 			let requestCode = '';
-			if(query.hasOwnProperty('request_code')){
+			if (query.hasOwnProperty('request_code')) {
 				requestCode = query['request_code'];
-			}else{
-				// 从小程序码进来读取scene
-				let scene = decodeURIComponent(options['scene']);
-				if(scene.indexOf('_')>-1){
-					let arr = scene.split('_');
-					requestCode = arr[0];
-				}else{
-					if(scene.length==6){
-						requestCode = scene
-					}
-				}
 			}
-			tip.success(requestCode);
+//			tip.success(requestCode);
 			return requestCode;
 		}
 
-		getAgentCode(options){
+		getAgentCode(options) {
 			let userInfo = this.getUserInfo();
 			let data = {
 				url: 'auth/check_agent',
-				isLoading:false,
-				params:{openid:userInfo.openid},
+				isLoading: false,
+				params: {openid: userInfo.openid},
 				scb: (result) => {
 					let agentCode = result['is_agent'];
-					if(agentCode=='-1'){
+					if (agentCode == '-1') {
 						this.login(options);
-					}else{
+					} else {
 						userInfo['agentCode'] = agentCode;
 						userInfo['requestCode'] = result['request_code'];
 						this.globalData.userInfo = userInfo;
