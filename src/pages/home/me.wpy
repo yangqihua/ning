@@ -291,6 +291,7 @@
 			},
 			handleQrCode(){
 				tip.confirm({text:'确定后将打开您的专属小程序码，请长按保存至相册或直接发送给好友'}).then((res)=>{
+					tip.loading("生成中");
 					let params = {
 						url: 'utils/getwxacode',
 						params: {openid:this.userInfo.openid,scene:'',page:'pages/home/index'},
@@ -299,6 +300,7 @@
 							wx.downloadFile({
 								url: PUBLIC+url,
 								success:function(res){
+									tip.loaded();
 									HTTPUtil.deleteTempPic(url);
 									wx.previewImage({
 										urls: [res.tempFilePath] ,
@@ -308,10 +310,14 @@
 									})
 								},
 								fail:function(){
+									tip.loaded();
 									tip.error('获取失败')
 								}
 							})
 						},
+						ecb:(res)=>{
+							tip.loaded();
+						}
 					}
 					HTTPUtil.get(params);
 				}).catch((res)=>{})

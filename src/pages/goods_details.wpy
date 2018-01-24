@@ -150,7 +150,8 @@
 		}
 		methods = {
 			generate(){
-				tip.confirm({text:"生成的图文包含小程序二维码，生成之后将保存至相册，可发送给好友或发表朋友圈"}).then((payload)=>{
+				tip.confirm({text:"生成的图文包含小程序二维码，请长按保存至相册或直接发送给好友"}).then((payload)=>{
+					tip.loading("生成中");
 					let userInfo = this.$parent.getUserInfo();
 					let params = {
 						url: 'utils/handle_share_pic',
@@ -171,6 +172,7 @@
 							wx.downloadFile({
 								url: PUBLIC+url,
 								success:function(res){
+									tip.loaded();
 									HTTPUtil.deleteTempPic(url);
 									wx.previewImage({
 										urls: [res.tempFilePath] ,
@@ -180,10 +182,14 @@
 									})
 								},
 								fail:function(){
+									tip.loaded();
 									tip.error('获取失败')
 								}
 							})
 						},
+						ecb:(res)=>{
+							tip.loaded();
+						}
 					}
 					HTTPUtil.get(params);
 				}).catch(()=>{});
@@ -209,10 +215,11 @@
 
 		getTKL(){
 			tip.loading();
+			let userInfo = this.$parent.getUserInfo();
 			let params = {
 				url: 'agent/get_tkl',
 				isLoading:false,
-				params: {openid:'',iid:this.goodsDetails.iid,title:this.goodsDetails.name,pic:this.goodsDetails.pic,coupon_link:this.goodsDetails.coupon_link},
+				params: {openid:userInfo.openid,iid:this.goodsDetails.iid,title:this.goodsDetails.name,pic:this.goodsDetails.pic,coupon_link:this.goodsDetails.coupon_link},
 				scb: (res) => {
 					wx.setClipboardData({
 						data: res,

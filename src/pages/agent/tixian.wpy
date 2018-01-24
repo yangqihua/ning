@@ -82,6 +82,9 @@
 				this.token = e.detail.value;
 			},
 			handelTixian(){
+				if(!this.money){
+					return;
+				}
 				if(this.info.money<this.info.min_tixian){
 					return;
 				}
