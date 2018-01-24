@@ -47,11 +47,18 @@
 	export default class ListItem extends wepy.component {
 		props = {
 			item: Object,
-		},
+		}
+		data={
+			userInfo:{agentCode:'0'},
+		}
+		onShow(){
+//			this.userInfo = wepy.getStorageSync(USER_INFO);
+			console.log('show');
+			this.userInfo = wepy.$wxapp.userInfo;
+		}
 		computed={
 			isAgent(){
-				let userInfo = wepy.getStorageSync(USER_INFO);
-				return userInfo.agentCode=='1';
+				return this.userInfo.agentCode=='1';
 			}
 		}
 	}
