@@ -1,6 +1,13 @@
 
 <template>
 	<view class="user_container">
+		<view class="user_header">
+			<view style="padding: 18rpx 0;font-size: 40rpx;color: #fff;">
+				{{userCount}}
+			</view>
+			<view style="font-size: 30rpx;color: #fff;">用户数</view>
+			<view style="padding: 16rpx 0;font-size: 20rpx;color: #fff;">分享小程序任意页面或者二维码都可以终身锁定用户</view>
+		</view>
 		<repeat for="{{userList}}" key="index" index="index" item="item">
 			<view class="user_item">
 				<image src="{{item.head_img}}"/>
@@ -31,8 +38,8 @@
 		config = {
 			navigationBarTitleText: '我的用户',
 			backgroundTextStyle: 'dark',
-			navigationBarBackgroundColor: '#FFFFFF',
-			navigationBarTextStyle: 'black',
+			navigationBarBackgroundColor: '#F7701A',
+			backgroundColor: '#efefef',
 		}
 
 		components = {
@@ -42,6 +49,7 @@
 		data = {
 			page: 1,
 			userList: [],
+			userCount:0,
 			loadingStatus:LoadingMore.LOADING,
 		}
 
@@ -66,7 +74,7 @@
 						this.loadingStatus =LoadingMore.NO_MORE;
 					}
 					if(this.page==1){
-						wx.setNavigationBarTitle({title: '我的用户('+res.count+')'})
+						this.userCount = res.count;
 					}
 					this.userList = [...this.userList,...res['list']];
 					this.$apply();
@@ -98,6 +106,11 @@
 </script>
 
 <style lang="less"  rel="stylesheet/less">
+	.user_header{
+		background-color: #F7701A;
+		color:#fff;
+		text-align: center;
+	}
 	.user_item{
 		display: flex;
 		background-color: #fefefe;

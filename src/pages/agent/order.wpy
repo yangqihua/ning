@@ -57,8 +57,8 @@
 		config = {
 			navigationBarTitleText: '订单详情',
 			backgroundTextStyle: 'dark',
-			navigationBarBackgroundColor: '#FFFFFF',
-			navigationBarTextStyle: 'black',
+			navigationBarBackgroundColor: '#F7701A',
+			backgroundColor: '#efefef',
 		}
 		components = {
 			loadingMore: LoadingMore,
