@@ -1,5 +1,5 @@
 <template>
-	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&type=0':item.iid+'&type=1'}}">
+	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&iid='+item.iid:'-1'+'&iid='+item.iid}}">
 		<view class="image_box">
 			<image lazy-load src="{{item.pic}}"></image>
 		</view>

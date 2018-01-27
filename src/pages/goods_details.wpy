@@ -92,7 +92,7 @@
 		data = {
 			hadCopy:false,
 			id:'10419',
-			type:'0',
+			iid:'0',
 			goodsDetails:{
 				iid: '',
 				name: '',
@@ -108,12 +108,12 @@
 				commission: ''
 			},
 		}
-		getGoodsDetails(id,type){
+		getGoodsDetails(id,iid){
 			let userInfo = this.$parent.getUserInfo();
 			let params = {
-				url: 'agent/goods_details',
+				url: 'agent/new_goods_details',
 				isLoading: false,
-				params: {id:id,type:type,openid:userInfo.openid},
+				params: {id:id,iid:iid,openid:userInfo.openid},
 				scb: (res) => {
 					this.goodsDetails = res;
 					this.$apply();
@@ -123,9 +123,9 @@
 			HTTPUtil.get(params);
 		}
 		onLoad(options) {
-			if(options.hasOwnProperty('id') && options.hasOwnProperty('type')){
+			if(options.hasOwnProperty('id') && options.hasOwnProperty('iid')){
 				this.id = options['id'];
-				this.type = options['type'];
+				this.iid = options['iid'];
 			}else{
 				let scene = decodeURIComponent(options['scene']);
 				if(scene.indexOf('_')>-1){
@@ -135,7 +135,7 @@
 					}
 					let requestCode = arr[0];
 					this.id = arr[1];
-					this.type = arr[2];
+					this.iid = arr[2];
 					if(this.$parent.globalData.isWxCode){
 						this.$parent.checkLogin(requestCode);
 					}
@@ -143,7 +143,7 @@
 					tip.error('错误:'+scene);
 				}
 			}
-			this.getGoodsDetails(this.id,this.type);
+			this.getGoodsDetails(this.id,this.iid);
 		}
 		onUnload(){
 			this.hadCopy=false;
@@ -159,7 +159,7 @@
 							openid:userInfo.openid,
 							page:'pages/goods_details',
 							id:this.id,
-							type:this.type,
+							iid:this.iid,
 							pic:this.goodsDetails.pic,
 							title:this.goodsDetails.name,
 							s_price:this.goodsDetails.s_price,
@@ -243,7 +243,7 @@
 		}
 		onShareAppMessage(res) {
 			let userInfo = this.$parent.getUserInfo();
-			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&type='+this.type+'&request_code='+userInfo.requestCode)
+			return tip.share(this.goodsDetails.name,this.goodsDetails.content,this.goodsDetails.pic,'/pages/goods_details?id='+this.id+'&iid='+this.iid+'&request_code='+userInfo.requestCode)
 		}
 	}
 </script>
