@@ -7,7 +7,7 @@
 				<view class="search_content">
 					<i class="iconfont icon-search"></i>
 					<input placeholder-class="search_placeholder" type="text" name="search_input" bindinput="searchInput" class="search_input" focus="{{focus}}"
-					       value="{{search_input_value}}" confirm-type="search" bindconfirm="confirmInput" placeholder="输入或粘贴淘宝/天猫标题"/>
+					       value="{{search_input_value}}" confirm-type="search" bindconfirm="confirmInput" placeholder="输入或粘贴商品标题"/>
 					<i wx:if="{{search_input_value!=''}}" @tap="delText" class="iconfont icon-del"></i>
 				</view>
 				<view class="btn_search" @tap="search()">搜索</view>
@@ -62,7 +62,7 @@
 
 		onShareAppMessage(res) {
 			let userInfo = this.$parent.getUserInfo();
-			return tip.share('淘宝天猫优惠券，速来围观！！！','','','/pages/home/search?request_code='+userInfo.requestCode);
+			return tip.share('高额优惠券，速来围观！！！','','','/pages/home/search?request_code='+userInfo.requestCode);
 		}
 	}
 </script>

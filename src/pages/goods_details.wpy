@@ -64,7 +64,7 @@
 				<view class="share_text">分享</view>
 			</button>
 			<view class="buy_box {{hadCopy?'had_buy':''}}" @tap="copyCode">
-				{{hadCopy?"已复制":"复制淘口令"}}
+				{{hadCopy?"已复制":"复制口令"}}
 			</view>
 		</view>
 
@@ -196,7 +196,7 @@
 			},
 			copyCode(){
 				if(this.hadCopy){
-					tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
+					tip.confirm({text:'口令复制成功',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
 					}).catch((res)=>{
 						wx.navigateTo({url: '/pages/help/jiaocheng'});
 					})
@@ -227,7 +227,7 @@
 							tip.loaded();
 							this.hadCopy = true;
 							this.$apply();
-							tip.confirm({text:'淘口令复制成功，请打开手机淘宝',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
+							tip.confirm({text:'口令复制成功',cancelText:'看看教程',confirmText:'我知道了'}).then((res)=>{
 							}).catch((res)=>{
 								wx.navigateTo({url: '/pages/help/jiaocheng'});
 							})

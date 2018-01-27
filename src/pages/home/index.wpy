@@ -6,7 +6,7 @@
 		        autoplay="true" interval="3000" duration="300" circular="true">
 			<repeat for="{{adList}}" key="adUrl" index="index" item="item">
 				<swiper-item>
-					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.id}})"/>
+					<image src="{{item.pic}}" mode="widthFix" class="slide_image" @tap="goToAd({{item.id}},{{item.iid}})"/>
 				</swiper-item>
 			</repeat>
 		</swiper>
@@ -137,10 +137,10 @@
 					url: '/pages/search_details?key='+value
 				})
 			},
-			goToAd(id){
+			goToAd(id,iid){
 				let userInfo = this.$parent.getUserInfo();
 				wx.navigateTo({
-					url: '/pages/goods_details?id='+id+'&type=0&openid='+userInfo.openid
+					url: '/pages/goods_details?id='+id+'&iid='+iid+'&openid='+userInfo.openid
 				})
 			},
 
@@ -219,7 +219,7 @@
 
 		onShareAppMessage(res) {
 			let userInfo = this.$parent.getUserInfo();
-			return tip.share('淘宝天猫优惠券，速来围观！！！','','','/pages/home/index?request_code='+userInfo.requestCode);
+			return tip.share('高额优惠券，速来围观！！！','','','/pages/home/index?request_code='+userInfo.requestCode);
 		}
 
 	}
