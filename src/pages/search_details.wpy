@@ -85,7 +85,6 @@
 					}
 					this.goods = [...this.goods,...res['list']];
 					this.$apply();
-					console.log("this.goods:",this.goods);
 					this.page++;
 				},
 				ecb:(err)=>{this.loadingStatus = LoadingMore.ERROR;}

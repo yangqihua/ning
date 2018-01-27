@@ -2,7 +2,7 @@
 <template>
 	<view class="top_container">
 		<view class="ad">
-			<image src="../../images/hot.png" mode="widthFix"/>
+			<image src="http://ozb2xxoij.bkt.clouddn.com/hot.png" mode="widthFix"/>
 		</view>
 		<view class="filter">
 			<view class="nav  {{sortId=='0' ? 'nav_active' : ''}}" data-current="0" @tap="handleSort">默认</view>
