@@ -61,7 +61,7 @@
 						<view class="data">{{timeData.incomes}}</view>
 					</view>
 				</view>
-				<view class="data_btn" @tap="order">点击查看详情 >></view>
+				<view class="data_btn" @tap="order">查看订单详情 >></view>
 			</view>
 			<view class="split"/>
 			<view class="group_list">
@@ -123,7 +123,7 @@
 			</view>
 
 			<view class="qr_code" @tap="handleQrCode">获取我的推广小程序码 >></view>
-			<view style="text-align: center;font-size: 18rpx;padding-bottom: 32rpx;">数据同步可能存在延迟，后台按时更新</view>
+			<view style="text-align: center;font-size: 18rpx;padding-bottom: 32rpx;">数据同步可能存在延迟，后台定时更新</view>
 		</view>
 		<view wx:else style="background-color: #efefef">
 			<view class="notice">{{normalUserData.notice}}</view>
@@ -280,7 +280,7 @@
 				wx.navigateTo({url: '/pages/agent/user'})
 			},
 			agent(){
-				wx.navigateTo({url: '/pages/agent/agent'})
+				wx.navigateTo({url: '/pages/agent/agent?total_reward='+this.userData.spread_money})
 			},
 			applyAgent(){
 				if(this.userInfo.agentCode=='2'){

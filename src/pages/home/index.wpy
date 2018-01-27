@@ -82,7 +82,6 @@
 	import tip from '../../utils/tip'
 	import HTTPUtil from '../../utils/HTTPUtil'
 
-	import FilterBar from '../../components/common/FilterBar'
 	import GoodsList from '../../components/common/GoodsList'
 	import LoadingMore from '../../components/common/LoadingMore'
 
@@ -98,7 +97,6 @@
 		}
 		components = {
 			search: Search,
-			filterBar: FilterBar,
 			goodsList: GoodsList,
 			loadingMore: LoadingMore,
 		}

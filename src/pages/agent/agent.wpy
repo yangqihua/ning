@@ -1,6 +1,13 @@
 
 <template>
 	<view class="agent_container">
+		<view style="background-color: #F7701A;text-align: center;">
+			<view style="padding: 18rpx 0;font-size: 40rpx;color: #fff;">
+				{{totalReward}}
+			</view>
+			<view style="font-size: 30rpx;color: #fff;">总奖励金额</view>
+			<view style="padding: 16rpx 0;font-size: 20rpx;color: #fff;">您的用户一旦成为代理合伙人，系统将自动奖励相应的金额</view>
+		</view>
 		<repeat for="{{agentList}}" key="index" index="index" item="item">
 			<view class="agent_item">
 				<image src="{{item.head_img}}"/>
@@ -31,8 +38,8 @@
 		config = {
 			navigationBarTitleText: '代理推广奖励',
 			backgroundTextStyle: 'dark',
-			navigationBarBackgroundColor: '#FFFFFF',
-			navigationBarTextStyle: 'black',
+			navigationBarBackgroundColor: '#F7701A',
+			backgroundColor: '#efefef',
 		}
 
 		components = {
@@ -40,6 +47,7 @@
 		}
 		mixins = [commonMixins];
 		data = {
+			totalReward:0,
 			page: 1,
 			agentList: [],
 			loadingStatus:LoadingMore.LOADING,
@@ -75,6 +83,9 @@
 		}
 
 		onLoad(options) {
+			if(options.hasOwnProperty('total_reward')){
+				this.totalReward = options.total_reward;
+			}
 			this.getAgentList();
 		}
 
