@@ -31,6 +31,8 @@ class HTTPUtil {
 			if(json['statusCode']==200){
 				if(res.code==200){
 					scb&&scb(res.data);
+				}else{
+					ecb&&ecb(json['msg']);
 				}
 			}else{
 				if(json['statusCode']==500){
@@ -60,6 +62,8 @@ class HTTPUtil {
 			if(json['statusCode']==200){
 				if(res.code==200){
 					scb&&scb(res.data);
+				}else{
+					ecb&&ecb(json['msg']);
 				}
 			}else{
 				ecb&&ecb(json['errMsg']);
