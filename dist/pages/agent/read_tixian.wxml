@@ -1,0 +1,27 @@
+
+	<view class="tixian_container">
+		<block wx:for="{{tixianList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+			<view class="tixian_item">
+				<image src="{{item.type=='0'?'http://ozb2xxoij.bkt.clouddn.com/weixin.png':'http://ozb2xxoij.bkt.clouddn.com/zhifubao.png'}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="token">{{item.token}}</view>
+						<view class="money">￥{{item.money}}</view>
+					</view>
+					<view style="display: flex;justify-content: space-between">
+						<view class="create_time">提现时间: {{item.time}}</view>
+						<view class="status {{item.status=='审核中'? 'has_tixian' : ''}}">{{item.status}}</view>
+					</view>
+				</view>
+			</view>
+		</block>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" bindtap="goTop"  wx:if="{{scrollTop>2000}}"/>
+		</view>
+		
+	<view class="loadMoreGif">
+		<image  wx:if="{{$loadingMore$show}}" src="../../images/loading.gif"/>
+		<view class="loading_text">{{$loadingMore$text}}</view>
+	</view>
+
+	</view>

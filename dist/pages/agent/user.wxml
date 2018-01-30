@@ -1,0 +1,31 @@
+
+	<view class="user_container">
+		<view style="background-color: #F7701A;text-align: center;">
+			<view style="padding: 18rpx 0;font-size: 40rpx;color: #fff;">
+				{{userCount}}
+			</view>
+			<view style="font-size: 30rpx;color: #fff;">总用户数</view>
+			<view style="padding: 16rpx 0;font-size: 20rpx;color: #fff;">分享小程序任意页面或者二维码都可以终身锁定用户</view>
+		</view>
+		<block wx:for="{{userList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+			<view class="user_item">
+				<image src="{{item.head_img}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="name">{{item.nick}}</view>
+						<view class="city">{{item.province?item.province:''}} {{item.city?item.city:''}}</view>
+					</view>
+					<view class="create_time">首次访问: {{item.time}}</view>
+				</view>
+			</view>
+		</block>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" bindtap="goTop"  wx:if="{{scrollTop>2000}}"/>
+		</view>
+		
+	<view class="loadMoreGif">
+		<image  wx:if="{{$loadingMore$show}}" src="../../images/loading.gif"/>
+		<view class="loading_text">{{$loadingMore$text}}</view>
+	</view>
+
+	</view>

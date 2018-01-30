@@ -1,0 +1,57 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.9.1",
+	"appid": "wxad716541ded0a6b3",
+	"projectname": "%E6%9F%A0%E6%AA%AC%E5%A5%BD%E7%89%A9",
+	"svr": "",
+	"client": "",
+	"qcloudRoot": "",
+	"miniprogramRoot": "",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": 0,
+					"name": "商品详情转发",
+					"pathName": "pages/home/index",
+					"query": "",
+					"scene": "1047"
+				},
+				{
+					"id": 1,
+					"name": "申请合伙人",
+					"pathName": "pages/agent/apply_agent",
+					"query": "",
+					"scene": "1008"
+				},
+				{
+					"id": -1,
+					"name": "我的用户",
+					"pathName": "pages/agent/user",
+					"query": "",
+					"scene": "1047"
+				}
+			]
+		}
+	}
+}

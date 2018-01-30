@@ -1,0 +1,29 @@
+
+	<view class="apply_container">
+		<view class="form_container">
+			<view class="form_item">
+				<text class="t_label" space="emsp">真实姓名 </text>
+				<input class="input_item" bindinput="handleNameInput" placeholder-class="input_placeholder" placeholder="请输入真实姓名，必填"/>
+			</view>
+			<view class="form_item">
+				<text class="t_label" space="emsp">电话号码 </text>
+				<input class="input_item" type="number" placeholder-class="input_placeholder" bindinput="handlePhoneInput" placeholder="请输入电话号码，必填"/>
+			</view>
+			<view class="form_item">
+				<text class="t_label" space="emsp">微信账号 </text>
+				<input class="input_item" type="text" placeholder-class="input_placeholder" bindinput="handleWxInput" placeholder="请输入微信账号，必填"/>
+			</view>
+			<view class="form_item">
+				<view class="t_label" space="emsp">支付宝账号</view>
+				<input class="input_item" type="text" placeholder-class="input_placeholder" bindinput="handleAliInput" placeholder="请输入支付宝账号，选填"/>
+			</view>
+
+			<view class="form_item">
+				<text class="t_label" space="emsp">申请理由 </text>
+				<textarea class="textarea_item" type="text" placeholder-class="input_placeholder" bindinput="handleReason" placeholder="请输入申请理由，请认真填写，否则审核通不过。必填"/>
+			</view>
+			<view class="submit_btn" bindtap="handelApply">
+				立即申请
+			</view>
+		</view>
+	</view>

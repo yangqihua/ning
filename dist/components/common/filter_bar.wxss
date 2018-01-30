@@ -1,0 +1,1 @@
+.filter{display:flex;align-items:center;justify-content:space-between;background:#fff}.filter .nav{color:#000000;font-size:26rpx;padding:12px 20px}.filter .nav_active{color:#f03939}

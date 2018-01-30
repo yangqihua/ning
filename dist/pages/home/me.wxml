@@ -1,0 +1,175 @@
+
+	<view class="me_container">
+		<view class="me_bg">
+			<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+			<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+		</view>
+		<view  wx:if="{{userInfo.agentCode==1}}">
+			<view class="notice">{{userData.notice}}</view>
+			<view class="money_container">
+				<view class="first">
+					<view>我的余额</view>
+					<view class="money_container">
+						<view class="money_value">
+							<image src="../../images/money.png"/>
+							<view>{{userData.money}}</view>
+						</view>
+						<view class="money_btn" bindtap="tixian">提现</view>
+					</view>
+				</view>
+				<view class="first" style="border:none">
+					<view>累计提现</view>
+					<view class="money_container">
+						<view class="money_value">
+							<image src="../../images/money2.png"/>
+							<view>{{userData.tixian}}</view>
+						</view>
+						<view class="money_btn" bindtap="readTixian">查看</view>
+					</view>
+				</view>
+			</view>
+			<view class="income_container">
+				<view class="month">
+					<view class="income_label">上月预估收入</view>
+					<view class="income_value">￥{{userData.total_lastm}}</view>
+				</view>
+				<view class="month" style="border: none">
+					<view class="income_label">本月预估收入</view>
+					<view class="income_value">￥{{userData.total_m}}</view>
+				</view>
+			</view>
+
+			<!--<view class="split"/>-->
+			<view class="data_container">
+				<view class="data_label">
+					<view class="{{activeTime=='0' ? 'view_active' : ''}}" style="border-right:1rpx solid #ddd;" data-current="0" bindtap="handleTime">今日</view>
+					<view class="{{activeTime=='1' ? 'view_active' : ''}}" style="border-right:1rpx solid #ddd;" data-current="1" bindtap="handleTime">本周</view>
+					<view class="{{activeTime=='2' ? 'view_active' : ''}}" data-current="2" bindtap="handleTime">总计</view>
+				</view>
+				<view class="data_value">
+					<view>
+						<view>点击数</view>
+						<view class="data">{{timeData.click}}</view>
+					</view>
+					<view>
+						<view>付款笔数</view>
+						<view class="data">{{timeData.order_num}}</view>
+					</view>
+					<view>
+						<view>预估收入</view>
+						<view class="data">{{timeData.incomes}}</view>
+					</view>
+				</view>
+				<view class="data_btn" bindtap="order">查看订单详情 >></view>
+			</view>
+			<view class="split"/>
+			<view class="group_list">
+				<view class="list_item" bindtap="user">
+					<view class="item_label">
+						<image src="../../images/group.png"/>
+						<view>我的用户</view>
+					</view>
+					<view class="item_value">
+						<view>{{userData.customer_count}} 个</view>
+						<image src="../../images/right.png"/>
+					</view>
+				</view>
+
+				<view class="list_item" bindtap="agent">
+					<view class="item_label">
+						<image src="../../images/reward.png"/>
+						<view>代理推广奖励</view>
+					</view>
+					<view class="item_value">
+						<view>{{userData.spread_money}} 元</view>
+						<image src="../../images/right.png"/>
+					</view>
+				</view>
+
+				<view class="split"/>
+
+				<navigator class="list_item" url="/pages/web_view?url=https://www.qu-gou.com/study/help.html">
+					<view class="item_label">
+						<image src="../../images/book.png"/>
+						<view>查看教程</view>
+					</view>
+					<view class="item_value">
+						<image src="../../images/right.png"/>
+					</view>
+				</navigator>
+
+				<view class="list_item" style="padding:0;">
+					<button plain style="border:none;width: 100%;padding:24rpx 22rpx;" open-type="contact">
+						<view class="item_label">
+								<image src="../../images/kefu.png"/>
+								<view>联系客服</view>
+						</view>
+					</button>
+					<view class="item_value" style="margin-top:24rpx;margin-right: 24rpx;">
+						<image src="../../images/right.png"/>
+					</view>
+				</view>
+
+				<view class="list_item">
+					<view class="item_label">
+						<image src="../../images/code.png"/>
+						<view>我的推广码</view>
+					</view>
+					<view class="item_value">
+						<view>{{userData.request_code}}</view>
+					</view>
+				</view>
+			</view>
+
+			<view class="qr_code" bindtap="handleQrCode">获取我的推广小程序码 >></view>
+			<view style="text-align: center;font-size: 18rpx;padding-bottom: 32rpx;">数据同步可能存在延迟，后台定时更新</view>
+		</view>
+		<view  wx:else style="background-color: #efefef">
+			<view class="notice">{{normalUserData.notice}}</view>
+			<view class="group_list">
+				<view class="list_item" bindtap="applyAgent">
+					<view class="item_label">
+						<image src="../../images/code.png"/>
+						<view>{{applyText}}</view>
+					</view>
+					<view class="item_value">
+						<image src="../../images/right.png"/>
+					</view>
+				</view>
+
+				<view class="list_item" style="padding:0;">
+					<button plain style="border:none;width: 100%;padding:24rpx 22rpx;" open-type="contact">
+						<view class="item_label">
+							<image src="../../images/kefu.png"/>
+							<view>联系客服</view>
+						</view>
+					</button>
+					<view class="item_value" style="margin-top:24rpx;margin-right: 24rpx;">
+						<image src="../../images/right.png"/>
+					</view>
+				</view>
+
+				<view class="split"/>
+
+				<navigator class="list_item" url="/pages/help/jiaocheng1">
+					<view class="item_label">
+						<image src="../../images/book.png"/>
+						<view>查券指南</view>
+					</view>
+					<view class="item_value">
+						<image src="../../images/right.png"/>
+					</view>
+				</navigator>
+
+				<view class="list_item">
+					<view class="item_label">
+						<image src="../../images/edit.png"/>
+						<view>邀请码</view>
+					</view>
+					<view class="item_value">
+						<view>{{normalUserData.code}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>

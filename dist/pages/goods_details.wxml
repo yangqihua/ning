@@ -1,0 +1,73 @@
+
+	<view class="goods_details_container">
+		<view>
+			<image src="{{goodsDetails.pic}}" mode="widthFix" class="goods_pic" style="width: 750rpx;"/>
+		</view>
+		<view class="goods_info">
+			<view class="title">
+				<view class="product_name">
+					<image src="{{goodsDetails.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}" class="logo"/>
+					{{goodsDetails.name}}
+				</view>
+			</view>
+			<view class="details">
+				<view class="info">
+					<view class="price">
+						<view class="x_price_label">券后价</view>
+						<view class="x_price">￥{{goodsDetails.price}}</view>
+						<view class="s_price">￥{{goodsDetails.s_price}}</view>
+					</view>
+					<view class="sales_info">
+							<view class="quan_label">券</view>
+							<view class="quan_value">￥{{goodsDetails.coupon_price}}</view>
+							<view class="sales_label">销量:</view>
+							<view class="sales_value">{{goodsDetails.sales}}</view>
+					</view>
+				</view>
+				<view class="operation" bindtap="generate">
+					<image src="http://ozb2xxoij.bkt.clouddn.com/share.png" class="share_icon"/>
+					<view class="share_text">分享图文</view>
+				</view>
+			</view>
+			<button  wx:if="{{isAgent}}" class="you" open-type="share" plain>
+				<image src="http://ozb2xxoij.bkt.clouddn.com/coupon.png" mode="widthFix" style="width: 100%;"/>
+				<view class="first_label">
+					<view class="first_value">{{goodsDetails.commission}}</view>
+					<view style="color:#fff">元佣金</view>
+				</view>
+				<view class="last_label">立即推广</view>
+			</button>
+			<view class="you" bindtap="copyCode"  wx:else>
+				<image src="http://ozb2xxoij.bkt.clouddn.com/coupon.png" mode="widthFix" style="width: 100%;"/>
+				<view class="first_label">
+					<view class="first_value">{{goodsDetails.coupon_price}}</view>
+					<view style="color:#fff">元优惠券</view>
+				</view>
+				<view class="last_label">立即领券</view>
+			</view>
+		</view>
+		<view class="split"/>
+		<view class="goods_content">
+			<view class="recommend">推荐</view>
+			{{goodsDetails.content}}
+		</view>
+		<view class="bottom_container">
+			<view class="price_box">
+				<view style="font-size: 24rpx;line-height: 100rpx;padding-left: 4rpx;">券后价</view>
+				<view style="color: #ff5777;">￥{{goodsDetails.price}}</view>
+			</view>
+			<button class="share_box" open-type="share" plain>
+				<view class="icon_container">
+					<image src="http://ozb2xxoij.bkt.clouddn.com/share2.png" class="share_icon"/>
+				</view>
+				<view class="share_text">分享</view>
+			</button>
+			<view class="buy_box {{hadCopy?'had_buy':''}}" bindtap="copyCode">
+				{{hadCopy?"已复制":"复制口令"}}
+			</view>
+		</view>
+
+		<navigator open-type="switchTab" url="/pages/home/index" class="home_btn">
+			首页
+		</navigator>
+	</view>

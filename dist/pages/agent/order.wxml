@@ -1,0 +1,51 @@
+
+	<view class="order_container">
+		<view class="filter">
+			<view class="nav  {{type=='0' ? 'nav_active' : ''}}" data-current="0" bindtap="handType">今日</view>
+			<view class="nav  {{type=='1' ? 'nav_active' : ''}}" data-current="1" bindtap="handType">本周</view>
+			<view class="nav  {{type=='2' ? 'nav_active' : ''}}" data-current="2" bindtap="handType">总计</view>
+		</view>
+		<view class="list_container">
+			<block wx:for="{{orderList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+				<view class="order_item">
+					<view class="item_info">
+						<image src="{{item.pic}}"/>
+						<view class="info">
+							<view class="name">{{item.name}}</view>
+							<view class="shop">所属店铺: {{item.shop}}</view>
+							<view style="display: flex;justify-content: space-between">
+								<view class="order_id">订单号: {{item.order_num}}</view>
+								<view style="padding-right: 8rpx;color:#999;font-size: 24rpx;">{{item.goods_num}} 件</view>
+							</view>
+						</view>
+					</view>
+					<view class="money">
+						<view class="money_container">
+							<view class="money_label">付款金额</view>
+							<view class="money_value">￥{{item.pay_money}}</view>
+						</view>
+						<view class="money_container">
+							<view class="money_label">成交预估收入</view>
+							<view class="money_value">￥{{item.commission}}</view>
+						</view>
+						<view class="money_container">
+							<view class="money_label">提成</view>
+							<view class="money_value">{{item.rate_precent}}%</view>
+						</view>
+					</view>
+					<view style="padding-top:15rpx;color: #999;font-size: 24rpx;">
+						{{item.order_time}} 创建
+					</view>
+				</view>
+			</block>
+		</view>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" bindtap="goTop"  wx:if="{{scrollTop>2000}}"/>
+		</view>
+		
+	<view class="loadMoreGif">
+		<image  wx:if="{{$loadingMore$show}}" src="../../images/loading.gif"/>
+		<view class="loading_text">{{$loadingMore$text}}</view>
+	</view>
+
+	</view>

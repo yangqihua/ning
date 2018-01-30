@@ -1,0 +1,15 @@
+
+	<view class="search_container">
+		<view class="search_box">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/search_background.jpg" mode="widthFix" style="width: 100%"/>
+			<view class="search">
+				<view class="search_content">
+					<i class="iconfont icon-search"/>
+					<input placeholder-class="search_placeholder" type="text" name="search_input" bindinput="searchInput" class="search_input" focus="{{focus}}" value="{{search_input_value}}" confirm-type="search" bindconfirm="confirmInput" placeholder="输入或粘贴商品标题"/>
+					<i  wx:if="{{search_input_value!=''}}" bindtap="delText" class="iconfont icon-del"/>
+				</view>
+				<view class="btn_search" bindtap="search" data-wpysearch-a="">搜索</view>
+			</view>
+		</view>
+		<image src="http://ozb2xxoij.bkt.clouddn.com/chaquan.jpg" mode="widthFix" style="width: 100%"/>
+	</view>

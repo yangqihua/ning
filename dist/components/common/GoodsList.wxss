@@ -1,0 +1,2 @@
+@import "./ListItem.wxss";
+@charset "UTF-8";.goods_list_container{padding:0 10rpx;background:#f7f7f7;display:flex;flex-wrap:wrap;padding-bottom:36rpx}

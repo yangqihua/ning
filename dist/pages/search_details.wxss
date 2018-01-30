@@ -1,0 +1,4 @@
+@import "./../components/common/ListItem.wxss";
+@import "./../components/common/LoadingMore.wxss";
+@import "./../components/common/search.wxss";
+@charset "UTF-8";.search_details_container{background-color:#f7f7f7}.search_details_container .filter{margin-top:84rpx;position:fixed;top:0;right:0;left:0;z-index:999;width:100%;display:flex;justify-content:space-between;background:#fff;border-bottom:1rpx solid #efe8ee}.search_details_container .filter .nav{flex:1;color:#333;font-size:26rpx;padding:10px 20px;text-align:center}.search_details_container .filter .nav_active{color:#ff0077}.search_details_container .goods_list_container{padding:0 10rpx;background:#f7f7f7;display:flex;flex-wrap:wrap;margin-top:160rpx;padding-bottom:36rpx}

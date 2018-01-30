@@ -1,0 +1,3 @@
+@import "./../../components/common/ListItem.wxss";
+@import "./../../components/common/LoadingMore.wxss";
+@charset "UTF-8";.top_container .ad{margin-top:100rpx;width:100%}.top_container .ad image{width:750rpx}.top_container .filter{position:fixed;top:0;right:0;left:0;z-index:999;width:100%;display:flex;justify-content:space-between;background:#fff;border-bottom:1rpx solid #efe8ee}.top_container .filter .nav{flex:1;color:#333;font-size:26rpx;padding:10px 20px;text-align:center}.top_container .filter .nav_active{color:#ff0077}.top_container .goods_list_container{padding:0 10rpx;background:#f7f7f7;display:flex;flex-wrap:wrap;padding-bottom:36rpx}

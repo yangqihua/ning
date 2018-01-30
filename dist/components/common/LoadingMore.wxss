@@ -1,0 +1,1 @@
+.loadMoreGif{padding:15rpx 0 45rpx 0;width:750rpx;display:flex;justify-content:center;align-items:center;z-index:99;background-color:#f7f7f7}.loadMoreGif .loading_text{font-size:30rpx;color:#999;margin-left:10rpx}.loadMoreGif image{width:40rpx;height:40rpx}

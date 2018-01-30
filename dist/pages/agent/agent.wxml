@@ -1,0 +1,31 @@
+
+	<view class="agent_container">
+		<view style="background-color: #F7701A;text-align: center;">
+			<view style="padding: 18rpx 0;font-size: 40rpx;color: #fff;">
+				{{totalReward}}
+			</view>
+			<view style="font-size: 30rpx;color: #fff;">总奖励金额</view>
+			<view style="padding: 16rpx 0;font-size: 20rpx;color: #fff;">您的用户一旦成为代理合伙人，系统将自动奖励相应的金额</view>
+		</view>
+		<block wx:for="{{agentList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+			<view class="agent_item">
+				<image src="{{item.head_img}}"/>
+				<view class="info">
+					<view style="display: flex;justify-content: space-between">
+						<view class="name">{{item.nick}}</view>
+						<view class="reward">奖金: {{item.reward}}元</view>
+					</view>
+					<view class="create_time">成为代理时间: {{item.time}}</view>
+				</view>
+			</view>
+		</block>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" bindtap="goTop"  wx:if="{{scrollTop>2000}}"/>
+		</view>
+		
+	<view class="loadMoreGif">
+		<image  wx:if="{{$loadingMore$show}}" src="../../images/loading.gif"/>
+		<view class="loading_text">{{$loadingMore$text}}</view>
+	</view>
+
+	</view>

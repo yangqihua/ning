@@ -1,0 +1,31 @@
+
+	<view class="tixian_container">
+		<view class="notice">{{info.notice}}</view>
+		<view class="form_container">
+			<view class="form_item">
+				<view class="t_label">当前余额</view>
+				<view class="t_value" style="color: red;">{{info.money}} 元</view>
+			</view>
+			<view class="form_item">
+				<radio-group style="margin-bottom: 8rpx;" bindchange="radioChange">
+					<label class="radio">
+						<radio value="0" checked/>微信
+					</label>
+					<label class="radio" style="margin-left: 200rpx;">
+						<radio value="1"/>支付宝
+					</label>
+				</radio-group>
+			</view>
+			<view class="form_item">
+				<view class="t_label">提现账户</view>
+				<input class="input_item {{moneyType=='0'?'active_input':''}}" bindinput="handleTokenInput" placeholder-class="input_placeholder" placeholder="请填写账户" value="{{token}}" disabled="{{moneyType=='0'}}"/>
+			</view>
+			<view class="form_item">
+				<view class="t_label">提现金额</view>
+				<input class="input_item" type="digit" placeholder-class="input_placeholder" bindinput="handleMoneyInput" placeholder="{{placeholder}}" value="{{money}}"/>
+			</view>
+			<view class="submit_btn" bindtap="handelTixian">
+				{{tip}}
+			</view>
+		</view>
+	</view>

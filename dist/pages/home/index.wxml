@@ -1,0 +1,132 @@
+
+	<view class="container">
+		
+	<view class="search_container">
+		<view class="search">
+			<view class="search_content">
+				<i class="iconfont icon-search"/>
+				<input placeholder-class="search_placeholder" type="text" name="search_input" bindinput="$search$searchInput" class="search_input" focus="{{$search$focus}}" value="{{$search$search_input_value}}" confirm-type="search" bindconfirm="$search$confirmInput" placeholder="搜索商品名称"/>
+				<i  wx:if="{{$search$search_input_value!=''}}" bindtap="$search$delText" class="iconfont icon-del"/>
+			</view>
+			<button class="btn btn_search" bindtap="$search$search" data-wpysearch-a="">搜索</button>
+		</view>
+	</view>
+
+		<swiper class="swiper" indicator-active-color="#ff5777" indicator-dots="true" autoplay="true" interval="3000" duration="300" circular="true">
+			<block wx:for="{{adList}}" wx:for-index="index" wx:for-item="item" wx:key="adUrl">
+				<swiper-item>
+					<image src="{{item.pic}}" mode="widthFix" class="slide_image" bindtap="goToAd" data-wpygotoad-a="{{item.id}}" data-wpygotoad-b="{{item.iid}}"/>
+				</swiper-item>
+			</block>
+		</swiper>
+
+		<view class="nav_list">
+			<navigator open-type="navigate" url="/pages/home_details?titleId=0" hover-class="none">
+				<image src="../../images/home/dapai.png" class="nav_icon"/>
+				<view class="nav_text">大牌券</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/home_details?titleId=1" hover-class="none">
+				<image src="../../images/home/present.png" class="nav_icon"/>
+				<view class="nav_text">九块九</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/home_details?titleId=2" hover-class="none">
+				<image src="../../images/home/sale.png" class="nav_icon"/>
+				<view class="nav_text">人气榜</view>
+			</navigator>
+			<navigator open-type="navigate" url="/pages/home_details?titleId=3" hover-class="none">
+				<image src="../../images/home/shop.png" class="nav_icon"/>
+				<view class="nav_text">聚划算</view>
+			</navigator>
+		</view>
+
+		<view class="home_list">
+			<wxc-tab bindtabchange="handCondition" animate="true" class="tab" default-index="{{conditionId}}">
+				<view slot="tablabel">
+					<block wx:for="{{tabs}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+						<wxc-tab-label tab-index="{{index}}">
+							<view class="label {{ conditionId === index ? 'active' : ''}}">
+								{{item.c_name}}
+							</view>
+						</wxc-tab-label>
+					</block>
+				</view>
+
+				<block wx:for="{{tabs}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+					<wxc-tab-panel tab-index="{{index}}">
+						<view class="filter_bar"  wx:if="{{conditionId==index}}">
+							<view class="filter">
+								<view class="nav  {{sortId=='0' ? 'nav_active' : ''}}" data-current="0" bindtap="handleSort">默认</view>
+								<view class="nav  {{sortId=='1' ? 'nav_active' : ''}}" data-current="1" bindtap="handleSort">价格</view>
+								<view class="nav  {{sortId=='2' ? 'nav_active' : ''}}" data-current="2" bindtap="handleSort">销量</view>
+								<view class="nav  {{sortId=='3' ? 'nav_active' : ''}}" data-current="3" bindtap="handleSort">券额</view>
+							</view>
+						</view>
+						<view  wx:if="{{conditionId==index}}">
+							
+	<view>
+		<scroll-view scroll-y>
+			<view class="goods_list_container">
+				<block wx:for="{{goods}}" wx:for-index="$goodsList$index" wx:for-item="$goodsList$item" wx:key="$goodsList$index">
+					
+	<navigator class="list" url="/pages/goods_details?id={{$goodsList$item.id?$goodsList$item.id+'&iid='+$goodsList$item.iid:'-1'+'&iid='+$goodsList$item.iid}}">
+		<view class="image_box">
+			<image lazy-load="lazy-load" src="{{$goodsList$item.pic}}"/>
+		</view>
+		<view class="goods">
+			<view class="title">
+				<image src="{{$goodsList$item.is_tmall==1?'http://ozb2xxoij.bkt.clouddn.com/tianmao.jpg':'http://ozb2xxoij.bkt.clouddn.com/taobao.jpg'}}" class="logo"/>
+				<view class="product_name">
+					{{$goodsList$item.name}}
+				</view>
+			</view>
+			<view class="second">
+				<view class="quanhou">
+					<view class="price"  wx:if="{{$goodsList$listItem$isAgent}}">￥{{$goodsList$item.price}}</view>
+					<view class="s_price"  wx:else>￥{{$goodsList$item.s_price}}</view>
+					{{$goodsList$listItem$isAgent?'券后':'原价'}}
+				</view>
+				<view class="sales">
+					<view>销量</view>
+					<view class="label_value">{{$goodsList$item.sales}}</view>
+				</view>
+			</view>
+			<view class="third">
+				<view class="quan">券￥{{$goodsList$item.coupon_price}}</view>
+				<view class="rate" wx:if="{{$goodsList$listItem$isAgent}}">
+					<view class="rate_text">佣金</view>
+					<view class="rate_value">{{$goodsList$item.commission}}元</view>
+				</view>
+				<view class="not_agent" wx:else>
+					<view class="label_text">券后</view>
+					<view class="label_value">￥{{$goodsList$item.price}}</view>
+				</view>
+			</view>
+		</view>
+	</navigator>
+
+				</block>
+			</view>
+		</scroll-view>
+		<view class="totop">
+			<image src="http://ozb2xxoij.bkt.clouddn.com/totop.png" bindtap="$goodsList$goTop"  wx:if="{{scrollTop>2000}}" data-com-index="{{index}}"/>
+		</view>
+	</view>
+
+						</view>
+					</wxc-tab-panel>
+				</block>
+
+			</wxc-tab>
+		</view>
+
+		<!--加载更多时动画-->
+		
+	<view class="loadMoreGif">
+		<image  wx:if="{{$loadingMore$show}}" src="../../images/loading.gif"/>
+		<view class="loading_text">{{$loadingMore$text}}</view>
+	</view>
+
+
+		<wxc-toast class="J_toast" text="{{toastText}}">
+		</wxc-toast>
+	</view>

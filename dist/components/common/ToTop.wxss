@@ -1,0 +1,1 @@
+.totop image{background:#000;border-radius:50%;position:fixed;bottom:82rpx;right:32rpx;width:40rpx;height:40rpx;padding:16rpx;opacity:.6;z-index:999999}

@@ -1,0 +1,1 @@
+@charset "UTF-8";.filter{width:100%;display:flex;justify-content:space-between;background:#fff}.filter .nav{flex:1;color:#333;font-size:26rpx;padding:10px 20px;text-align:center}.filter .nav_active{color:#ff0077}
