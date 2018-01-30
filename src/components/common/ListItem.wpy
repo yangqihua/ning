@@ -1,5 +1,5 @@
 <template>
-	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&iid='+item.iid:'-1'+'&iid='+item.iid}}">
+	<view class="list" @tap="goDetails">
 		<view class="image_box">
 			<image lazy-load src="{{item.pic}}"></image>
 		</view>
@@ -13,9 +13,9 @@
 			</view>
 			<view class="second">
 				<view class="quanhou">
-					<view class="price" wx:if="{{isAgent}}">￥{{item.price}}</view>
+					<view class="price" wx:if="{{userInfo.agentCode=='1'}}">￥{{item.price}}</view>
 					<view class="s_price" wx:else>￥{{item.s_price}}</view>
-					{{isAgent?'券后':'原价'}}
+					{{userInfo.agentCode=='1'?'券后':'原价'}}
 				</view>
 				<view class="sales">
 					<view>销量</view>
@@ -24,7 +24,7 @@
 			</view>
 			<view class="third">
 				<view class="quan">券￥{{item.coupon_price}}</view>
-				<view class="rate" wx:if="{{isAgent}}">
+				<view class="rate" wx:if="{{userInfo.agentCode=='1'}}">
 					<view class="rate_text">佣金</view>
 					<view class="rate_value">{{item.commission}}元</view>
 				</view>
@@ -34,7 +34,7 @@
 				</view>
 			</view>
 		</view>
-	</navigator>
+	</view>
 </template>
 
 <script>
@@ -49,9 +49,20 @@
 			item: Object,
 		}
 		computed={
-			isAgent(){
-				let userInfo = wepy.getStorageSync(USER_INFO);
-				return userInfo.agentCode=='1';
+			userInfo(){
+				return wepy.getStorageSync(USER_INFO);
+			},
+		}
+		methods = {
+			goDetails(){
+				let id = this.item.id?this.item.id:'-1';
+				let iid = this.item.iid;
+				if(this.userInfo.checkout=='0'){
+					return;
+				}
+				wx.navigateTo({
+					url: '/pages/goods_details?id='+id+'&iid='+iid
+				})
 			}
 		}
 	}

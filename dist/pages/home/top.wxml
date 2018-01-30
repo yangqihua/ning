@@ -13,7 +13,7 @@
 			<view class="goods_list_container">
 				<block wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
 					
-	<navigator class="list" url="/pages/goods_details?id={{item.id?item.id+'&iid='+item.iid:'-1'+'&iid='+item.iid}}">
+	<view class="list" bindtap="$listItem$goDetails" data-com-index="{{index}}">
 		<view class="image_box">
 			<image lazy-load="lazy-load" src="{{item.pic}}"/>
 		</view>
@@ -26,9 +26,9 @@
 			</view>
 			<view class="second">
 				<view class="quanhou">
-					<view class="price"  wx:if="{{$listItem$isAgent}}">￥{{item.price}}</view>
+					<view class="price"  wx:if="{{$listItem$userInfo.agentCode=='1'}}">￥{{item.price}}</view>
 					<view class="s_price"  wx:else>￥{{item.s_price}}</view>
-					{{$listItem$isAgent?'券后':'原价'}}
+					{{$listItem$userInfo.agentCode=='1'?'券后':'原价'}}
 				</view>
 				<view class="sales">
 					<view>销量</view>
@@ -37,7 +37,7 @@
 			</view>
 			<view class="third">
 				<view class="quan">券￥{{item.coupon_price}}</view>
-				<view class="rate" wx:if="{{$listItem$isAgent}}">
+				<view class="rate" wx:if="{{$listItem$userInfo.agentCode=='1'}}">
 					<view class="rate_text">佣金</view>
 					<view class="rate_value">{{item.commission}}元</view>
 				</view>
@@ -47,7 +47,7 @@
 				</view>
 			</view>
 		</view>
-	</navigator>
+	</view>
 
 				</block>
 			</view>

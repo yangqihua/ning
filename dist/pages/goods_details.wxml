@@ -63,7 +63,7 @@
 				<view class="share_text">分享</view>
 			</button>
 			<view class="buy_box {{hadCopy?'had_buy':''}}" bindtap="copyCode">
-				{{hadCopy?"已复制":"复制口令"}}
+				{{hadCopy?"已复制":"复制淘口令"}}
 			</view>
 		</view>
 

@@ -127,7 +127,7 @@
 		<view  wx:else style="background-color: #efefef">
 			<view class="notice">{{normalUserData.notice}}</view>
 			<view class="group_list">
-				<view class="list_item" bindtap="applyAgent">
+				<view wx:if="{{userInfo.checkout!='0'}}" class="list_item" bindtap="applyAgent">
 					<view class="item_label">
 						<image src="../../images/code.png"/>
 						<view>{{applyText}}</view>
@@ -151,7 +151,7 @@
 
 				<view class="split"/>
 
-				<navigator class="list_item" url="/pages/help/jiaocheng1">
+				<navigator wx:if="{{userInfo.checkout!='0'}}" class="list_item" url="/pages/help/jiaocheng1">
 					<view class="item_label">
 						<image src="../../images/book.png"/>
 						<view>查券指南</view>
@@ -161,7 +161,7 @@
 					</view>
 				</navigator>
 
-				<view class="list_item">
+				<view wx:if="{{userInfo.checkout!='0'}}" class="list_item">
 					<view class="item_label">
 						<image src="../../images/edit.png"/>
 						<view>邀请码</view>
