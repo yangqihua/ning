@@ -144,6 +144,7 @@
 						console.log("result:", result);
 						userInfo['openid'] = result['openid'];
 						userInfo['agentCode'] = result['is_agent'];
+						userInfo['checkout'] = result['checkout'];
 						userInfo['requestCode'] = result['request_code'];
 						this.globalData.userInfo = userInfo;
 						wepy.setStorageSync(USER_INFO, userInfo);
@@ -176,6 +177,7 @@
 						this.login(options);
 					} else {
 						userInfo['agentCode'] = agentCode;
+						userInfo['checkout'] = result['checkout'];
 						userInfo['requestCode'] = result['request_code'];
 						this.globalData.userInfo = userInfo;
 						wepy.setStorageSync(USER_INFO, userInfo);
