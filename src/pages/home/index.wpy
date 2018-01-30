@@ -87,7 +87,7 @@
 
 	export default class Index extends wepy.page {
 		config = {
-			navigationBarTitleText: '柠檬好物',
+			navigationBarTitleText: '柠檬购物',
 			usingComponents: {
 				'wxc-toast': '../../packages/@minui/wxc-toast/dist/index',
 				'wxc-tab': '../../packages/@minui/wxc-tab/dist/index',

@@ -41,7 +41,7 @@
 			window: {
 				backgroundTextStyle: 'dark',
 				navigationBarBackgroundColor: '#ff5777',
-				navigationBarTitleText: '柠檬好物',
+				navigationBarTitleText: '柠檬购物',
 				navigationBarTextStyle: '#fff',
 				enablePullDownRefresh: false,
 				backgroundColor: '#fefefe',
