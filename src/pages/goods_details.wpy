@@ -231,11 +231,14 @@
 							}).catch((res)=>{
 								wx.navigateTo({url: '/pages/help/jiaocheng'});
 							})
+						},
+						fail:(res)=>{
+							tip.loaded();
 						}
 					})
 				},
 				ecb:(err)=>{
-					console.log('err:',err);
+					tip.loaded();
 					tip.error(err)
 				}
 			}

@@ -139,6 +139,9 @@
 			},
 			goToAd(id,iid){
 				let userInfo = this.$parent.getUserInfo();
+				if(userInfo.checkout=='0'){
+					return;
+				}
 				wx.navigateTo({
 					url: '/pages/goods_details?id='+id+'&iid='+iid+'&openid='+userInfo.openid
 				})
