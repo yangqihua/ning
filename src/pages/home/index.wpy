@@ -185,6 +185,7 @@
 			HTTPUtil.get(params);
 		}
 
+
 		showToast() {
 			let $toast = this.$wxpage.selectComponent('.J_toast')
 			$toast && $toast.show()
