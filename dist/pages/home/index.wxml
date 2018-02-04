@@ -126,7 +126,6 @@
 		<view class="loading_text">{{$loadingMore$text}}</view>
 	</view>
 
-
 		<wxc-toast class="J_toast" text="{{toastText}}">
 		</wxc-toast>
 	</view>

@@ -68,7 +68,6 @@
 
 		<!--加载更多时动画-->
 		<loadingMore :loadingStatus.sync="loadingStatus" message="加载中..."></loadingMore>
-
 		<wxc-toast
 				class="J_toast"
 				text="{{toastText}}">
@@ -175,15 +174,15 @@
 				isLoading: false,
 				params: {page: this.page, sort: this.sortId, cid: this.conditionId},
 				scb: (res) => {
-					this.loadingMore =LoadingMore.FINISHED;
+					this.loadingStatus =LoadingMore.FINISHED;
 					if(res.length==0){
-						this.loadingMore =LoadingMore.NO_MORE;
+						this.loadingStatus = LoadingMore.NO_MORE;
 					}
 					this.goods = [...this.goods,...res];
 					this.$apply();
 					this.page++;
 				},
-				ecb:(err)=>{this.loadingMore =LoadingMore.ERROR;}
+				ecb:(err)=>{this.loadingStatus =LoadingMore.ERROR;}
 			}
 			HTTPUtil.get(params);
 		}
@@ -215,7 +214,7 @@
 		}
 
 		onReachBottom(){
-			if(this.loadingMore!=LoadingMore.FINISHED){
+			if(this.loadingStatus!=LoadingMore.FINISHED){
 				return;
 			}
 			this.getGoodsList();
